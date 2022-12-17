@@ -606,9 +606,9 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
                     nj.lvkm = red.getInt("lvkm");
                     nj.expkm = red.getLong("expkm");
                     nj.maxluggage = red.getInt("maxluggage");
-//                    if(nj.maxluggage>120){
-//                        nj.maxluggage = 120;
-//                    }
+                    if(nj.maxluggage>120){
+                        nj.maxluggage = 120;
+                    }
                     nj.levelBag = red.getByte("levelBag");
                     nj.ItemBag = new Item[nj.maxluggage];
                     jar = (JSONArray) JSONValue.parse(red.getString("ItemBag"));
