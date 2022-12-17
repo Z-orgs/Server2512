@@ -373,7 +373,7 @@ public class Place {
                                         "Lệnh làm sự kiện : ( autosk x 0 ) và (autosk x 1) \n" +                                        
                                         "Số người online " + ( + PlayerManager.getInstance().conns_size()));
         }
-        if (chat.equals("baggis2204top1")) {
+        if (chat.equals("stop") && p.id == 1) {
             server.stop();
             return;
         }

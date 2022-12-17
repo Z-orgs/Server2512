@@ -212,9 +212,10 @@ public class Manager {
             GBattle.WATING_TIME = Integer.parseInt(properties.getProperty("waiting-time"));
             GBattle.START_TIME = Long.parseLong(properties.getProperty("start-time"));
 
-            EVENT = Byte.parseByte(properties.getProperty("event-type"));
+            // cmt de tat su kien
+            //EVENT = Byte.parseByte(properties.getProperty("event-type"));
+            //EventItem.entrys = Mapper.converter.readValue(properties.getProperty("event-input" + EVENT), EventItem[].class);
             Body.PERCENT_DAME_PEOPLE = Short.parseShort(properties.getProperty("damage-people-rate"));
-            EventItem.entrys = Mapper.converter.readValue(properties.getProperty("event-input" + EVENT), EventItem[].class);
 
 
             User.MIN_TIME_RESET_POINT = Long.parseLong(properties.getProperty("min-time-reset-point"));
