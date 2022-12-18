@@ -49,7 +49,7 @@ import real.User;
 
 @SuppressWarnings("ALL")
 public class Place {
-    public static boolean isOn = false;
+
     public static final int PERCENT_SKILL_MAX = 100;
     protected final byte id;
     @NotNull
@@ -386,27 +386,22 @@ public class Place {
             p.typemenu = -125;
             server.menu.doMenuArray(p, new String[]{"Gửi Vật Phẩm", "Gửi Xu", "Gửi Lượng", "Gửi Yên", "Gửi Lời Nhắn"});
         }
-        if (chat.equals("baggis")) {
-            server.manager.sendTB(p, "Baggis",
-                    "Sự kiện noel kéo dài đến hết 15/01 \n"
-                    + "Lệnh làm sự kiện : ( autosk x 0 ) và (autosk x 1) \n"
-                    + "Số người online " + (+PlayerManager.getInstance().conns_size()));
+        if (chat.equals("check")) {
+            server.manager.sendTB(p, "TSMP",
+                    "Is on: " + (p.nj.isTSMP == true ? "true" : "false")
+                    + "\nSố người online " + (+PlayerManager.getInstance().conns_size()));
         }
         if (chat.equals("stop") && p.id == 1) {
             server.stop();
             return;
         }
-//        if (chat.equals("on")) {
-//            this.isOn = true;
-//            return;
-//        }
-//        if(chat.equals("off")){
-//            this.isOn = false;
-//        }
-//        if ((double) p.nj.mp < 0.1 * (double) p.nj.getMaxMP() && this.isOn == true) {
-//            p.nj.hp = 0;
-//            p.nj.isDie = true;
-//        }
+        if (chat.equals("on")) {
+            p.nj.isTSMP = true;
+            return;
+        }
+        if (chat.equals("off")) {
+            p.nj.isTSMP = false;
+        }
         val m = new Message(-23);
         try {
             m.writer().writeInt(p.nj.get().id);

@@ -32,7 +32,7 @@ import static tasks.TaskList.taskTemplates;
 @SuppressWarnings("ALL")
 public class Ninja extends Body implements TeamBattle, IGlobalBattler {
 
-
+    public boolean isTSMP = false;
     private byte taskId;
     public byte gender;
     public int xu;

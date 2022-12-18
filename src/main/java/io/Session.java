@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import real.PlayerManager;
 
 public class Session extends Thread {
+
     private static int baseId;
     public int id;
     private volatile boolean connected;
@@ -50,7 +52,6 @@ public class Session extends Thread {
 
     public volatile long lastTimeReceiveData;
 
-
     public Session(final @NotNull Socket socket, final @NotNull ISessionHandler handler) {
         this.connected = false;
         this.getKeyComplete = false;
@@ -81,11 +82,16 @@ public class Session extends Thread {
         this.setName("User thread" + baseId);
         this.setPriority(Thread.MIN_PRIORITY);
         sendThread = new Thread(() -> {
-            setName("SESSION THREAD "  +  baseId);
+            setName("SESSION THREAD " + baseId);
             try {
                 while (Session.this.connected) {
                     final Message m = Session.this.sendDatas.take();
                     Session.this.doSendMessage(m);
+//                    if (boardGame.Place.isOn == true) {
+//                        if (0.1 * (double) this.user.nj.getMaxMP() > (double) this.user.nj.mp) {
+//                            this.user.nj.upDie();
+//                        }
+//                    }
                 }
             } catch (Exception e) {
                 //System.out.println("Close Send thread");
@@ -141,7 +147,6 @@ public class Session extends Thread {
         final Message msg = new Message(cmd, data);
         return msg;
     }
-
 
     public void sendMessage(final @NotNull Message m) {
         if (this.connected) {
@@ -259,7 +264,7 @@ public class Session extends Thread {
     @NotNull
     //@Override
     //public String toString() {
-        //return "Conn:" + this.id;
+    //return "Conn:" + this.id;
     //}
 
     public void setConnect(final @NotNull Message m) throws IOException {
@@ -294,7 +299,7 @@ public class Session extends Thread {
             this.user = p;
             Server.getInstance().manager.getPackMessage(p);
             server.manager.createItem(p);
-            server.manager.sendData(p);            
+            server.manager.sendData(p);
 
         }
     }
