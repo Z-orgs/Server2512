@@ -2644,14 +2644,14 @@ public class MenuController {
 
         if (idnpc == 33 && server.manager.EVENT != 0) {
 
-//            val itemNames = new String[EventItem.entrys.length + 1];
-//
-//            for (int i = 0; i < itemNames.length - 1; i++) {
-//                itemNames[i] = EventItem.entrys[i].getOutput().getItemData().name;
-//            }
-//
-//            itemNames[EventItem.entrys.length] = "Hướng dẫn";
-//            createMenu(33, itemNames, "", p);
+            val itemNames = new String[EventItem.entrys.length + 1];
+
+            for (int i = 0; i < itemNames.length - 1; i++) {
+                itemNames[i] = EventItem.entrys[i].getOutput().getItemData().name;
+            }
+
+            itemNames[EventItem.entrys.length] = "Hướng dẫn";
+            createMenu(33, itemNames, "", p);
         }
 
         if (idnpc == 36) {
@@ -2659,15 +2659,15 @@ public class MenuController {
             return;
         }
         if (idnpc == 35) {
-//            doMenuArray(p, new String[]{"Bảng Tin Baggis", "Thu phục Pet Người Tuyết", "Thu phục Pet Trộm"});
+            doMenuArray(p, new String[]{"Bảng Tin Baggis", "Thu phục Pet Người Tuyết", "Thu phục Pet Trộm"});
             return;
         }
         if (idnpc == 31) {
-//            doMenuArray(p, new String[]{"Thả đèn", "Hướng Dẫn", "Top thả đèn", "Top vui xuân"});
+            doMenuArray(p, new String[]{"Thả đèn", "Hướng Dẫn", "Top thả đèn", "Top vui xuân"});
             return;
         }
         if (idnpc == 37) {
-//            doMenuArray(p, new String[]{"Luyện bí kíp kiếm thuật", "Luyện bí kíp tiêu thuật", "Luyện bí kíp kunai", "Luyện bí kíp cung", "Luyện bí kíp đao", "Luyện bí kíp quạt", "Hướng Dẫn"});
+            doMenuArray(p, new String[]{"Luyện bí kíp kiếm thuật", "Luyện bí kíp tiêu thuật", "Luyện bí kíp kunai", "Luyện bí kíp cung", "Luyện bí kíp đao", "Luyện bí kíp quạt", "Hướng Dẫn"});
             return;
         }
 

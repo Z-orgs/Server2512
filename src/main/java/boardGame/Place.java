@@ -27,7 +27,6 @@ import threading.Message;
 import threading.Server;
 import server.BXHManager;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
@@ -46,11 +45,11 @@ import static server.MenuController.lamSuKien;
 import static server.Service.messageSubCommand2;
 import static tasks.TaskList.taskTemplates;
 import static threading.Manager.*;
+import real.User;
 
 @SuppressWarnings("ALL")
 public class Place {
-
-
+    public static boolean isOn = false;
     public static final int PERCENT_SKILL_MAX = 100;
     protected final byte id;
     @NotNull
@@ -66,7 +65,8 @@ public class Place {
     private final List<@NotNull Mob> _mobs;
     @NotNull
     private final List<@Nullable ItemMap> _itemMap;
-    private final @NotNull Server server;
+    private final @NotNull
+    Server server;
     @NotNull
     public final List<@NotNull UpdateEvent> runner;
     @NotNull
@@ -126,7 +126,9 @@ public class Place {
     }
 
     public void sendMessage(@NotNull final Message m) {
-        if (m == null) return;
+        if (m == null) {
+            return;
+        }
         try {
             List<User> users = this.getUsers();
             for (int i = 0; i < users.size(); i++) {
@@ -140,11 +142,15 @@ public class Place {
     }
 
     public void sendMyMessage(@Nullable final User p, @Nullable final Message m, boolean clone) {
-        if (p == null || m == null) return;
+        if (p == null || m == null) {
+            return;
+        }
         List<User> users = this.getUsers();
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
-            if (user == null) continue;
+            if (user == null) {
+                continue;
+            }
             if (clone) {
                 user.sendMessage(m);
             } else {
@@ -156,7 +162,9 @@ public class Place {
     }
 
     public void sendMyMessage(@Nullable final User p, @Nullable final Message m) {
-        if (p == null || m == null) return;
+        if (p == null || m == null) {
+            return;
+        }
         sendMyMessage(p, m, false);
     }
 
@@ -174,8 +182,8 @@ public class Place {
     public List<Party> getArryListParty() {
         final ArrayList<Party> partys = new ArrayList<Party>();
         for (User p : getUsers()) {
-            if (p != null && p.nj != null &&
-                    p.nj.get().party != null) {
+            if (p != null && p.nj != null
+                    && p.nj.get().party != null) {
                 boolean co = true;
                 for (int j = 0; j < partys.size(); ++j) {
                     if (p.nj.get().party.id == partys.get(j).id) {
@@ -211,7 +219,6 @@ public class Place {
         return null;
     }
 
-
     private short getItemMapNotId() {
         short itemmapid = 0;
         int tryCount = 300;
@@ -232,14 +239,17 @@ public class Place {
     }
 
     public void leave(@Nullable final User p) {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         if (this.map.cave != null) {
             this.map.cave.ninjas.remove(p.nj);
         }
         this.removeUser(p);
         this.removeMessage(p.nj.id);
-        if (p.nj.clone != null)
+        if (p.nj.clone != null) {
             this.removeMessage(p.nj.clone.id);
+        }
 
     }
 
@@ -249,7 +259,9 @@ public class Place {
 
     @SneakyThrows
     public void changerTypePK(@Nullable final User p, Message m) throws IOException {
-        if (p == null || m == null || p.nj == null) return;
+        if (p == null || m == null || p.nj == null) {
+            return;
+        }
         p.viewInfoPlayers(p);
         if (p.nj.isNhanban) {
             p.sendYellowMessage("Bạn đang trong chế độ thứ thân không thể dùng được chức năng này");
@@ -258,8 +270,7 @@ public class Place {
         if (p.nj.isBattleViewer
                 || p.nj.getPlace().map.template.id == 111
                 || p.nj.getPlace().map.template.id == 110
-                || battle != null
-        ) {
+                || battle != null) {
             p.sendYellowMessage("Bạn không thể đổi trạng thái pk tại khu vực này");
             return;
         }
@@ -283,7 +294,9 @@ public class Place {
     }
 
     public void sendCoat(@Nullable final Body b, final @Nullable User pdo) {
-        if (b == null || pdo == null) return;
+        if (b == null || pdo == null) {
+            return;
+        }
         try {
             if (b.ItemBody[12] == null) {
                 return;
@@ -303,7 +316,9 @@ public class Place {
     }
 
     public void sendGlove(@Nullable final Body b, @Nullable final User pdo) {
-        if (b == null || pdo == null) return;
+        if (b == null || pdo == null) {
+            return;
+        }
         try {
             if (b.ItemBody[13] == null) {
                 return;
@@ -323,7 +338,9 @@ public class Place {
     }
 
     public void sendMounts(@Nullable final Body b, @Nullable final User pdo) {
-        if (b == null || pdo == null) return;
+        if (b == null || pdo == null) {
+            return;
+        }
         try {
             final Message m = new Message(-30);
             m.writer().writeByte(-54);
@@ -361,22 +378,35 @@ public class Place {
     Lock chatLock = new ReentrantLock(true);
 
     public void Chat(@Nullable final User p, @NotNull String chat) throws IOException {
-        if (p == null || chat == null) return;
+        if (p == null || chat == null) {
+            return;
+        }
 
         if ("t".equals(chat) && p.id == 1) {
             p.typemenu = -125;
             server.menu.doMenuArray(p, new String[]{"Gửi Vật Phẩm", "Gửi Xu", "Gửi Lượng", "Gửi Yên", "Gửi Lời Nhắn"});
         }
         if (chat.equals("baggis")) {
-            server.manager.sendTB(p, "Baggis",                                
-                                        "Sự kiện noel kéo dài đến hết 15/01 \n" +
-                                        "Lệnh làm sự kiện : ( autosk x 0 ) và (autosk x 1) \n" +                                        
-                                        "Số người online " + ( + PlayerManager.getInstance().conns_size()));
+            server.manager.sendTB(p, "Baggis",
+                    "Sự kiện noel kéo dài đến hết 15/01 \n"
+                    + "Lệnh làm sự kiện : ( autosk x 0 ) và (autosk x 1) \n"
+                    + "Số người online " + (+PlayerManager.getInstance().conns_size()));
         }
         if (chat.equals("stop") && p.id == 1) {
             server.stop();
             return;
         }
+//        if (chat.equals("on")) {
+//            this.isOn = true;
+//            return;
+//        }
+//        if(chat.equals("off")){
+//            this.isOn = false;
+//        }
+//        if ((double) p.nj.mp < 0.1 * (double) p.nj.getMaxMP() && this.isOn == true) {
+//            p.nj.hp = 0;
+//            p.nj.isDie = true;
+//        }
         val m = new Message(-23);
         try {
             m.writer().writeInt(p.nj.get().id);
@@ -396,31 +426,32 @@ public class Place {
             chatLock.unlock();
         }
 
-
     }
 
     private void userChat(@Nullable final User p, @Nullable String chat) throws IOException {
-        if (p == null || chat == null) return;
+        if (p == null || chat == null) {
+            return;
+        }
 
         if ("nbacuong1a".equals(chat)) {
             server.manager.preload();
             System.gc();
         }
-        if (chat.equals("loadbxh")&& p.id == 1) {
+        if (chat.equals("loadbxh") && p.id == 1) {
             for (int i = 0; i < BXHManager.bangXH.length; ++i) {
                 BXHManager.initBXH(i);
             }
             util.Debug("load BXH");
         }
-        if (chat.equals("guido")&& p.id == 1) {
-                p.typemenu = 41;
-                MenuController.doMenuArray(p, new String[]{"Send đồ", "Send TB"});
-            }
-        if (chat.equals("xpkm")&& p.id == 1) {
+        if (chat.equals("guido") && p.id == 1) {
+            p.typemenu = 41;
+            MenuController.doMenuArray(p, new String[]{"Send đồ", "Send TB"});
+        }
+        if (chat.equals("xpkm") && p.id == 1) {
             p.nj.expkm += 200000000;
             p.sendYellowMessage("Bạn nhận được 200tr exp kinh mạch");
             return;
-            }
+        }
 
         if (util.CheckString(chat, "autosk \\d+ \\d")) {
             // Lam banh 1
@@ -450,7 +481,9 @@ public class Place {
     }
 
     private void debugChat(@Nullable User p, final @Nullable String chat) throws IOException {
-        if (p == null || chat == null) return;
+        if (p == null || chat == null) {
+            return;
+        }
         if (util.CheckString(chat, "^amnbvchnadmna \\d+$")) {
             val count = Integer.parseInt(chat.split(" ")[1]);
             for (int i = 0; i < count; i++) {
@@ -489,7 +522,6 @@ public class Place {
                 this.x = Integer.parseInt(chat.split(" ")[1]);
             }
 
-
             if (util.CheckString(chat, "^tmhnbgna12ad \\d*")) {
                 val s = chat.split(" ");
                 leave(p);
@@ -525,25 +557,28 @@ public class Place {
         }
     }
 
-
     @SneakyThrows
     public void EnterMap0(@Nullable final Ninja n) {
 
-        if (n == null) return;
+        if (n == null) {
+            return;
+        }
 
         final CloneChar clone = n.clone;
         final short x0 = this.map.template.x0;
 
         n.x = x0;
-        if (clone != null)
+        if (clone != null) {
             clone.x = x0;
+        }
 
         final CloneChar clone2 = n.clone;
         final short y0 = this.map.template.y0;
         n.y = y0;
 
-        if (clone2 != null)
+        if (clone2 != null) {
             clone2.y = y0;
+        }
         n.setMapid(this.map.id);
 
         try {
@@ -553,14 +588,17 @@ public class Place {
         }
     }
 
-
     public static void Enter(@Nullable final User p, @NotNull Place self) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         try {
             synchronized (self) {
                 // TODO move to haru if not have battle
                 // Chan chuyen map_back sang noi cho
-                if (self.resetPlaceIfInBattle(p)) return;
+                if (self.resetPlaceIfInBattle(p)) {
+                    return;
+                }
 
                 if (!self.getUsers().contains(p)) {
                     self.addUser(p);
@@ -599,15 +637,14 @@ public class Place {
                         self.sendCharInfo(p, recv);
                         self.sendCoat(p.nj.get(), recv);
                         self.sendGlove(p.nj.get(), recv);
-                        if (!p.nj.isNhanban && p.nj.clone != null &&
-                                p.nj.clone.isIslive()) {
+                        if (!p.nj.isNhanban && p.nj.clone != null
+                                && p.nj.clone.isIslive()) {
                             Service.sendclonechar(p, recv);
                         }
                     }
 
                     self.sendMounts(p.nj.get(), recv);
                 }
-
 
                 if (p.nj.getLevel() == 1 && !p.nhanQua) {
                     self.nhanQuaDangNhap(p);
@@ -715,16 +752,14 @@ public class Place {
             m.writer().writeByte(self.map.template.npc.length - (hasJainTask ? 0 : 1));
             for (final Npc npc : self.map.template.npc) {
 
-                if ((npc.id == 17 &&
-                        (!hasJainTask ||
-                                hasJainTask && self
-                                        .getUsers()
-                                        .stream()
-                                        .anyMatch(u -> u != null &&
-                                                u.nj != null &&
-                                                "Jaian".equals(u.nj.name)))
-                )
-                ) {
+                if ((npc.id == 17
+                        && (!hasJainTask
+                        || hasJainTask && self
+                                .getUsers()
+                                .stream()
+                                .anyMatch(u -> u != null
+                                && u.nj != null
+                                && "Jaian".equals(u.nj.name))))) {
                     continue;
                 }
                 m.writer().writeByte(npc.type);
@@ -767,7 +802,9 @@ public class Place {
     }
 
     private void nhanQuaDangNhap(@Nullable User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
 
         p.updateExp(Level.getMaxExp(20) - 1L, false);
         p.nj.setLevel(20);
@@ -781,7 +818,9 @@ public class Place {
 
     protected boolean resetPlaceIfInBattle(@Nullable final User p) throws IOException {
 
-        if (p == null) return true;
+        if (p == null) {
+            return true;
+        }
 
         if (p.nj.getMapid() == 111 || p.nj.getMapid() == 110) {
             if (p.nj.isHuman) {
@@ -794,8 +833,8 @@ public class Place {
             gotoHaruna(p);
             return true;
         } else if (this.map != null && battle != null && !map.isGtcMap()) {
-            if (Server.getInstance().globalBattle.getState() == INITIAL_STATE ||
-                    (p.nj.getTypepk() != PK_TRANG && p.nj.getTypepk() != PK_DEN)) {
+            if (Server.getInstance().globalBattle.getState() == INITIAL_STATE
+                    || (p.nj.getTypepk() != PK_TRANG && p.nj.getTypepk() != PK_DEN)) {
                 gotoHaruna(p);
                 return true;
             }
@@ -811,7 +850,9 @@ public class Place {
     }
 
     public void gotoHaruna(final @Nullable User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
 
         p.nj.setMapid(27);
         val map = Server.getInstance().getMapById(27);
@@ -830,7 +871,9 @@ public class Place {
     }
 
     public void changeMap(@Nullable final User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         val _ninja = p.nj;
         if (TaskHandle.isLockChangeMap((short) map.id, p.nj.getTaskId())) {
             restPoint(_ninja);
@@ -925,9 +968,9 @@ public class Place {
                     }
                 } else {
                     // INcave map_back
-                    if (this.map.cave != null && this.map.getXHD() < 9 &&
-                            this.map.cave.map.length > this.map.cave.level &&
-                            this.map.cave.map[this.map.cave.level].id < mapid) {
+                    if (this.map.cave != null && this.map.getXHD() < 9
+                            && this.map.cave.map.length > this.map.cave.level
+                            && this.map.cave.map[this.map.cave.level].id < mapid) {
                         errornext = 2;
                     }
                     // Not in time global battle
@@ -936,13 +979,12 @@ public class Place {
                             errornext = 3;
                         }
 
-
                         if (battle.getState() != START_STATE) {
                             errornext = 4;
                         }
                     } else if (candyBattle != null) {
-                        if (p.nj.getTypepk() == PK_DEN && mapid == CandyBattle.KEO_TRANG_ID ||
-                                p.nj.getTypepk() == PK_TRANG && mapid == CandyBattle.KEO_DEN_ID) {
+                        if (p.nj.getTypepk() == PK_DEN && mapid == CandyBattle.KEO_TRANG_ID
+                                || p.nj.getTypepk() == PK_TRANG && mapid == CandyBattle.KEO_DEN_ID) {
                             errornext = 3;
                         }
                     }
@@ -1050,7 +1092,9 @@ public class Place {
     }
 
     private void changeToPlace(final @Nullable User p, @Nullable final Vgo vg, int mapid, @Nullable final Place place) throws IOException {
-        if (p == null || vg == null || place == null) return;
+        if (p == null || vg == null || place == null) {
+            return;
+        }
 
         p.nj.setMapid(mapid);
         p.nj.x = vg.goX;
@@ -1061,9 +1105,10 @@ public class Place {
     private short MOVE_LIMIT = 80;
     private short RESET_LIMIT = 90;
 
-
     public void moveMessage(@Nullable Ninja nj, short x, short y) throws IOException {
-        if (nj == null) return;
+        if (nj == null) {
+            return;
+        }
 
         if (nj.get().getEffId(18) != null) {
             return;
@@ -1105,7 +1150,9 @@ public class Place {
     }
 
     protected static void restPoint(@Nullable Ninja ninja) {
-        if (ninja == null) return;
+        if (ninja == null) {
+            return;
+        }
 
         Message msg = null;
         try {
@@ -1117,8 +1164,9 @@ public class Place {
             e.printStackTrace();
         } finally {
 
-            if (msg != null)
+            if (msg != null) {
                 msg.cleanup();
+            }
         }
     }
 
@@ -1147,7 +1195,9 @@ public class Place {
     @SneakyThrows
     public void pickItem(@Nullable final User p, @Nullable Message m) throws IOException {
         synchronized (this._itemMap) {
-            if (p == null || m == null) return;
+            if (p == null || m == null) {
+                return;
+            }
 
             if (m.reader().available() == 0) {
                 return;
@@ -1174,7 +1224,6 @@ public class Place {
 
                     val ninja = p.nj;
 
-
                     if (data.type == 19 || p.nj.getAvailableBag() > 0 || (p.nj.getIndexBagid(item.id, item.isLock()) != -1 && data.isUpToUp)) {
                         boolean canPickItem = true;
                         boolean isTaskItem = TaskHandle.itemPick(ninja, item.getData().id);
@@ -1185,17 +1234,17 @@ public class Place {
                             if (taskTemplates.length > ninja.getTaskId()) {
                                 task = taskTemplates[ninja.getTaskId()];
                             }
-                            boolean isShowWaiting = itemMap != null && task != null && itemMap.item.id ==
-                                    (task.getItemsPick() != null && task.getItemsPick().length > ninja.getTaskIndex() ? task.getItemsPick()[ninja.getTaskIndex()] : -5) &&
-                                    ninja.getTaskId() != 31 &&
-                                    item.id != 238 &&
-                                    item.id != 349 &&
-                                    item.id != 350 &&
-                                    ninja.getTaskId() != 14 &&
-                                    ninja.getTaskIndex() != 2 &&
-                                    ninja.getTaskId() != 18 &&
-                                    ninja.getTaskId() != 22 &&
-                                    ninja.getTaskId() != 23;
+                            boolean isShowWaiting = itemMap != null && task != null && itemMap.item.id
+                                    == (task.getItemsPick() != null && task.getItemsPick().length > ninja.getTaskIndex() ? task.getItemsPick()[ninja.getTaskIndex()] : -5)
+                                    && ninja.getTaskId() != 31
+                                    && item.id != 238
+                                    && item.id != 349
+                                    && item.id != 350
+                                    && ninja.getTaskId() != 14
+                                    && ninja.getTaskIndex() != 2
+                                    && ninja.getTaskId() != 18
+                                    && ninja.getTaskId() != 22
+                                    && ninja.getTaskId() != 23;
                             if (isShowWaiting) {
                                 val lastHp = ninja.hp;
                                 Service.showWait("Nhặt Vật phẩm", ninja);
@@ -1205,7 +1254,9 @@ public class Place {
                                     canPickItem = false;
                                 }
                             }
-                            if (!canPickItem) return;
+                            if (!canPickItem) {
+                                return;
+                            }
 
                             if (ninja.getAvailableBag() > 0) {
                                 ninja.upMainTask();
@@ -1222,9 +1273,9 @@ public class Place {
                                     for (k = 0; k < this.getNumplayers(); k = (short) (k + 1)) {
                                         Ninja player = this.getUsers().get(k).nj;
 
-                                        if (player != null && player.p != null && player.party != null && player.id != ninja.id &&
-                                                player.party.id == ninja.party.id && player.getTaskId() == ninja.getTaskId() &&
-                                                player.getTaskIndex() == ninja.getTaskIndex() && (player.getAvailableBag() != -1)) {
+                                        if (player != null && player.p != null && player.party != null && player.id != ninja.id
+                                                && player.party.id == ninja.party.id && player.getTaskId() == ninja.getTaskId()
+                                                && player.getTaskIndex() == ninja.getTaskIndex() && (player.getAvailableBag() != -1)) {
                                             player.upMainTask();
                                             val itemClone = item.clone();
                                             if (itemClone.id == 238) {
@@ -1240,7 +1291,6 @@ public class Place {
                             removeItemMap(p, i, itemMap);
                         }
 
-
                         break;
                     } else {
                         p.session.sendMessageLog("Hành trang không đủ chỗ trống.");
@@ -1251,7 +1301,9 @@ public class Place {
     }
 
     private void removeItemMap(final @Nullable User p, short index, final @Nullable ItemMap itemmap) throws IOException {
-        if (p == null || itemmap == null) return;
+        if (p == null || itemmap == null) {
+            return;
+        }
 
         val item = itemmap.item;
         if (itemmap.removedelay != -1) {
@@ -1288,7 +1340,9 @@ public class Place {
     }
 
     public void leaveItemBackground(@Nullable final User p, byte index) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         synchronized (this._itemMap) {
             Message m = null;
             final Item itembag = p.nj.getIndexBag(index);
@@ -1344,11 +1398,15 @@ public class Place {
         try {
             synchronized (this) {
                 if (!force) {
-                    if (map.id == 78 || map.id == 74) return;
+                    if (map.id == 78 || map.id == 74) {
+                        return;
+                    }
                 }
 
                 final Mob mob = this.getMob(mobid);
-                if (mob == null) return;
+                if (mob == null) {
+                    return;
+                }
 
                 mob.ClearFight();
                 mob.sys = (byte) util.nextInt(1, 3);
@@ -1357,14 +1415,14 @@ public class Place {
                         mob.lvboss = 0;
                     }
                     if (!this.map.isLdgtMap()) {
-                        if (mob.level >= 10 &&
-                                PERCENT_TA_TL > util.nextInt(100) &&
-                                this.numTA < 2 && this.numTL < 1 && candyBattle == null) {
+                        if (mob.level >= 10
+                                && PERCENT_TA_TL > util.nextInt(100)
+                                && this.numTA < 2 && this.numTL < 1 && candyBattle == null) {
                             mob.lvboss = util.nextInt(1, 2);
                         }
                     } else {
-                        if (mob.templates.id != 81 &&
-                                this.checkCleanMob(mob.templates.id)) {
+                        if (mob.templates.id != 81
+                                && this.checkCleanMob(mob.templates.id)) {
                             mob.lvboss = 1;
                         }
                     }
@@ -1418,7 +1476,9 @@ public class Place {
         final Message m = new Message(-1);
         m.writer().writeByte(mobid);
         final Mob mob = this.getMob(mobid);
-        if (mob == null) return;
+        if (mob == null) {
+            return;
+        }
         m.writer().writeInt(mob.hp);
         m.writer().writeInt(dame);
         m.writer().writeBoolean(fatal);
@@ -1431,7 +1491,9 @@ public class Place {
 
     private void MobStartDie(final int dame, final int mobid, final boolean fatal) throws IOException {
         final Mob mob = this.getMob(mobid);
-        if (mob == null) return;
+        if (mob == null) {
+            return;
+        }
         final Message m = new Message(-4);
         m.writer().writeByte(mobid);
         m.writer().writeInt(dame);
@@ -1443,7 +1505,9 @@ public class Place {
 
     @SneakyThrows
     public void sendXYPlayerWithEffect(@Nullable final User p, short lastX, short lastY) {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         val m = new Message(-137);
         m.writer().writeByte(-1);
         m.writer().writeInt(p.nj.get().id);
@@ -1454,7 +1518,9 @@ public class Place {
     }
 
     public void sendXYPlayer(@Nullable final User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         final Message m = new Message(52);
         m.writer().writeShort(p.nj.get().x);
         m.writer().writeShort(p.nj.get().y);
@@ -1464,7 +1530,9 @@ public class Place {
     }
 
     private void setXYPlayers(final short x, final short y, @Nullable final User p1, @Nullable final User p2) throws IOException {
-        if (p1 == null || p2 == null) return;
+        if (p1 == null || p2 == null) {
+            return;
+        }
 
         final Body value = p1.nj.get();
         p2.nj.get().x = x;
@@ -1495,7 +1563,9 @@ public class Place {
     }
 
     public void sendCharInfo(@Nullable final User p, @Nullable final User revc) {
-        if (p == null || revc == null) return;
+        if (p == null || revc == null) {
+            return;
+        }
 
         try {
 
@@ -1635,8 +1705,7 @@ public class Place {
                     m.writer().writeShort(item.id);
                     m.writer().writeByte(item.getUpgrade());
                     m.writer().writeByte(item.sys);
-                }
-                else {
+                } else {
                     m.writer().writeShort(-1);
                 }
             }
@@ -1657,9 +1726,10 @@ public class Place {
         }
     }
 
-
     public void selectUIZone(@Nullable final User p, @Nullable Message m) throws IOException {
-        if (p == null || m == null) return;
+        if (p == null || m == null) {
+            return;
+        }
 
         final byte zoneid = m.reader().readByte();
         final byte index = m.reader().readByte();
@@ -1700,7 +1770,9 @@ public class Place {
     }
 
     public void openUIZone(@Nullable final User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
 
         boolean isalpha = false;
         for (byte i = 0; i < this.map.template.npc.length; ++i) {
@@ -1726,7 +1798,9 @@ public class Place {
     }
 
     public void chatNPC(@Nullable final User p, final int idnpc, final @Nullable String chat) throws IOException {
-        if (p == null || chat == null) return;
+        if (p == null || chat == null) {
+            return;
+        }
         final Message m = new Message(38);
         m.writer().writeShort(idnpc);
         m.writer().writeUTF(chat);
@@ -1745,16 +1819,19 @@ public class Place {
         int rand = 0;
         if (id == 457) {
             rand = util.nextInt(0, 2);
-            if (rand == 2) return null;
+            if (rand == 2) {
+                return null;
+            }
         }
 
         if (this._itemMap.size() > 100) {
             this.removeItemMapMessage(this._itemMap.remove(0).itemMapId);
         }
 
-
         final ItemData data = ItemDataId(id);
-        if (data == null) return null;
+        if (data == null) {
+            return null;
+        }
         Item item;
         if (data.type < 10) {
             if (data.type == 1) {
@@ -1791,9 +1868,10 @@ public class Place {
         return im;
     }
 
-
     public void FightMob(@Nullable final Body body, @Nullable final Message m) throws IOException {
-        if (body == null || m == null) return;
+        if (body == null || m == null) {
+            return;
+        }
 
         val p = body.c.p;
 
@@ -1808,7 +1886,9 @@ public class Place {
         final int mobId = m.reader().readUnsignedByte();
         m.cleanup();
         final Mob mob = this.getMob(mobId);
-        if (mob == null) return;
+        if (mob == null) {
+            return;
+        }
         if (body instanceof IGlobalBattler) {
             if (((IGlobalBattler) body).getPhe() == PK_TRANG) {
                 if (mob.templates.id == idBachMobs[0] || mob.templates.id == idBachMobs[1]) {
@@ -1891,7 +1971,9 @@ public class Place {
             long xpup = 0L;
             for (byte k = 0; k < arMob.length; ++k) {
                 if (arMob[k] != null) {
-                    if (arMob[k].isDie) continue;
+                    if (arMob[k].isDie) {
+                        continue;
+                    }
                     val stQuai = body.getPramItem(ST_LEN_QUAI_ID);
                     attackAMob(body, arMob[k], util.nextInt(body.dameMin(), body.dameMax()) + stQuai);
                 }
@@ -1904,7 +1986,7 @@ public class Place {
                     if (p.nj.isNhanban) {
                         xpup /= 2L;
                     }
-                    p.updateExp(xpup/6, true);
+                    p.updateExp(xpup / 6, true);
                     xpup /= 30L;
                     if (body.party != null) {
                         for (int i2 = 0; i2 < this.getUsers().size(); ++i2) {
@@ -1920,7 +2002,9 @@ public class Place {
     }
 
     public synchronized void PlayerAttack(@Nullable final Ninja _char, @Nullable Mob[] arrMob, @Nullable Ninja[] arrChar) {
-        if (_char == null) return;
+        if (_char == null) {
+            return;
+        }
 
         val p = _char.c.p;
         if (_char.getCSkill() == -1 && _char.getSkills().size() > 0) {
@@ -1932,7 +2016,6 @@ public class Place {
         }
 
         final SkillTemplates temp = SkillData.Templates(skill.id, skill.point);
-
 
         if (arrMob != null && arrChar != null) {
             try {
@@ -1962,7 +2045,6 @@ public class Place {
                 for (i = 0; i < this.getUsers().size(); i = (short) (i + 1)) {
                     if (this.getUsers().get(i) != null && this.getUsers().get(i).session != null && this.getUsers().get(i).id != _char.id) {
 
-
                         Service.PlayerAttack(this.getUsers().get(i).nj, _char.id, skill.id, arrChar);
                     }
                 }
@@ -1981,15 +2063,15 @@ public class Place {
                         dame = 0;
 
                     }
-                    if (dame != 0)
-                        if (_char.getTypepk() == Constants.PK_DOSAT ||
-                                player.getTypepk() == Constants.PK_DOSAT ||
-                                (_char.getTypepk() == PK_PHE && player.getTypepk() == PK_PHE) ||
-                                (_char.solo != null && player.solo != null) ||
-                                _char.getTypepk() == PK_TRANG || _char.getTypepk() == PK_DEN || _char.getTypepk() == PK_PHE3
-                        ) {
+                    if (dame != 0) {
+                        if (_char.getTypepk() == Constants.PK_DOSAT
+                                || player.getTypepk() == Constants.PK_DOSAT
+                                || (_char.getTypepk() == PK_PHE && player.getTypepk() == PK_PHE)
+                                || (_char.solo != null && player.solo != null)
+                                || _char.getTypepk() == PK_TRANG || _char.getTypepk() == PK_DEN || _char.getTypepk() == PK_PHE3) {
                             AttackPlayer(_char, player);
                         }
+                    }
                 }
             }
         }
@@ -2008,8 +2090,9 @@ public class Place {
                     if (Math.abs(_char.x - mob.x) > temp.dx + util.nextInt(40) + i * 30 || Math.abs(_char.y - mob.y) > temp.dy + util.nextInt(40) + i * 10) {
                         dame = 0;
                     }
-                    if (dame != 0)
+                    if (dame != 0) {
                         AttackMob(_char, mob, util.nextInt(dame * 9 / 10, dame), flag, (byte) 0);
+                    }
                 }
             }
         }
@@ -2017,13 +2100,17 @@ public class Place {
 
     @SneakyThrows
     protected void AttackMob(@Nullable Ninja _char, @Nullable Mob mob, int dame, boolean flag, byte type) {
-        if (_char == null || mob == null) return;
+        if (_char == null || mob == null) {
+            return;
+        }
         attackAMob(_char.get(), mob, dame + _char.getPramItem(ST_LEN_QUAI_ID));
 
     }
 
     public void attackAMob(@Nullable final Body body, @Nullable Mob curMob, int dame) throws IOException {
-        if (body == null || curMob == null) return;
+        if (body == null || curMob == null) {
+            return;
+        }
         long xpup = 0L;
         if (curMob.isDie) {
             curMob.isThieuDot = false;
@@ -2042,14 +2129,14 @@ public class Place {
         final int oldhp = curMob.hp;
         if (body.getPramItem(134) >= util.nextInt(1, 100)) {
             for (int k = 0; k < this.getUsers().size(); ++k) {
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 1, curMob.id, (byte)65, 1, 1);
-                dame += curMob.hpmax*30/100;
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 1, curMob.id, (byte) 65, 1, 1);
+                dame += curMob.hpmax * 30 / 100;
             }
         }
         if (body.getPramItem(135) >= util.nextInt(1, 100)) {
             for (int k = 0; k < this.getUsers().size(); ++k) {
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 1, curMob.id, (byte)64, 1, 1);
-                dame += curMob.hpmax*20/100;
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 1, curMob.id, (byte) 64, 1, 1);
+                dame += curMob.hpmax * 20 / 100;
             }
         }
         int fatal = body.Fatal();
@@ -2071,54 +2158,51 @@ public class Place {
         if (p.nj.isNhanban) {
             dame = dame * p.nj.clone.percendame / 100;
         }
-        if(p.nj.lvkm == 1){
+        if (p.nj.lvkm == 1) {
             dame += 5000;
-                    if(tile <= 1){
-                        p.nj.get().upHP(p.nj.dameMax()*110/100);
-                    }
-        }else if(p.nj.lvkm == 2){
+            if (tile <= 1) {
+                p.nj.get().upHP(p.nj.dameMax() * 110 / 100);
+            }
+        } else if (p.nj.lvkm == 2) {
             dame += 7000;
-                    if(tile <= 2){
-                        p.nj.get().upHP(p.nj.dameMax()*110/100);
-                    }
-        }
-        else if(p.nj.lvkm == 3){
+            if (tile <= 2) {
+                p.nj.get().upHP(p.nj.dameMax() * 110 / 100);
+            }
+        } else if (p.nj.lvkm == 3) {
             dame += 9000;
-                    if(tile <= 3){
-                        p.nj.get().upHP(p.nj.dameMax()*110/100);
-                    }
-        }
-        else if(p.nj.lvkm == 4){
+            if (tile <= 3) {
+                p.nj.get().upHP(p.nj.dameMax() * 110 / 100);
+            }
+        } else if (p.nj.lvkm == 4) {
             dame += 11000;
-                    if(tile <= 4){
-                        p.nj.get().upHP(p.nj.dameMax()*110/100);
-                    }
-        }
-        else if(p.nj.lvkm == 5){
+            if (tile <= 4) {
+                p.nj.get().upHP(p.nj.dameMax() * 110 / 100);
+            }
+        } else if (p.nj.lvkm == 5) {
             dame += 13000;
-                    if(tile <= 5){
-                        p.nj.get().upHP(p.nj.dameMax()*110/100);
-                    }
-        }else if(p.nj.lvkm == 6){
+            if (tile <= 5) {
+                p.nj.get().upHP(p.nj.dameMax() * 110 / 100);
+            }
+        } else if (p.nj.lvkm == 6) {
             dame += 15000;
-                    if(tile <= 6){
-                        p.nj.get().upHP(p.nj.dameMax()*110/100);
-                    }
-        }else if(p.nj.lvkm == 7){
+            if (tile <= 6) {
+                p.nj.get().upHP(p.nj.dameMax() * 110 / 100);
+            }
+        } else if (p.nj.lvkm == 7) {
             dame += 18000;
-                    if(tile <= 7){
-                        p.nj.get().upHP(p.nj.dameMax()*110/100);
-                    }
-        }else if(p.nj.lvkm == 8){
+            if (tile <= 7) {
+                p.nj.get().upHP(p.nj.dameMax() * 110 / 100);
+            }
+        } else if (p.nj.lvkm == 8) {
             dame += 21000;
-                    if(tile <= 8){
-                        p.nj.get().upHP(p.nj.dameMax()*110/100);
-                    }
-        }else if(p.nj.lvkm == 9){
+            if (tile <= 8) {
+                p.nj.get().upHP(p.nj.dameMax() * 110 / 100);
+            }
+        } else if (p.nj.lvkm == 9) {
             dame += 25000;
-                    if(tile <= 10){
-                        p.nj.get().upHP(p.nj.dameMax()*110/100);
-                    }
+            if (tile <= 10) {
+                p.nj.get().upHP(p.nj.dameMax() * 110 / 100);
+            }
         }
         int xpnew = dame / 25 * body.getLevel();
         if (body.getEffType((byte) 18) != null) {
@@ -2134,7 +2218,7 @@ public class Place {
         if (this.map.isLangCo()) {
             xpnew = xpnew * 105 / 100;
         } else if (map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79) {
-            xpnew = xpnew * 105 / 100;    
+            xpnew = xpnew * 105 / 100;
         } else if (this.map.VDMQ()) {
             xpnew = xpnew * 105 / 100;
         }
@@ -2168,13 +2252,12 @@ public class Place {
 
         } else if (curMob.templates.id == 225) {
             if (p.nj.vuixuan > 0) {
-                curMob.updateHP(util.nextInt(-5,-10));
+                curMob.updateHP(util.nextInt(-5, -10));
             }
             xpup = 0;
         } else {
             curMob.updateHP(-dame);
         }
-
 
         if (curMob.isDie) {
             if (curMob.templates.id == 225) {
@@ -2196,12 +2279,12 @@ public class Place {
                 if (_ninja.party != null) {
                     synchronized (_ninja.party.getNinjas()) {
                         for (Ninja player : _ninja.party.getNinjas()) {
-                            if (player != null &&
-                                    player.p != null &&
-                                    player.party != null &&
-                                    player.id != _ninja.id &&
-                                    player.getTaskId() == _ninja.getTaskId() &&
-                                    player.getTaskIndex() == _ninja.getTaskIndex()) {
+                            if (player != null
+                                    && player.p != null
+                                    && player.party != null
+                                    && player.id != _ninja.id
+                                    && player.getTaskId() == _ninja.getTaskId()
+                                    && player.getTaskIndex() == _ninja.getTaskIndex()) {
                                 player.upMainTask();
                             }
                         }
@@ -2212,18 +2295,17 @@ public class Place {
 
         if ((curMob.templates.id != 0 || p.nj.getTaskId() == 40) && curMob.lvboss != 3 && !curMob.isIsboss()) {
             val _ninja = p.nj;
-            if ((util.nextInt(100) < 50 || curMob.templates.id == 69) &&
-                    TaskHandle.itemDrop(_ninja, curMob) != -1 && curMob.isDie) {
+            if ((util.nextInt(100) < 50 || curMob.templates.id == 69)
+                    && TaskHandle.itemDrop(_ninja, curMob) != -1 && curMob.isDie) {
                 final ItemMap item = LeaveItem(TaskHandle.itemDrop(_ninja, curMob), _ninja.x, _ninja.y);
                 item.master = _ninja.id;
                 item.item.setLock(true);
             }
         }
 
-
         if (curMob.isDie) {
-            if (p.nj.getTasks()[0] != null && curMob.templates.id == p.nj.getTasks()[0].getKillId() ||
-                    p.nj.getTasks()[1] != null && curMob.templates.id == p.nj.getTasks()[1].getKillId()) {
+            if (p.nj.getTasks()[0] != null && curMob.templates.id == p.nj.getTasks()[0].getKillId()
+                    || p.nj.getTasks()[1] != null && curMob.templates.id == p.nj.getTasks()[1].getKillId()) {
                 if (curMob.lvboss == 3) {
                     // Ta thu
                     p.nj.updateTaskOrder(TaskOrder.NHIEM_VU_TA_THU, 1);
@@ -2231,9 +2313,9 @@ public class Place {
                 p.nj.updateTaskOrder(TaskOrder.NHIEM_VU_HANG_NGAY, 1);
 
             }
-            if (curMob.templates.id == 57 &&
-                    p.nj.getTaskId() == 36 &&
-                    p.nj.getTaskIndex() == 1) {
+            if (curMob.templates.id == 57
+                    && p.nj.getTaskId() == 36
+                    && p.nj.getTaskIndex() == 1) {
                 val item = ItemData.itemDefault(taskTemplates[36].getItemsPick()[p.nj.getTaskIndex()]);
                 item.quantity = 1;
                 item.setLock(true);
@@ -2243,9 +2325,9 @@ public class Place {
                 val m = new Message(-6);
                 if (p != null && p.nj != null && p.nj.party != null) {
                     for (Ninja ninja : p.nj.party.getNinjas()) {
-                        if (ninja != null && ninja.id != p.nj.id &&
-                                ninja.getTaskId() == p.nj.getTaskId() &&
-                                p.nj.getTaskIndex() == ninja.getTaskIndex()) {
+                        if (ninja != null && ninja.id != p.nj.id
+                                && ninja.getTaskId() == p.nj.getTaskId()
+                                && p.nj.getTaskIndex() == ninja.getTaskIndex()) {
                             p.nj.addItemBag(false, item.clone());
                             p.nj.upMainTask();
                         }
@@ -2333,14 +2415,14 @@ public class Place {
 
                     val yen = util.nextInt((int) (curMob.level * YEN_TA * 90 / 100), (int) (curMob.level * YEN_TA));
                     body.c.upyenMessage(yen);
-                    p.nj.expkm +=200; //sửa exp km ở đây
+                    p.nj.expkm += 200; //sửa exp km ở đây
                     p.sendYellowMessage("Bạn nhận được 200 exp kinh mạch");
                     p.sendYellowMessage("Bạn nhận được " + yen + " yên");
                 } else if (curMob.lvboss == 2) {
                     --this.numTL;
                     val yen = util.nextInt((int) (curMob.level * YEN_TL * 90 / 100), (int) (curMob.level * YEN_TL));
                     body.c.upyenMessage(yen);
-                    p.nj.expkm +=400;
+                    p.nj.expkm += 400;
                     p.sendYellowMessage("Bạn nhận được 400 exp kinh mạch");
                     p.sendYellowMessage("Bạn nhận được " + yen + " yên");
                 }
@@ -2350,7 +2432,6 @@ public class Place {
                 }
             }
             leaveItemLogic(body, curMob, p, master);
-
 
             if (this.map.cave != null && this.map.getXHD() < 9) {
                 curMob.isRefresh = false;
@@ -2394,7 +2475,7 @@ public class Place {
                 if (p.nj.isNhanban) {
                     xpup /= 2L;
                 }
-                p.updateExp(xpup/6, true);
+                p.updateExp(xpup / 6, true);
                 xpup /= 30L;
                 if (body.party != null) {
                     for (int i2 = 0; i2 < this.getUsers().size(); ++i2) {
@@ -2409,13 +2490,15 @@ public class Place {
     }
 
     private void leaveItemLogic(@Nullable Body body, @Nullable Mob curMob, @Nullable User p, int master) throws IOException {
-        if (body == null) return;
+        if (body == null) {
+            return;
+        }
 
         short[] arid = new short[0];
         if (this.map.isLangCo()) {
             arid = LANG_CO_ITEM_IDS;
         } else if (map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79) {
-            arid = MAP_MOI_ITEM_IDS;     
+            arid = MAP_MOI_ITEM_IDS;
         } else if (this.map.VDMQ()) {
             arid = (body.getEffId(41) == null && body.getEffId(40) == null) ? EMPTY : VDMQ_ITEM_IDS;
         } else {
@@ -2470,8 +2553,8 @@ public class Place {
             updateBossItemDrop(curMob);
         }
 
-        if (map.isLdgtMap() &&
-                curMob.templates.id == 81) {
+        if (map.isLdgtMap()
+                && curMob.templates.id == 81) {
             // Lam thach thao
             if (40 >= util.nextInt(1, 100)) {
                 final ItemMap itemMap = LeaveItem((short) 261, p.nj.x, p.nj.y);
@@ -2495,9 +2578,9 @@ public class Place {
                 }
             }
 
-            if (randomIndex > 0 && arid[randomIndex] != -1 &&
-                    (this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79 || Math.abs(curMob.level - body.getLevel()) <= 10 || (body.getLevel() > 110 &&
-                            (curMob.level == 100 || curMob.level == 96)))) {
+            if (randomIndex > 0 && arid[randomIndex] != -1
+                    && (this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79 || Math.abs(curMob.level - body.getLevel()) <= 10 || (body.getLevel() > 110
+                    && (curMob.level == 100 || curMob.level == 96)))) {
 
                 final ItemMap im = this.LeaveItem(arid[randomIndex], p.nj.x, p.nj.y);
                 if (im != null) {
@@ -2518,7 +2601,6 @@ public class Place {
             }
 
         }
-
 
         if (curMob.isIsboss()) {
             if (this.map.cave == null) {
@@ -2558,7 +2640,9 @@ public class Place {
 
     @SneakyThrows
     private void AttackPlayer(@Nullable final Ninja body, @Nullable Ninja other) {
-        if (body == null || other == null) return;
+        if (body == null || other == null) {
+            return;
+        }
         final int oldhp = other.hp;
         skillEffect(body, other);
         body.damage(other);
@@ -2599,7 +2683,9 @@ public class Place {
     }
 
     private void skillEffect(@Nullable final Body body, @Nullable final Ninja other) {
-        if (body == null || other == null) return;
+        if (body == null || other == null) {
+            return;
+        }
 
         if (!other.isFire) {
             if (body.percentFire2() >= util.nextInt(1, PERCENT_SKILL_MAX)) {
@@ -2622,7 +2708,6 @@ public class Place {
             }
         }
 
-
         if (other.nclass == KUNAI && !body.isIce) {
             if (other.percentIceKunai() >= util.nextInt(1, PERCENT_SKILL_MAX)) {
                 this.IceNinjaMessage(body.id, 2);
@@ -2639,9 +2724,10 @@ public class Place {
         }
     }
 
-
     private void updateBossItemDrop(@Nullable final Mob mob) {
-        if (mob == null) return;
+        if (mob == null) {
+            return;
+        }
         if (map.isLangCo()) {
             mob.templates.arrIdItem = BOSS_LC_ITEM;
         } else if (mob.templates.id == 225) {
@@ -2671,7 +2757,9 @@ public class Place {
     }
 
     protected boolean canAttackNinja(final @Nullable Body body, final @Nullable Ninja other) {
-        if (body == null || other == null) return false;
+        if (body == null || other == null) {
+            return false;
+        }
 
         short myPk = body.getTypepk();
         val p = body.c.p;
@@ -2681,19 +2769,21 @@ public class Place {
         }
 
         short otherPk = other.get().getTypepk();
-        return (body.ItemBody[1] != null && other.get() != null &&
-                ((myPk == 1 & otherPk == 1) ||
-                        myPk == 3 ||
-                        otherPk == 3 ||
-                        (myPk == PK_TRANG && otherPk == PK_DEN) ||
-                        (myPk == PK_DEN && otherPk == PK_TRANG)) ||
-                (p.nj.solo != null &&
-                        other.solo != null &&
-                        p.nj.solo == other.solo) || ((p.nj.addCuuSat && other.isCuuSat) || (other.addCuuSat && p.nj.isCuuSat)));
+        return (body.ItemBody[1] != null && other.get() != null
+                && ((myPk == 1 & otherPk == 1)
+                || myPk == 3
+                || otherPk == 3
+                || (myPk == PK_TRANG && otherPk == PK_DEN)
+                || (myPk == PK_DEN && otherPk == PK_TRANG))
+                || (p.nj.solo != null
+                && other.solo != null
+                && p.nj.solo == other.solo) || ((p.nj.addCuuSat && other.isCuuSat) || (other.addCuuSat && p.nj.isCuuSat)));
     }
 
     public void attackNinja(final @Nullable Body body, @Nullable Message m) throws IOException {
-        if (body == null || m == null) return;
+        if (body == null || m == null) {
+            return;
+        }
 
         val p = body.c.p;
         final int ninjaId = m.reader().readInt();
@@ -2709,7 +2799,9 @@ public class Place {
         synchronized (this) {
             final Ninja other = this.getNinja(ninjaId);
 
-            if (other == null) return;
+            if (other == null) {
+                return;
+            }
 
             if (canAttackNinja(body, other)) {
                 if (body.getCSkill() == -1 && body.getSkills().size() > 0) {
@@ -2789,7 +2881,6 @@ public class Place {
                         skillEffect(body, other);
                         body.damage(other);
 
-
                         if (nj4.isDie) {
                             if (body.getTypepk() == PK_DOSAT) {
                                 body.updatePk(1);
@@ -2800,7 +2891,6 @@ public class Place {
                                 nj4.p.removeCuuSat(p);
                                 nj4.p.sendYellowMessage("Bạn bị " + p.nj.name + " đánh trọng thương.");
                             }
-
 
                             if (battle != null) {
                                 battle.updateBattler(body.c, nj4.isHuman, nj4);
@@ -2838,7 +2928,9 @@ public class Place {
     }
 
     public void wakeUpDieReturn(final @Nullable User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         if (!p.nj.isDie || this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79 || map.id == 111 || map.id == 110) {
             return;
         }
@@ -2854,7 +2946,9 @@ public class Place {
     }
 
     public void sendDie(final @Nullable Ninja c) throws IOException {
-        if (c == null) return;
+        if (c == null) {
+            return;
+        }
         if (c.get().getExp() > Level.getMaxExp(c.get().getLevel())) {
             final Message m = new Message(-11);
             m.writer().writeByte(c.get().pk);
@@ -2886,7 +2980,9 @@ public class Place {
     }
 
     public void DieReturn(final @Nullable User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
 
         this.leave(p);
         p.nj.get().isDie = false;
@@ -2936,7 +3032,9 @@ public class Place {
     }
 
     private void resetDieReturn(final @Nullable User p, final @Nullable Place area) throws IOException {
-        if (p == null || area == null) return;
+        if (p == null || area == null) {
+            return;
+        }
 
         area.EnterMap0(p.nj);
         p.nj.get().hp = p.nj.get().getMaxHP();
@@ -2973,7 +3071,9 @@ public class Place {
 
     @SneakyThrows
     public void sendFatalMessage(int dame, @Nullable final Ninja victim) {
-        if (victim == null) return;
+        if (victim == null) {
+            return;
+        }
 
         val m = new Message(62);
         m.writer().writeInt(victim.id);
@@ -2987,7 +3087,7 @@ public class Place {
 
     }
 
-    private void DisableMobMessage(final User p , final int mobid, final int type) {
+    private void DisableMobMessage(final User p, final int mobid, final int type) {
         try {
             final Mob mob = this.getMob(mobid);
             switch (type) {
@@ -2997,7 +3097,7 @@ public class Place {
                 }
                 case 0: {
                     mob.isDisable = true;
-                    mob.timeDisable = System.currentTimeMillis() + 1000*p.nj.getPramSkill(48);
+                    mob.timeDisable = System.currentTimeMillis() + 1000 * p.nj.getPramSkill(48);
                     break;
                 }
             }
@@ -3007,13 +3107,12 @@ public class Place {
             m.writer().flush();
             this.sendMessage(m);
             m.cleanup();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void DontMoveMobMessage(final User p , final int mobid, final int type) {
+    private void DontMoveMobMessage(final User p, final int mobid, final int type) {
         try {
             final Mob mob = this.getMob(mobid);
             switch (type) {
@@ -3023,7 +3122,7 @@ public class Place {
                 }
                 case 0: {
                     mob.isDontMove = true;
-                    mob.timeDontMove = System.currentTimeMillis() + 1000*p.nj.getPramSkill(55) + p.nj.getPramSkill(62);
+                    mob.timeDontMove = System.currentTimeMillis() + 1000 * p.nj.getPramSkill(55) + p.nj.getPramSkill(62);
                     break;
                 }
             }
@@ -3033,8 +3132,7 @@ public class Place {
             m.writer().flush();
             this.sendMessage(m);
             m.cleanup();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -3042,7 +3140,9 @@ public class Place {
     private void FireMobMessage(final int mobid, final int type) {
         try {
             final Mob mob = this.getMob(mobid);
-            if (mob == null) return;
+            if (mob == null) {
+                return;
+            }
             switch (type) {
                 case -1: {
                     mob.isFire = false;
@@ -3073,7 +3173,9 @@ public class Place {
     private void IceMobMessage(final int mobid, final int type) {
         try {
             final Mob mob = this.getMob(mobid);
-            if (mob == null) return;
+            if (mob == null) {
+                return;
+            }
             switch (type) {
                 case -1: {
                     mob.isIce = false;
@@ -3105,7 +3207,9 @@ public class Place {
     private void WindMobMessage(final int mobid, final int type) {
         try {
             final Mob mob = this.getMob(mobid);
-            if (mob == null) return;
+            if (mob == null) {
+                return;
+            }
             switch (type) {
                 case -1: {
                     mob.isWind = false;
@@ -3136,7 +3240,9 @@ public class Place {
     protected void FireNinjaMessage(final int ninjaId, final int type) {
         try {
             Ninja ninja = this.getNinja(ninjaId);
-            if (ninja == null) return;
+            if (ninja == null) {
+                return;
+            }
 
             long reduceTime = 0;
             try {
@@ -3180,7 +3286,9 @@ public class Place {
         try {
 
             Ninja ninja = this.getNinja(ninjaId);
-            if (ninja == null) return;
+            if (ninja == null) {
+                return;
+            }
             long reduceIceTime = 0;
 
             try {
@@ -3227,7 +3335,9 @@ public class Place {
     protected void WindNinjaMessage(final int ninjaId, final int type) {
         try {
             Ninja ninja = this.getNinja(ninjaId);
-            if (ninja == null) return;
+            if (ninja == null) {
+                return;
+            }
             long reduceTime = 0;
             try {
                 reduceTime = ninja.get().getPramSkill(39) * 100 + ninja.get().getWindReduceTime();
@@ -3272,7 +3382,9 @@ public class Place {
         synchronized (this) {
             try {
                 final Mob mob = this.getMob(mobid);
-                if (mob == null) return;
+                if (mob == null) {
+                    return;
+                }
                 if (mob.isIce || mob.isWind) {
                     return;
                 }
@@ -3405,9 +3517,11 @@ public class Place {
     }
 
     private void MobAtkMessage(final int mobid, final @Nullable Ninja n, final int dame, final int mpdown,
-                               final short idskill_atk, final byte typeatk, final byte typetool) throws IOException {
+            final short idskill_atk, final byte typeatk, final byte typetool) throws IOException {
 
-        if (n == null) return;
+        if (n == null) {
+            return;
+        }
         Message m = new Message(-3);
         m.writer().writeByte(mobid);
         m.writer().writeInt(dame);
@@ -3434,12 +3548,16 @@ public class Place {
     }
 
     private void loadMobMeAtk(@Nullable final Ninja n) {
-        if (n == null) return;
+        if (n == null) {
+            return;
+        }
         n.mobMe.timeFight = System.currentTimeMillis() + 3000L;
         try {
             if (n.mobAtk != -1 && n.mobMe.templates.id >= 211 && n.mobMe.templates.id <= 217) {
                 final Mob mob = this.getMob(n.mobAtk);
-                if (mob == null) return;
+                if (mob == null) {
+                    return;
+                }
                 if (!mob.isDie) {
                     val body = n.get();
                     val item = body.ItemBody[10];
@@ -3458,9 +3576,11 @@ public class Place {
     }
 
     private void MobMeAtkMessage(final @Nullable Ninja n, final int idatk, final int dame, final short idskill_atk,
-                                 final byte typeatk, final byte typetool, final byte type) throws IOException {
+            final byte typeatk, final byte typetool, final byte type) throws IOException {
 
-        if (n == null) return;
+        if (n == null) {
+            return;
+        }
         final Message m = new Message(87);
         m.writer().writeInt(n.id);
         m.writer().writeByte(idatk);
@@ -3477,7 +3597,9 @@ public class Place {
     }
 
     public void openFindParty(@Nullable final User p) {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         try {
             final ArrayList<Party> partys = (ArrayList<Party>) this.getArryListParty();
             final Message m = new Message(-30);
@@ -3497,28 +3619,27 @@ public class Place {
         }
     }
 
-
     public void update() throws Exception {
         synchronized (this) {
 
             //final Calendar rightNow = Calendar.getInstance();
             //final int min = rightNow.get(12);
             //final int sec = rightNow.get(13);
-
             //if(((min % 2) == 0) && (sec == 1)){
-                //final File f = new File("log/ip.txt");
-                //if (f.exists()) {
-                    //f.delete();
-                    //System.out.println("Xoá file ip");
-                //}
+            //final File f = new File("log/ip.txt");
+            //if (f.exists()) {
+            //f.delete();
+            //System.out.println("Xoá file ip");
+            //}
             //}
             synchronized (this._itemMap) {
                 for (ItemMap itemMap : _itemMap) {
-                    if (itemMap == null) continue;
-                    if (
-                            itemMap.visible == false &&
-                                    System.currentTimeMillis() > itemMap.nextTimeRefresh &&
-                                    itemMap.removedelay == -1) {
+                    if (itemMap == null) {
+                        continue;
+                    }
+                    if (itemMap.visible == false
+                            && System.currentTimeMillis() > itemMap.nextTimeRefresh
+                            && itemMap.removedelay == -1) {
                         itemMap.setVisible(true);
                     }
                 }
@@ -3527,7 +3648,9 @@ public class Place {
             for (int i = 0; i < users.size(); ++i) {
                 try {
                     val user = this.getUsers().get(i);
-                    if (user == null) continue;
+                    if (user == null) {
+                        continue;
+                    }
                     final Ninja ninja = user.nj;
                     updateUser(user);
                     if (ninja.isFire && System.currentTimeMillis() >= ninja.timeFire) {
@@ -3540,7 +3663,7 @@ public class Place {
                         this.WindNinjaMessage(ninja.id, -1);
                     }
                     //if (ninja.getTaskId() == 11) {//fix tạm nvu
-                        //ninja.setTaskId(ninja.getTaskId()+1);
+                    //ninja.setTaskId(ninja.getTaskId()+1);
                     //}
                 } catch (Exception e) {
 
@@ -3555,13 +3678,15 @@ public class Place {
             updateExpiredItemMap();
             for (int i = 0; i < this.getMobs().size(); ++i) {
                 final Mob mob = this.getMobs().get(i);
-                if (mob == null) continue;
+                if (mob == null) {
+                    continue;
+                }
                 mob.update(this);
 
-                if (!map.isLdgtMap() &&
-                        mob.getTimeRefresh() > 0L &&
-                        System.currentTimeMillis() >= mob.getTimeRefresh() &&
-                        mob.isRefresh) {
+                if (!map.isLdgtMap()
+                        && mob.getTimeRefresh() > 0L
+                        && System.currentTimeMillis() >= mob.getTimeRefresh()
+                        && mob.isRefresh) {
                     this.refreshMob(mob.id);
                 }
                 if (mob.isDisable && System.currentTimeMillis() >= mob.timeDisable) {
@@ -3607,10 +3732,10 @@ public class Place {
                     }
                 }
 
-                if (map.id == 90 && checkCleanMob(BOST_LDGT_ID) && this.getUsers().size() > 0 &&
-                        this.getUsers().get(0).getClanTerritoryData() != null &&
-                        this.getUsers().get(0).getClanTerritoryData().getClanTerritory() != null &&
-                        this.getUsers().get(0).getClanTerritoryData().getClanTerritory().getState() != ClanTerritory.State.WIN) {
+                if (map.id == 90 && checkCleanMob(BOST_LDGT_ID) && this.getUsers().size() > 0
+                        && this.getUsers().get(0).getClanTerritoryData() != null
+                        && this.getUsers().get(0).getClanTerritoryData().getClanTerritory() != null
+                        && this.getUsers().get(0).getClanTerritoryData().getClanTerritory().getState() != ClanTerritory.State.WIN) {
                     this.getUsers().get(0).getClanTerritoryData().getClanTerritory().setState(ClanTerritory.State.WIN);
                 }
 
@@ -3623,13 +3748,17 @@ public class Place {
     private void updateMission(long currentTime) throws IOException {
         if (map.id == 33) {
             for (User user : getUsers()) {
-                if (user == null || user.nj == null) continue;
+                if (user == null || user.nj == null) {
+                    continue;
+                }
                 if ("Jaian".equals(user.nj.name)) {
                     val ninjaAI = user.nj;
-                    if (ninjaAI == null) continue;
-                    if (ninjaAI.lastTimeMove == -1 ||
-                            currentTime - ninjaAI.lastTimeMove >=
-                                    util.nextInt(20 * TIME_CONTROL_MOVE / 100, TIME_CONTROL_MOVE)) {
+                    if (ninjaAI == null) {
+                        continue;
+                    }
+                    if (ninjaAI.lastTimeMove == -1
+                            || currentTime - ninjaAI.lastTimeMove
+                            >= util.nextInt(20 * TIME_CONTROL_MOVE / 100, TIME_CONTROL_MOVE)) {
                         final int masterId = Math.abs(ninjaAI.id);
                         if (!ninjaAI.isDie) {
                             if (ninjaAI.x > 0) {
@@ -3685,7 +3814,9 @@ public class Place {
         } else if (map.id == 74) {
             if (getUsers().size() == 1) {
                 val nj = getUsers().get(0);
-                if (nj == null) return;
+                if (nj == null) {
+                    return;
+                }
                 if (nj.expiredTime == -1 || currentTime >= nj.expiredTime) {
                     for (User user : getUsers()) {
                         gietHeoRungGoBack(user, "Nhiệm vụ thất bại do hết thời gian");
@@ -3747,53 +3878,55 @@ public class Place {
     //<editor-fold desc="Update event loop">
     @SneakyThrows
     private void updateUser(final @Nullable User p) throws IOException {
-        if (p == null) return;
-        
+        if (p == null) {
+            return;
+        }
+
         //xoa item tui  het han cua ng choi
-                    for (byte j = 0; j < p.nj.ItemBag.length; j++) {
-                        Item item = p.nj.ItemBag[j];
-                        if (item == null || !item.isExpires) {
-                            continue;
-                        }
-                        if (System.currentTimeMillis() >= item.expires) {
-                            p.nj.removeItemBag(j, item.quantity);
-                        }
-                    }
-                    //xoa item tra bi  het han cua ng choi
-                    for (byte j = 0; j < p.nj.get().ItemBody.length; j++) {
-                        Item item = p.nj.get().ItemBody[j];
-                        if (item == null || !item.isExpires) {
-                            continue;
-                        }
-                        if (System.currentTimeMillis() >= item.expires) {
-                            if (p.nj.isHuman) {
-                                p.nj.removeItemBody(j);
-                            } else if (p.nj.isNhanban) {
-                                p.nj.clone.removeItemBody(j);
-                            }
-                        }
-                    }
-                    //xoa item ruong het han cua ng choi
-                    for (byte j = 0; j < p.nj.ItemBox.length; j++) {
-                        Item item = p.nj.ItemBox[j];
-                        if (item == null || !item.isExpires) {
-                            continue;
-                        }
-                        if (System.currentTimeMillis() >= item.expires) {
-                            p.nj.removeItemBox(j);
-                        }
-                    }
-                    if((this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79) && (p.nj.isDie || p.nj.pk > 0)) {
-                        p.nj.place.leave(p);
-                        Map ma = Manager.getMapid(p.nj.mapLTD);
-                        byte k;
-                        for (k = 0; k < ma.area.length; k++) {
-                            if (ma.area[k].getNumplayers() < ma.template.maxplayers) {
-                                ma.area[k].EnterMap0(p.nj);
-                                return;
-                            }
-                        }
-                    }                               
+        for (byte j = 0; j < p.nj.ItemBag.length; j++) {
+            Item item = p.nj.ItemBag[j];
+            if (item == null || !item.isExpires) {
+                continue;
+            }
+            if (System.currentTimeMillis() >= item.expires) {
+                p.nj.removeItemBag(j, item.quantity);
+            }
+        }
+        //xoa item tra bi  het han cua ng choi
+        for (byte j = 0; j < p.nj.get().ItemBody.length; j++) {
+            Item item = p.nj.get().ItemBody[j];
+            if (item == null || !item.isExpires) {
+                continue;
+            }
+            if (System.currentTimeMillis() >= item.expires) {
+                if (p.nj.isHuman) {
+                    p.nj.removeItemBody(j);
+                } else if (p.nj.isNhanban) {
+                    p.nj.clone.removeItemBody(j);
+                }
+            }
+        }
+        //xoa item ruong het han cua ng choi
+        for (byte j = 0; j < p.nj.ItemBox.length; j++) {
+            Item item = p.nj.ItemBox[j];
+            if (item == null || !item.isExpires) {
+                continue;
+            }
+            if (System.currentTimeMillis() >= item.expires) {
+                p.nj.removeItemBox(j);
+            }
+        }
+        if ((this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79) && (p.nj.isDie || p.nj.pk > 0)) {
+            p.nj.place.leave(p);
+            Map ma = Manager.getMapid(p.nj.mapLTD);
+            byte k;
+            for (k = 0; k < ma.area.length; k++) {
+                if (ma.area[k].getNumplayers() < ma.template.maxplayers) {
+                    ma.area[k].EnterMap0(p.nj);
+                    return;
+                }
+            }
+        }
         updateEffect(p);
         if ((p.nj.eff5buffHP() > 0 || p.nj.get().eff5buffMP() > 0) && p.nj.eff5buff <= System.currentTimeMillis()) {
             p.nj.eff5buff = System.currentTimeMillis() + 5000L;
@@ -3830,7 +3963,6 @@ public class Place {
                         tl += 0;
                     }
 
-
                     for (int k = 0; k < this.getUsers().size(); ++k) {
                         GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, tl, 1, 1);
                     }
@@ -3865,38 +3997,39 @@ public class Place {
         }
         if (p.nj.ItemBody[11].id == 786 || p.nj.ItemBody[11].id == 787 || p.nj.ItemBody[11].id == 828) {
             for (int k = 0; k < this.getUsers().size(); ++k) {
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)25, 1, 1);
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 25, 1, 1);
             }
         }
         if (p.nj.ItemBody[11].id == 774) {
             for (int k = 0; k < this.getUsers().size(); ++k) {
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)22, 1, 1);
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)23, 1, 1);
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 22, 1, 1);
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 23, 1, 1);
             }
         }
         if (p.nj.ItemBody[10].id == 846) {
             for (int k = 0; k < this.getUsers().size(); ++k) {
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)28, 1, 1);
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)29, 1, 1);
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 28, 1, 1);
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 29, 1, 1);
             }
         }
         if (p.nj.ItemBody[14].id == 694) {
             for (int k = 0; k < this.getUsers().size(); ++k) {
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)24, 1, 1);
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 24, 1, 1);
             }
-        }if (p.nj.ItemBody[10].id == 837 || p.nj.ItemBody[10].id == 838) {
+        }
+        if (p.nj.ItemBody[10].id == 837 || p.nj.ItemBody[10].id == 838) {
             for (int k = 0; k < this.getUsers().size(); ++k) {
                 int num = util.nextInt(0, 2);
 
                 switch (num) {
                     case 0:
-                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)5, 1, 1);
+                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 5, 1, 1);
                         break;
                     case 1:
-                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)8, 1, 1);
+                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 8, 1, 1);
                         break;
                     case 2:
-                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)11, 1, 1);
+                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 11, 1, 1);
                         break;
                 }
             }
@@ -3904,8 +4037,8 @@ public class Place {
 
         if (p.nj.ItemBody[12].id == 797) {
             for (int k = 0; k < this.getUsers().size(); ++k) {
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)27, 1, 1);
-                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)43, 1, 1);
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 27, 1, 1);
+                GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 43, 1, 1);
             }
         }
         if (p.nj.name.equals("Đầu cắt moi") || p.nj.name.equals("admin") && System.currentTimeMillis() > p.nj.delayEffect) {
@@ -3915,18 +4048,17 @@ public class Place {
 
                 switch (num) {
                     case 0:
-                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)5, 1, 1);
+                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 5, 1, 1);
                         break;
                     case 1:
-                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)8, 1, 1);
+                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 8, 1, 1);
                         break;
                     case 2:
-                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short)11, 1, 1);
+                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 11, 1, 1);
                         break;
                 }
             }
         }
-
 
         if (p.nj.get().mobMe != null && p.nj.get().mobMe.timeFight <= System.currentTimeMillis()) {
             this.loadMobMeAtk(p.nj);
@@ -3940,15 +4072,15 @@ public class Place {
         if ((this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79) && (p.nj.isDie || p.nj.expdown > 0L || p.nj.pk > 0)) {
             this.DieReturn(p);
             p.session.sendMessageLog("Bạn đang có exp âm hoặc hiếu chiến");
-        }        
+        }
 
         if (System.currentTimeMillis() > p.nj.deleyRequestClan) {
             p.nj.requestclan = -1;
         }
-        if (p != null &&
-                p.nj != null &&
-                p.nj.clone != null &&
-                p.nj.clone.isIslive() && System.currentTimeMillis() > p.nj.timeRemoveClone) {
+        if (p != null
+                && p.nj != null
+                && p.nj.clone != null
+                && p.nj.clone.isIslive() && System.currentTimeMillis() > p.nj.timeRemoveClone) {
             p.nj.clone.off();
         }
         if (p.nj.get().isDie) {
@@ -3967,7 +4099,6 @@ public class Place {
         return itemMaps;
     }
 
-
     private Mob findMobInDistance(int x, int y, int distance) {
         for (Mob mob : this._mobs) {
             if (mob != null && !mob.isDie && Math.sqrt(Math.pow(mob.x - x, 2) + Math.pow(mob.y - y, 2)) <= distance) {
@@ -3979,7 +4110,9 @@ public class Place {
 
     @SneakyThrows
     private void updateHpToFriend(final @Nullable User p) {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
 
         val m = messageSubCommand2(17);
         m.writer().writeInt(p.nj.id);
@@ -3990,7 +4123,9 @@ public class Place {
     }
 
     public void updateMp(final @Nullable User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         Message msg = null;
         try {
             msg = new Message(-30);
@@ -4002,13 +4137,16 @@ public class Place {
             e.printStackTrace();
         } finally {
 
-            if (msg != null)
+            if (msg != null) {
                 msg.cleanup();
+            }
         }
     }
 
     private void updateHp(final @Nullable User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         Message msg = null;
         try {
             msg = new Message(-30);
@@ -4020,17 +4158,20 @@ public class Place {
             e.printStackTrace();
         } finally {
 
-            if (msg != null)
+            if (msg != null) {
                 msg.cleanup();
+            }
         }
     }
 
     private void updateExpiredItemMap() throws IOException {
         for (int i = 0; i < this._itemMap.size(); ++i) {
             final ItemMap itm = this._itemMap.get(i);
-            if (itm == null || itm.item == null) continue;
-            if (itm.removedelay != -1 &&
-                    System.currentTimeMillis() >= itm.removedelay) {
+            if (itm == null || itm.item == null) {
+                continue;
+            }
+            if (itm.removedelay != -1
+                    && System.currentTimeMillis() >= itm.removedelay) {
                 this.removeItemMapMessage(itm.itemMapId);
                 this._itemMap.remove(i);
                 --i;
@@ -4041,7 +4182,9 @@ public class Place {
     }
 
     private void updateEffect(final @Nullable User p) {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         for (Effect eff : p.nj.get().getVeff()) {
             if (System.currentTimeMillis() >= eff.timeRemove) {
                 p.removeEffect(eff.template.id);
@@ -4064,7 +4207,9 @@ public class Place {
     }
 
     private void removeIfItemExpired(final @Nullable User p) throws IOException {
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         for (int l = 0; l < p.nj.ItemBag.length; ++l) {
             final Item item = p.nj.ItemBag[l];
             if (item != null) {
@@ -4098,11 +4243,12 @@ public class Place {
     }
     //</editor-fold>
 
-
     @SneakyThrows
     public void updateSpecialEvent(final @Nullable User p) {
 
-        if (p == null) return;
+        if (p == null) {
+            return;
+        }
         val nj = p.nj;
 
         TeamBattle t = nj.party == null ? nj : nj.party;
@@ -4111,8 +4257,7 @@ public class Place {
                 Map map = server.getMaps()[27];
                 Place area = map.getFreeArea();
                 t.enterSamePlace(area, null);
-            } else if (
-                    t.getBattle().getState() == Battle.CHIEN_DAU_STATE) {
+            } else if (t.getBattle().getState() == Battle.CHIEN_DAU_STATE) {
                 if (t.loose()) {
                     t.getBattle().updateWinner(t);
                 }
@@ -4126,8 +4271,7 @@ public class Place {
         if (battle != null) {
             try {
                 battle.update(nj);
-            } catch (Exception e
-            ) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -4163,9 +4307,8 @@ public class Place {
                 List<ItemMap> itemMaps = findItemMapInDistance(p.nj.get().x, p.nj.get().y, p.typeTBLOption.getValue(), p.filter, p.nj.get().id);
 
                 for (ItemMap itemMap : itemMaps) {
-                    if (p.nj.getAvailableBag() != 0 && itemMap != null && itemMap.item != null &&
-                            itemMap.item.getData().type != 25
-                    ) {
+                    if (p.nj.getAvailableBag() != 0 && itemMap != null && itemMap.item != null
+                            && itemMap.item.getData().type != 25) {
                         removeItemMap(p, (short) _itemMap.indexOf(itemMap), itemMap);
                     }
                 }
@@ -4183,14 +4326,16 @@ public class Place {
             }
         }
         // Nhiem vu heo rung
-        if (map.id == 74 && p != null && p.nj != null && p.nj.get() != null &&
-                p.nj.get().isDie) {
+        if (map.id == 74 && p != null && p.nj != null && p.nj.get() != null
+                && p.nj.get().isDie) {
             gietHeoRungGoBack(p, "Nhiệm vụ thất bại do hít quá nhiều khí độc");
         }
     }
 
     private void gietHeoRungGoBack(final @Nullable User p, final @Nullable String message) throws IOException {
-        if (p == null || message == null) return;
+        if (p == null || message == null) {
+            return;
+        }
 
         leave(p);
         p.expiredTime = -1;
@@ -4223,7 +4368,6 @@ public class Place {
         p.sendYellowMessage(message);
     }
 
-
     public void close() {
         this._users.clear();
     }
@@ -4231,7 +4375,6 @@ public class Place {
     public byte getNumplayers() {
         return (byte) this.getUsers().size();
     }
-
 
     public synchronized void removeRunner(UpdateEvent runnable) {
         this.runner.remove(runnable);
@@ -4242,16 +4385,19 @@ public class Place {
         return this;
     }
 
-
     @SneakyThrows
     public void sendPlayersInfo(final @Nullable Ninja nj, final @Nullable Message message) {
-        if (nj == null || message == null) return;
+        if (nj == null || message == null) {
+            return;
+        }
         val m = new Message(25);
         val ds = m.writer();
         val size = message.reader().readByte();
         for (int i = 0; i < size; i++) {
             val ninja = getNinja(message.reader().readInt());
-            if (ninja == null) continue;
+            if (ninja == null) {
+                continue;
+            }
             ds.writeInt(ninja.id);
             ds.writeShort(ninja.x);
             ds.writeShort(ninja.y);
@@ -4273,7 +4419,6 @@ public class Place {
         buNhins.remove(buNhin);
         MessageSubCommand.removeBuNhin(b, getUsers());
     }
-
 
     public List<@Nullable User> getUsers() {
         return this._users;
@@ -4304,8 +4449,12 @@ public class Place {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Place place = (Place) o;
         return id == place.id && Objects.equals(map, place.map);
     }
@@ -4314,7 +4463,6 @@ public class Place {
     public int hashCode() {
         return Objects.hash(id, map);
     }
-
 
     public void terminate() {
         for (User user : this._users) {

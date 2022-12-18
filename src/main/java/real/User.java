@@ -1371,9 +1371,9 @@ public class User extends Actor implements SendMessage {
                         } catch (Exception e) {
 
                         }
-                        server.manager.sendTB(this, "Z-orgs",
-                                "Chào mừng các player đến với sever Z-orgs \n" +
-                                        "Số người online " + ( + PlayerManager.getInstance().conns_size()));
+//                        server.manager.sendTB(this, "Z-orgs",
+//                                "Chào mừng các player đến với sever Z-orgs \n" +
+//                                        "Số người online " + ( + PlayerManager.getInstance().conns_size()));
 
                         if (this.nj != null && this.nj.clan != null) {
                             Server.clanTerritoryManager.getClanTerritoryDataById(this.getClanTerritoryId());

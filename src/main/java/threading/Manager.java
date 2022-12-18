@@ -213,8 +213,8 @@ public class Manager {
             GBattle.START_TIME = Long.parseLong(properties.getProperty("start-time"));
 
             // cmt de tat su kien
-            //EVENT = Byte.parseByte(properties.getProperty("event-type"));
-            //EventItem.entrys = Mapper.converter.readValue(properties.getProperty("event-input" + EVENT), EventItem[].class);
+            EVENT = Byte.parseByte(properties.getProperty("event-type"));
+            EventItem.entrys = Mapper.converter.readValue(properties.getProperty("event-input" + EVENT), EventItem[].class);
             Body.PERCENT_DAME_PEOPLE = Short.parseShort(properties.getProperty("damage-people-rate"));
 
 
