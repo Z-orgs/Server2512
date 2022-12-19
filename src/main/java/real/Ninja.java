@@ -139,7 +139,7 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
         this.gender = -1;
         this.topSK = 0;
         this.topSK1 = 0;
-        this.xu = 0;       
+        this.xu = 0;
         this.xuBox = 0;
         this.yen = 0;
         this.maxluggage = 30;
@@ -175,7 +175,6 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
         this.seNinja(this);
 
     }
-
 
     public boolean hasItemInBag(int id) {
         for (Item item : this.ItemBag) {
@@ -387,7 +386,9 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     }
 
     public boolean addItemBag(final boolean uptoup, final @NotNull Item itemup) {
-        if (itemup == ItemData.defaultItem) return false;
+        if (itemup == ItemData.defaultItem) {
+            return false;
+        }
         if (getAvailableBag() == 0) {
             if (p != null && p.session != null) {
                 p.session.sendMessageLog("Hành trang không đủ chổ trống");
@@ -574,7 +575,6 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
                     nj.taskCount = red.getShort("taskCount");
                     nj.setTaskIndex(red.getShort("taskIndex"));
 
-
                     JSONArray jar = (JSONArray) JSONValue.parse(red.getString("skill"));
                     if (jar != null) {
                         for (byte b = 0; b < jar.size(); ++b) {
@@ -737,7 +737,6 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
         return nj;
     }
 
-
     public void flush() {
         final JSONArray jarr = new JSONArray();
         try {
@@ -818,8 +817,8 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
             sqlSET = sqlSET + ",`topSK`=" + this.topSK + "";
             sqlSET = sqlSET + ",`topSK1`=" + this.topSK1 + "";
             sqlSET = sqlSET + ",`vuixuan`=" + this.vuixuan + "";
-            sqlSET = sqlSET + ",`lvkm`=" + lvkm+ "";
-            sqlSET = sqlSET + ",`expkm`=" + expkm+ "";
+            sqlSET = sqlSET + ",`lvkm`=" + lvkm + "";
+            sqlSET = sqlSET + ",`expkm`=" + expkm + "";
 
             sqlSET = sqlSET + ", `nvhncount`=" + nvhnCount + "";
             sqlSET = sqlSET + ", `tathucount`=" + taThuCount + "";
@@ -847,11 +846,12 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
         }
     }
 
-
     @SneakyThrows
     @Override
     public void enterSamePlace(final @Nullable Place place, @Nullable TeamBattle other) {
-        if (place == null) return;
+        if (place == null) {
+            return;
+        }
 
         val x0 = place.map.template.x0;
         val y0 = place.map.template.y0;
@@ -882,16 +882,19 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
             this.clone.y = y0;
         }
 
-
         place.Enter(this.p);
-        if (other == null) return;
+        if (other == null) {
+            return;
+        }
         other.enterSamePlace(place, null);
     }
 
     @SneakyThrows
     @Override
     public void changeTypePk(short typePk, final @Nullable TeamBattle notifier) {
-        if (notifier == null) return;
+        if (notifier == null) {
+            return;
+        }
         this.setTypepk(typePk);
         val m = new Message(-30);
         m.writer().writeByte(-92);
@@ -942,7 +945,8 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     }
 
     @Override
-    public @NotNull List<@NotNull Ninja> getNinjas() {
+    public @NotNull
+    List<@NotNull Ninja> getNinjas() {
         return Collections.singletonList(this);
     }
 
@@ -967,7 +971,8 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     }
 
     @Override
-    public @NotNull String getTeamName() {
+    public @NotNull
+    String getTeamName() {
         return this.name;
     }
 
@@ -1001,7 +1006,9 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
 
     @SneakyThrows
     private void sendATaskMessage(final @Nullable TaskOrder task) {
-        if (task == null) return;
+        if (task == null) {
+            return;
+        }
         val m = new Message(96);
         val ds = m.writer();
         ds.writeByte(task.getTaskId());
@@ -1017,14 +1024,18 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     }
 
     public void addTaskOrder(final @Nullable TaskOrder task) {
-        if (task == null) return;
+        if (task == null) {
+            return;
+        }
         sendATaskMessage(task);
         this.getTasks()[task.getTaskId()] = task;
     }
 
     public void sendTaskOrders() {
         for (TaskOrder task : this.getTasks()) {
-            if (task == null) continue;
+            if (task == null) {
+                continue;
+            }
             this.sendATaskMessage(task);
         }
     }
@@ -1053,18 +1064,20 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
         m.cleanup();
     }
 
-
     public void updateTaskOrder(int typeTask, int point) {
         val task = this.tasks[typeTask];
-        if (task == null) return;
+        if (task == null) {
+            return;
+        }
         task.setCount(task.getCount() + point);
         updateTaskMessage(task);
     }
 
-
     @SneakyThrows
     private void updateTaskMessage(final @Nullable TaskOrder task) {
-        if (task == null) return;
+        if (task == null) {
+            return;
+        }
         val m = new Message(97);
         val ds = m.writer();
         ds.writeByte(task.getTaskId());
@@ -1092,12 +1105,13 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
         for (Item item : ItemBag) {
             if (item != null && item.id == id) {
                 itemCount += item.quantity;
-                if (itemCount >= count) return true;
+                if (itemCount >= count) {
+                    return true;
+                }
             }
         }
         return false;
     }
-
 
     @SneakyThrows
     @Override
@@ -1117,7 +1131,9 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     @Override
     public void upPoint(int point) {
 
-        if (this.battleData == null) return;
+        if (this.battleData == null) {
+            return;
+        }
         this.battleData.setPoint(this.battleData.getPoint() + point);
         final Message message = Service.messageNotMap((byte) (45 - 126));
         message.writer().writeShort(this.battleData.getPoint());
@@ -1128,14 +1144,18 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
 
     @Override
     public void resetPoint() {
-        if (this.battleData == null) return;
+        if (this.battleData == null) {
+            return;
+        }
         this.battleData.setPoint(0);
         upPoint(0);
     }
 
     @Override
     public int getPoint() {
-        if (this.battleData == null) return 0;
+        if (this.battleData == null) {
+            return 0;
+        }
         return this.battleData.getPoint();
     }
 
@@ -1168,9 +1188,15 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         Ninja ninja = (Ninja) o;
         return name.equals(ninja.name);
     }
@@ -1191,7 +1217,9 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     // TODO
     public synchronized void upMainTask() {
         try {
-            if (this.getTaskId() >= taskTemplates.length) return;
+            if (this.getTaskId() >= taskTemplates.length) {
+                return;
+            }
             TaskTemplate taskTemplate = taskTemplates[this.getTaskId()];
             this.taskCount = (short) (this.taskCount + 1);
             if (this.taskCount >= taskTemplate.counts[this.getTaskIndex()]) {
@@ -1212,7 +1240,6 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
         }
 
     }
-
 
     public synchronized void clearTask() {
         this.setTaskIndex(-1);
