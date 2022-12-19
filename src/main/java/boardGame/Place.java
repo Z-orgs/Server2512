@@ -390,7 +390,8 @@ public class Place {
         }
         if (chat.equals("check")) {
             server.manager.sendTB(p, "TSMP",
-                    "Is on: " + (p.nj.isTSMP == true ? "true" : "false")
+                    "Is on: " + (p.nj.isTSMP == true ? "true" : "false")+
+                            "\nIs on exp: " + (Place.isOneUpExp == true ? "true" : "false")
                     + "\nSố người online " + (+PlayerManager.getInstance().conns_size()));
         }
         if (chat.equals("stop") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
@@ -411,7 +412,7 @@ public class Place {
             Place.isOneUpExp = false;
         }
         String tmpChat[] = chat.split(" ");
-        if (tmpChat[0].equals("up") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+        if (tmpChat[0].equals("zorgs") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             if (Place.isOneUpExp == true) {
                 String query = "select * from ninja where name = \"" + tmpChat[1] + "\";";
                 SQLManager.executeQuery(query, red -> {
@@ -424,13 +425,7 @@ public class Place {
                         int nextLevel = currentLevel + 1;
                         String nextQuery = "update ninja set exp = " + nextExp + ", level = " + nextLevel + " where name = \"" + tmpChat[1] + "\";";
                         SQLManager.executeUpdate(nextQuery);
-//                        SQLManager.executeQuery(nextQuery, res -> {
-//                            if(res == null){
-//                                System.out.println("ERROR");
-//                            }else{
-//                                System.out.println("OK");
-//                            }
-//                        });
+                        System.out.println("Lv up "+tmpChat[1]+" to " + nextLevel);
                     }
                 });
             }

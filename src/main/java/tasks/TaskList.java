@@ -603,7 +603,7 @@ public class TaskList {
                 {LUONG_ID, 100},
                 {XU_ID, 500_000},})
             .counts(new int[]{
-                -1, 100, -1
+                -1, 5, -1
             })
             .build(),
             builder()
@@ -966,88 +966,88 @@ public class TaskList {
             .minLevel(
             63)
             .build(), //
-        //
-        //                builder()
-        //                        .taskId(41)
-        //                        .minLevel(65)
-        //                        .npcTalk("Sau khi cố gắng lao động mà không đủ ăn thì thử đen đỏ thử xem, hồi còn giàu ta cũng hay chơi mấy đồ yêu này lắm")
-        //                        .name("NV Thử tài may mắn")
-        //                        .detail("")
-        //                        .subNames(new String[]{
-        //                                "Trình độ đạt cấp 65",
-        //                                "Sử dụng rương hang động",
-        //                                "Sử dụng rương thất thú bảo",
-        //                                "Báo cáo với Guriin"
-        //                        })
-        //                        .counts(new int[]{
-        //                                -1, 0, 0, -1
-        //                        })
-        //                        .mobs(new int[][]{
-        //                                {},
-        //                                {},
-        //                                {0, 0},
-        //                                {}
-        //                        })
-        //                        .itemsPick(new int[]{
-        //                                -1,
-        //                                -1,
-        //                                288,
-        //                                -1
-        //                        })
-        //                        .rewards(new int[][]{
-        //                                {227, 1},
-        //                                {EXP_ID, 100_000_000},
-        //                                {LUONG_ID, 100},
-        //                                {XU_ID, 500_000},
-        //                        })
-        //                        .minLevel(65)
-        //                        .build(),
-        //                builder()
-        //                        .taskId(42)
-        //                        .minLevel(67)
-        //                        .npcTalk("Bệnh thành tích là không tốt nhưng không có thành tích thì không ai nể thôi cố gắng lấy thành tích về đi bố vợ tưởng lai hứa sẽ gả con gái cho")
-        //                        .name("NV Chiến trường")
-        //                        .detail("")
-        //                        .subNames(new String[]{
-        //                                "Trình độ đạt cấp 67",
-        //                                "Đạt 2000 điểm tích luỹ phe Bạch giả",
-        //                                "Đạt 2000 điểm tích luỹ phe Hắc giả",
-        //                                "Báo cáo với Guriin"
-        //                        })
-        //                        .counts(new int[]{
-        //                                -1, 0, 0, -1,
-        //                        })
-        //                        .rewards(new int[][]{
-        //                                {EXP_ID, 100_000_000},
-        //                                {LUONG_ID, 100},
-        //                                {XU_ID, 500_000},
-        //                        })
-        //                        .minLevel(67)
-        //                        .build(),
-        //
-        //                builder()
-        //                        .taskId(43)
-        //                        .minLevel(69)
-        //                        .npcTalk("Ta hứa là đây là nhiệm vụ cuối cùng ráng làm đi ta sẽ thưởng to")
-        //
-        //                        .name("NV Thách đấu lôi đài")
-        //                        .detail("")
-        //                        .subNames(new String[]{
-        //                                "Trình độ đạt cấp 69",
-        //                                "Ấn thách đấu lôi đài",
-        //                                "Báo cáo với Guriin"
-        //                        })
-        //                        .rewards(new int[][]{
-        //                                {228, 1},
-        //                                {EXP_ID, 100_000_000},
-        //                                {LUONG_ID, 100},
-        //                                {XU_ID, 500_000},
-        //                        })
-        //                        .counts(new int[]{
-        //                                -1, 0, -1
-        //                        })
-        //                        .minLevel(69)
-        //                        .build(),
+        
+                        builder()
+                                .taskId(41)
+                                .minLevel(65)
+                                .npcTalk("Sau khi cố gắng lao động mà không đủ ăn thì thử đen đỏ thử xem, hồi còn giàu ta cũng hay chơi mấy đồ yêu này lắm")
+                                .name("NV Thử tài may mắn")
+                                .detail("")
+                                .subNames(new String[]{
+                                        "Trình độ đạt cấp 65",
+                                        "Sử dụng rương hang động",
+                                        "Sử dụng rương thất thú bảo",
+                                        "Báo cáo với Guriin"
+                                })
+                                .counts(new int[]{
+                                        -1, 1, 1, -1
+                                })
+                                .mobs(new int[][]{
+                                        {},
+                                        {},
+                                        {0, 0},
+                                        {}
+                                })
+                                .itemsPick(new int[]{
+                                        -1,
+                                        -1,
+                                        288,
+                                        -1
+                                })
+                                .rewards(new int[][]{
+                                        {227, 1},
+                                        {EXP_ID, 100_000_000},
+                                        {LUONG_ID, 100},
+                                        {XU_ID, 500_000},
+                                })
+                                .minLevel(65)
+                                .build(),
+                        builder()
+                                .taskId(42)
+                                .minLevel(67)
+                                .npcTalk("Bệnh thành tích là không tốt nhưng không có thành tích thì không ai nể thôi cố gắng lấy thành tích về đi bố vợ tưởng lai hứa sẽ gả con gái cho")
+                                .name("NV Chiến trường")
+                                .detail("")
+                                .subNames(new String[]{
+                                        "Trình độ đạt cấp 67",
+                                        "Đạt 2000 điểm tích luỹ phe Bạch giả",
+                                        "Đạt 2000 điểm tích luỹ phe Hắc giả",
+                                        "Báo cáo với Guriin"
+                                })
+                                .counts(new int[]{
+                                        -1, 1, 1, -1,
+                                })
+                                .rewards(new int[][]{
+                                        {EXP_ID, 100_000_000},
+                                        {LUONG_ID, 100},
+                                        {XU_ID, 500_000},
+                                })
+                                .minLevel(67)
+                                .build(),
+        
+                        builder()
+                                .taskId(43)
+                                .minLevel(69)
+                                .npcTalk("Ta hứa là đây là nhiệm vụ cuối cùng ráng làm đi ta sẽ thưởng to")
+        
+                                .name("NV Thách đấu lôi đài")
+                                .detail("")
+                                .subNames(new String[]{
+                                        "Trình độ đạt cấp 69",
+                                        "Ấn thách đấu lôi đài",
+                                        "Báo cáo với Guriin"
+                                })
+                                .rewards(new int[][]{
+                                        {228, 1},
+                                        {EXP_ID, 100_000_000},
+                                        {LUONG_ID, 100},
+                                        {XU_ID, 500_000},
+                                })
+                                .counts(new int[]{
+                                        -1, 1, -1
+                                })
+                                .minLevel(69)
+                                .build(),
         };
     }
 }
