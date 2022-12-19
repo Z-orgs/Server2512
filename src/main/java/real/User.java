@@ -39,6 +39,7 @@ import static server.util.*;
 import java.sql.ResultSet;
 
 public class User extends Actor implements SendMessage {
+
     public static final String TẤT_CẢ_CÁC_KHU_ĐẶT_CƯỢC_ĐỀU_FULL = "Tất cả các khu đặt cược đều full";
     public static long MIN_TIME_RESET_POINT;
     public String username;
@@ -233,7 +234,6 @@ public class User extends Actor implements SendMessage {
 
     }
 
-
     public void cleanup() {
         this.session = null;
         this.setClanTerritoryData(null);
@@ -303,7 +303,6 @@ public class User extends Actor implements SendMessage {
         });
         return u[0];
     }
-
 
     public void messageSubCommand(final Message m) throws IOException {
         final byte b = m.reader().readByte();
@@ -416,8 +415,9 @@ public class User extends Actor implements SendMessage {
     }
 
     public void sendInfo(boolean enter) throws IOException {
-        if (nj.isHuman)
+        if (nj.isHuman) {
             restPoint();
+        }
         this.nj.hp = this.nj.getMaxHP();
         this.nj.mp = this.nj.getMaxMP();
         final Message m = new Message(-30);
@@ -493,7 +493,6 @@ public class User extends Actor implements SendMessage {
         m.writer().flush();
         this.sendMessage(m);
 
-
         m.cleanup();
         this.getMobMe();
         try {
@@ -504,11 +503,11 @@ public class User extends Actor implements SendMessage {
 
         if (nj.clone != null) {
             val clone = nj.clone;
-            int totalClone = clone.getPotential0() +
-                    clone.getPotential1() +
-                    clone.getPotential2() +
-                    clone.getPotential3() +
-                    clone.getPpoint();
+            int totalClone = clone.getPotential0()
+                    + clone.getPotential1()
+                    + clone.getPotential2()
+                    + clone.getPotential3()
+                    + clone.getPpoint();
             if (totalClone > Level.totalpPoint(clone.getLevel()) + clone.getTiemNangSo() * 10 + clone.getBanghoa() * 10 + 25) {
                 this.restPpoint(clone);
             }
@@ -558,7 +557,6 @@ public class User extends Actor implements SendMessage {
         m.cleanup();
     }
 
-
     @SneakyThrows
     void restPoint() {
 
@@ -569,7 +567,6 @@ public class User extends Actor implements SendMessage {
             this.restSpoint();
             this.nj.setExp(Level.getMaxExp(this.nj.getLevel()));
         }
-
 
     }
 
@@ -845,30 +842,30 @@ public class User extends Actor implements SendMessage {
 
         for (int i = 0, itemBodyLength = itemBody.length; i < itemBodyLength; i++) {
             Item item = itemBody[i];
-            if (item != null && (item.getData().isVuKhi() ||
-                    item.getData().isTrangPhuc() ||
-                    item.getData().isYoroi() ||
-                    item.getData().isTrangSuc())) {
+            if (item != null && (item.getData().isVuKhi()
+                    || item.getData().isTrangPhuc()
+                    || item.getData().isYoroi()
+                    || item.getData().isTrangSuc())) {
                 itemBody[i] = null;
             }
         }
 
         for (int i = 0; i < this.nj.ItemBag.length; i++) {
             val item = this.nj.ItemBag[i];
-            if (item != null && (item.getData().isVuKhi() ||
-                    item.getData().isTrangPhuc() ||
-                    item.getData().isYoroi() ||
-                    item.getData().isTrangSuc())) {
+            if (item != null && (item.getData().isVuKhi()
+                    || item.getData().isTrangPhuc()
+                    || item.getData().isYoroi()
+                    || item.getData().isTrangSuc())) {
                 this.nj.ItemBag[i] = null;
             }
         }
 
         for (int i = 0, boxLength = this.nj.ItemBox.length; i < boxLength; i++) {
             Item item = this.nj.ItemBox[i];
-            if (item != null && (item.getData().isVuKhi() ||
-                    item.getData().isTrangPhuc() ||
-                    item.getData().isYoroi() ||
-                    item.getData().isTrangSuc())) {
+            if (item != null && (item.getData().isVuKhi()
+                    || item.getData().isTrangPhuc()
+                    || item.getData().isYoroi()
+                    || item.getData().isTrangSuc())) {
                 this.nj.ItemBox[i] = null;
             }
         }
@@ -894,8 +891,9 @@ public class User extends Actor implements SendMessage {
         }
         int sumSkill = 0;
         for (Skill skill1 : this.nj.get().getSkills()) {
-            if (skill1.id >= 67 && skill1.id <= 72)
+            if (skill1.id >= 67 && skill1.id <= 72) {
                 continue;
+            }
             sumSkill += skill1.point - 1;
         }
         if (this.nj.get().getSpoint() + sumSkill > 1.75 * (Level.totalsPoint(this.nj.get().getLevel()) + this.nj.get().getKyNangSo() + this.nj.get().getPhongLoi())) {
@@ -970,17 +968,16 @@ public class User extends Actor implements SendMessage {
             return;
         }
 
-
         if (nj.getTaskId() == 9 && nj.getTaskIndex() == 1) {
             nj.upMainTask();
         }
 
-        if (this.nj.get().getPpoint() +
-                this.nj.get().getPotential0() +
-                this.nj.get().getPotential1() +
-                nj.get().getPotential2() +
-                nj.get().getPotential3() >
-                (Level.totalpPoint(nj.get().getLevel()) + 25 + nj.get().getTiemNangSo() * 10 + nj.get().getBanghoa() * 10)) {
+        if (this.nj.get().getPpoint()
+                + this.nj.get().getPotential0()
+                + this.nj.get().getPotential1()
+                + nj.get().getPotential2()
+                + nj.get().getPotential3()
+                > (Level.totalpPoint(nj.get().getLevel()) + 25 + nj.get().getTiemNangSo() * 10 + nj.get().getBanghoa() * 10)) {
             session.sendMessageLog("Lỗi cộng điểm tiềm năng tiềm năng được reset");
             restPpoint(this.nj.get());
             return;
@@ -1036,7 +1033,6 @@ public class User extends Actor implements SendMessage {
         this.updatePotential();
     }
 
-
     @SneakyThrows
     public synchronized void restSpoint() {
         if (lastTimeResetPoint != -1 && System.currentTimeMillis() - lastTimeResetPoint < MIN_TIME_RESET_POINT) {
@@ -1044,7 +1040,9 @@ public class User extends Actor implements SendMessage {
         }
 
         for (final Skill skill : this.nj.get().getSkills()) {
-            if (skill.getTemplate().skillId == 67) continue;
+            if (skill.getTemplate().skillId == 67) {
+                continue;
+            }
             if (skill.id != 0 && skill.id != 72 && skill.id != 68) {
                 skill.point = 1;
             }
@@ -1499,8 +1497,8 @@ public class User extends Actor implements SendMessage {
         if (!canNext[0]) {
             return;
         }
-        SQLManager.executeUpdate("INSERT INTO ninja(`name`,`gender`,`head`,`ItemBag`,`ItemBox`,`ItemBody`,`ItemMounts`, `friend`, `effect`, `clan`, `exptype`, `skill`) VALUES " +
-                "(\"" + name + "\"," + gender + "," + head + ",'[]','[]','[]','[]', '[]', '[]','[]', 1, '[{\"id\": 0, \"point\": 0}]');");
+        SQLManager.executeUpdate("INSERT INTO ninja(`name`,`gender`,`head`,`ItemBag`,`ItemBox`,`ItemBody`,`ItemMounts`, `friend`, `effect`, `clan`, `exptype`, `skill`) VALUES "
+                + "(\"" + name + "\"," + gender + "," + head + ",'[]','[]','[]','[]', '[]', '[]','[]', 1, '[{\"id\": 0, \"point\": 0}]');");
         for (byte i = 0; i < this.sortNinja.length; ++i) {
             if (this.sortNinja[i] == null) {
                 this.sortNinja[i] = name;
@@ -1565,7 +1563,9 @@ public class User extends Actor implements SendMessage {
 
     @SneakyThrows
     public void removeLuong(long luong) {
-        if (luong < 0) throw new RuntimeException("Luong must >=0");
+        if (luong < 0) {
+            throw new RuntimeException("Luong must >=0");
+        }
         upluong(-luong);
         final Message m = new Message(-30);
         m.writer().writeByte(56 - 128);
@@ -1575,28 +1575,25 @@ public class User extends Actor implements SendMessage {
         m.cleanup();
     }
 
-
     public static long DIFFER_USE_ITEM_TIME;
     private int useItemCount = 0;
     public static int MAX_USE_ITEM_FAST = 500;
-
 
     public void useItem(final Message m) throws IOException {
         val differ = System.currentTimeMillis() - this.lastTimeUseItem;
         util.Debug(differ + "");
         //if (differ < DIFFER_USE_ITEM_TIME) {
-            //useItemCount++;
+        //useItemCount++;
         //} else {
-            //useItemCount = 0;
+        //useItemCount = 0;
         //}
         //this.lastTimeUseItem = System.currentTimeMillis();
 
         //if (useItemCount >= MAX_USE_ITEM_FAST) {
-            //session.disconnect();
-            //PlayerManager.getInstance().kickSession(session);
-            //return;
+        //session.disconnect();
+        //PlayerManager.getInstance().kickSession(session);
+        //return;
         //}
-
         final byte index = m.reader().readByte();
         m.cleanup();
         final Item item = this.nj.getIndexBag(index);
@@ -1987,7 +1984,9 @@ public class User extends Actor implements SendMessage {
         val itemId = m.reader().readInt();
         m.cleanup();
         final ItemShinwaManager.ItemShinwa itemShinwa = ItemShinwaManager.findItemById(itemId);
-        if (itemShinwa == null) return;
+        if (itemShinwa == null) {
+            return;
+        }
         val mes = new Message(-152);
         mes.writer().writeInt(itemId);
         mes.writer().writeInt(itemShinwa.getItem().sale);
@@ -2005,7 +2004,6 @@ public class User extends Actor implements SendMessage {
         mes.cleanup();
 
     }
-
 
     public void requestTrade(Message m) throws IOException {
         final int ids = m.reader().readInt();
@@ -2321,7 +2319,8 @@ public class User extends Actor implements SendMessage {
         ds.writeByte(nj.get().getBanghoa());
         ds.flush();
         sendMessage(mes);
-        m.cleanup();Service.CharViewInfo(p, false);
+        m.cleanup();
+        Service.CharViewInfo(p, false);
     }
 
     public void viewOptionPlayers(Message m) throws IOException {
@@ -2380,11 +2379,10 @@ public class User extends Actor implements SendMessage {
             return;
         }
 
-
         AtomicBoolean agree = new AtomicBoolean(false);
         other.friend.stream()
-                .filter(f -> f != null && this.nj != null &&
-                        this.nj.name.equals(f.getName()))
+                .filter(f -> f != null && this.nj != null
+                && this.nj.name.equals(f.getName()))
                 .findFirst()
                 .ifPresent(f -> {
                     agree.set(true);
@@ -2426,7 +2424,9 @@ public class User extends Actor implements SendMessage {
     public void itemMonToBag(Message m) throws IOException {
         final byte index = m.reader().readByte();
         m.cleanup();
-        if (index == -1) return;
+        if (index == -1) {
+            return;
+        }
 
         final int indexItemBag = this.nj.getIndexBagNotItem();
         if (indexItemBag == 0) {
@@ -2482,7 +2482,6 @@ public class User extends Actor implements SendMessage {
                 return;
             }
 
-
             SQLManager.executeUpdate("UPDATE `player` SET `password`='" + this.passnew + "' WHERE `id`=" + this.id + " LIMIT 1;");
             this.session.sendMessageLog("Đã đổi mật khẩu thành công");
         } catch (Exception e) {
@@ -2513,7 +2512,6 @@ public class User extends Actor implements SendMessage {
             SQLManager.executeUpdate("UPDATE `player` SET `luong`=" + this.luong + ",`ninja`='" + jarr.toJSONString() + "' WHERE `id`=" + this.id + " LIMIT 1;");
             SQLManager.executeUpdate("UPDATE `player` SET `clanTerritoryId`=" + this.getClanTerritoryId() + " WHERE `id`=" + this.id + " LIMIT 1;");
 
-
         } catch (SQLException e) {
             Debug("Flush data User + Ninja Error");
             e.printStackTrace();
@@ -2543,7 +2541,6 @@ public class User extends Actor implements SendMessage {
         this.sendMessage(m);
         m.cleanup();
     }
-
 
     public synchronized void updateExp(long xpup, boolean useMulti) throws IOException {
 
@@ -2579,7 +2576,6 @@ public class User extends Actor implements SendMessage {
 //            if (xpold >= 10711676205700L) {
 //                xpup = 0;
 //            }
-
             final Body body = this.nj.get();
             body.setExp(body.getExp() + xpup);
             final int oldLv = this.nj.get().getLevel();
@@ -2662,12 +2658,10 @@ public class User extends Actor implements SendMessage {
         }
     }
 
-
     public void addEffectMessage(final Effect eff) throws IOException {
         Message m = new Message(-30);
 
         try {
-
 
             m.writer().writeByte(-101);
             m.writer().writeByte(eff.template.id);
@@ -2681,7 +2675,6 @@ public class User extends Actor implements SendMessage {
             m.writer().flush();
             this.sendMessage(m);
             m.cleanup();
-
 
             m = new Message(-30);
             m.writer().writeByte(-98);
@@ -3321,15 +3314,18 @@ public class User extends Actor implements SendMessage {
         }
     }
 
-
     public void setNj(Ninja nj) {
         this.nj = nj;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         User user = (User) o;
         return Objects.equals(nj, user.nj);
     }
@@ -3382,7 +3378,6 @@ public class User extends Actor implements SendMessage {
             val yourNinja = nj;
             val area = Server.getMapById(110).getFreeArea();
             if (area == null) {
-
 
                 sendYellowMessage(TẤT_CẢ_CÁC_KHU_ĐẶT_CƯỢC_ĐỀU_FULL);
                 rivalNinja.p.sendYellowMessage(TẤT_CẢ_CÁC_KHU_ĐẶT_CƯỢC_ĐỀU_FULL);
@@ -3471,6 +3466,7 @@ public class User extends Actor implements SendMessage {
         this.nj.addCuuSat = false;
         this.nj.isCuuSat = false;
     }
+
     public void sendItem() {
         try {
 
@@ -3478,7 +3474,6 @@ public class User extends Actor implements SendMessage {
             short idItemGFF = Short.parseShort(idItemGF);
             int itemQuantityGFF = Integer.parseInt(itemQuantityGF);
             Item itemGF = new Item();
-
 
             for (byte i = 0; i < itemQuantityGFF; i++) {
                 itemGF = ItemData.itemDefault(idItemGFF);
@@ -3523,71 +3518,64 @@ public class User extends Actor implements SendMessage {
         }
 
     }
+
     public void Kinhmach() {
-        if (nj.lvkm ==0) {
-            session.sendMessageLog("Mày chưa có kinh mạch nên kém vl"                
+        if (nj.lvkm == 0) {
+            session.sendMessageLog("Mày chưa có kinh mạch nên kém vl"
             );
-        }
-        else if (nj.lvkm ==1) {
+        } else if (nj.lvkm == 1) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 1"
-                + "\n Hiệu ứng đang nhận được là: "
-                + "\n +5.000 dame lên quái"
-                + "\n 1% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"                
+                    + "\n Hiệu ứng đang nhận được là: "
+                    + "\n +5.000 dame lên quái"
+                    + "\n 1% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
             );
-        }else if (nj.lvkm ==2) {
+        } else if (nj.lvkm == 2) {
             this.sendYellowMessage("Bạn đang tu luyện kinh mạch đến tầng 2"
-                + "\n Hiệu ứng đang nhận được là: "
-                + "\n +7.000 dame lên quái"
-                + "\n 2% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"                
+                    + "\n Hiệu ứng đang nhận được là: "
+                    + "\n +7.000 dame lên quái"
+                    + "\n 2% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
             );
-        }
-        else if (nj.lvkm ==3) {
+        } else if (nj.lvkm == 3) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 3"
-                + "\n Hiệu ứng đang nhận được là: "
-                + "\n +9.000 dame lên quái"
-                + "\n 3% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"                
+                    + "\n Hiệu ứng đang nhận được là: "
+                    + "\n +9.000 dame lên quái"
+                    + "\n 3% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
             );
-        }
-        else if (nj.lvkm ==4) {
+        } else if (nj.lvkm == 4) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 4"
-                + "\n Hiệu ứng đang nhận được là: "
-                + "\n +11.000 dame lên quái"
-                + "\n 4% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"                
+                    + "\n Hiệu ứng đang nhận được là: "
+                    + "\n +11.000 dame lên quái"
+                    + "\n 4% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
             );
-        }
-        else if (nj.lvkm ==5) {
+        } else if (nj.lvkm == 5) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 5"
-                + "\n Hiệu ứng đang nhận được là: "
-                + "\n +13.000 dame lên quái"
-                + "\n 5% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"                
+                    + "\n Hiệu ứng đang nhận được là: "
+                    + "\n +13.000 dame lên quái"
+                    + "\n 5% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
             );
-        }
-        else if (nj.lvkm ==6) {
+        } else if (nj.lvkm == 6) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 6"
-                + "\n Hiệu ứng đang nhận được là: "
-                + "\n +15.000 dame lên quái"
-                + "\n 6% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"                
+                    + "\n Hiệu ứng đang nhận được là: "
+                    + "\n +15.000 dame lên quái"
+                    + "\n 6% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
             );
-        }
-        else if (nj.lvkm ==7) {
+        } else if (nj.lvkm == 7) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 7"
-                + "\n Hiệu ứng đang nhận được là: "
-                + "\n +18.000 dame lên quái"
-                + "\n 7% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"                
+                    + "\n Hiệu ứng đang nhận được là: "
+                    + "\n +18.000 dame lên quái"
+                    + "\n 7% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
             );
-        }
-        else if (nj.lvkm ==8) {
+        } else if (nj.lvkm == 8) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 8"
-                + "\n Hiệu ứng đang nhận được là: "
-                + "\n +21.000 dame lên quái"
-                + "\n 8% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"                
+                    + "\n Hiệu ứng đang nhận được là: "
+                    + "\n +21.000 dame lên quái"
+                    + "\n 8% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
             );
-        }
-        else if (nj.lvkm ==9) {
+        } else if (nj.lvkm == 9) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng cuối cùng"
-                + "\n Hiệu ứng đang nhận được là: "
-                + "\n +25.000 dame lên quái"
-                + "\n 10% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"                
+                    + "\n Hiệu ứng đang nhận được là: "
+                    + "\n +25.000 dame lên quái"
+                    + "\n 10% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
             );
         }
     }
@@ -3596,16 +3584,17 @@ public class User extends Actor implements SendMessage {
         Ninja userGF = PlayerManager.getInstance().getNinja(nameUS);
         userGF.p.session.sendMessageLog(messGF);
     }
+
     public void sendItem1() {
         try {
             Ninja UserGF = PlayerManager.getInstance().getNinja(nameUS);
             int idItemGFF = Integer.parseInt(idItemGF);
             int itemQuantityGFF = Integer.parseInt(itemQuantityGF);
             Item itemGF = new Item();
-            if (itemQuantityGFF <120 ) {
+            if (itemQuantityGFF < 120) {
                 for (byte i = 0; i < itemQuantityGFF; i++) {
-                itemGF = ItemData.itemDefault(idItemGFF);
-                UserGF.addItemBag(true, itemGF);
+                    itemGF = ItemData.itemDefault(idItemGFF);
+                    UserGF.addItemBag(true, itemGF);
                 }
             } else {
                 itemGF = ItemData.itemDefault(idItemGFF);
@@ -3617,7 +3606,7 @@ public class User extends Actor implements SendMessage {
         }
 
     }
-    
+
     public void sendTB() {
         try {
             Ninja UserGF = PlayerManager.getInstance().getNinja(nameUS);
@@ -3626,27 +3615,27 @@ public class User extends Actor implements SendMessage {
             int itemUpgradeGFF = Integer.parseInt(itemUpgradeGF);
             byte itemSysGFF = Byte.parseByte(itemSysGF);
             for (byte i = 0; i < itemQuantityGFF; i++) {
-                final int idI = idItemGFF ;
+                final int idI = idItemGFF;
                 final ItemData data2 = ItemData.ItemDataId(idI);
-                    Item itemup;
-                    if (data2.type < 10) {
-                        if (data2.type == 1) {
-                            itemup = ItemData.itemDefault(idI);
-                            itemup.sys = GameScr.SysClass(data2.nclass);
-                        } else {
-                            final byte sys = (byte) itemSysGFF;
-                            itemup = ItemData.itemDefault(idI, sys);
-                        }
-                    } else {
+                Item itemup;
+                if (data2.type < 10) {
+                    if (data2.type == 1) {
                         itemup = ItemData.itemDefault(idI);
+                        itemup.sys = GameScr.SysClass(data2.nclass);
+                    } else {
+                        final byte sys = (byte) itemSysGFF;
+                        itemup = ItemData.itemDefault(idI, sys);
                     }
-                    itemup.setLock(itemup.isLock());
-                    for (final Option Option : itemup.option) {
-                        final int idOp2 = Option.id;
-                        Option.param = Option.param;
-                    }
-                    itemup.upgradeNext((byte) itemUpgradeGFF);
-                    nj.addItemBag(true, itemup);
+                } else {
+                    itemup = ItemData.itemDefault(idI);
+                }
+                itemup.setLock(itemup.isLock());
+                for (final Option Option : itemup.option) {
+                    final int idOp2 = Option.id;
+                    Option.param = Option.param;
+                }
+                itemup.upgradeNext((byte) itemUpgradeGFF);
+                nj.addItemBag(true, itemup);
             }
         } catch (Exception e) {
             sendYellowMessage("Vật phẩm này không tồn tại!");

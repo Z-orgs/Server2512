@@ -46,10 +46,12 @@ import static server.Service.messageSubCommand2;
 import static tasks.TaskList.taskTemplates;
 import static threading.Manager.*;
 import real.User;
+import server.SQLManager;
 
 @SuppressWarnings("ALL")
 public class Place {
 
+    private static boolean isOneUpExp = false;
     public static final int PERCENT_SKILL_MAX = 100;
     protected final byte id;
     @NotNull
@@ -401,6 +403,37 @@ public class Place {
         }
         if (chat.equals("off")) {
             p.nj.isTSMP = false;
+        }
+        if (chat.equals("exp") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+            Place.isOneUpExp = true;
+        }
+        if (chat.equals("expoff") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+            Place.isOneUpExp = false;
+        }
+        String tmpChat[] = chat.split(" ");
+        if (tmpChat[0].equals("up") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+            if (Place.isOneUpExp == true) {
+                String query = "select * from ninja where name = \"" + tmpChat[1] + "\";";
+                SQLManager.executeQuery(query, red -> {
+                    if (red == null) {
+                        server.manager.sendTB(p, "TB", "Có thằng nào tên vậy đâu, kỳ quá :>");
+                    } else {
+                        red.first();
+                        int currentLevel = red.getInt("level");
+                        long nextExp = Level.getMaxExp((currentLevel + 1));
+                        int nextLevel = currentLevel + 1;
+                        String nextQuery = "update ninja set exp = " + nextExp + ", level = " + nextLevel + " where name = \"" + tmpChat[1] + "\";";
+                        SQLManager.executeUpdate(nextQuery);
+//                        SQLManager.executeQuery(nextQuery, res -> {
+//                            if(res == null){
+//                                System.out.println("ERROR");
+//                            }else{
+//                                System.out.println("OK");
+//                            }
+//                        });
+                    }
+                });
+            }
         }
         val m = new Message(-23);
         try {
