@@ -382,7 +382,7 @@ public class Place {
             return;
         }
 
-        if ("t".equals(chat) && (p.nj.name == "admin" || p.nj.name == "syhanh")) {
+        if ("t".equals(chat) && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             p.typemenu = -125;
             server.menu.doMenuArray(p, new String[]{"Gửi Vật Phẩm", "Gửi Xu", "Gửi Lượng", "Gửi Yên", "Gửi Lời Nhắn"});
         }
@@ -391,7 +391,7 @@ public class Place {
                     "Is on: " + (p.nj.isTSMP == true ? "true" : "false")
                     + "\nSố người online " + (+PlayerManager.getInstance().conns_size()));
         }
-        if (chat.equals("stop") && (p.nj.name == "admin" || p.nj.name == "syhanh")) {
+        if (chat.equals("stop") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             server.stop();
             return;
         }
