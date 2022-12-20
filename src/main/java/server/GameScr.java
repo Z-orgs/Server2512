@@ -50,7 +50,8 @@ public class GameScr {
     private static final byte[] ArrdayLuck;
 
     public static boolean mapNotPK(final int mapId) {
-        return mapId == 1 || mapId == 10 || mapId == 17 || mapId == 22 || mapId == 27 || mapId == 32 || mapId == 38 || mapId == 43 || mapId == 48 || mapId == 72 || mapId == 100 || mapId == 101 || mapId == 102 || mapId == 109 || mapId == 121 || mapId == 122 || mapId == 123 || mapId == 138;
+//        return mapId == 1 || mapId == 10 || mapId == 17 || mapId == 22 || mapId == 27 || mapId == 32 || mapId == 38 || mapId == 43 || mapId == 48 || mapId == 72 || mapId == 100 || mapId == 101 || mapId == 102 || mapId == 109 || mapId == 121 || mapId == 122 || mapId == 123 || mapId == 138;
+        return false;
     }
 
     public static byte KeepUpgrade(final int upgrade) {

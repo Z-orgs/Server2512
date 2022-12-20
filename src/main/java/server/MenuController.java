@@ -1860,7 +1860,7 @@ public class MenuController {
                 //cpanel
                 case -125:
                     if (menuId == 0) { //Item
-                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
                             p.nj.place.chatNPC(p, (short) npcId, "Bạn Không Có Quyền");
                             break;
                         } else {
@@ -1868,7 +1868,7 @@ public class MenuController {
                             break;
                         }
                     } else if (menuId == 1) { //Xu
-                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
                             p.nj.place.chatNPC(p, (short) npcId, "Bạn Không Có Quyền");
                             break;
                         } else {
@@ -1876,7 +1876,7 @@ public class MenuController {
                             break;
                         }
                     } else if (menuId == 2) { //Lượng
-                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
                             p.nj.place.chatNPC(p, (short) npcId, "Bạn Không Có Quyền");
                             break;
                         } else {
@@ -1884,7 +1884,7 @@ public class MenuController {
                             break;
                         }
                     } else if (menuId == 3) { //yên
-                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
                             p.nj.place.chatNPC(p, (short) npcId, "Bạn Không Có Quyền");
                             break;
                         } else {
@@ -1892,7 +1892,7 @@ public class MenuController {
                             break;
                         }
                     } else if (menuId == 4) { //Mess
-                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+                        if (!(p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
                             p.nj.place.chatNPC(p, (short) npcId, "Bạn Không Có Quyền");
                             break;
                         } else {
