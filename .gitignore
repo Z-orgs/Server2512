@@ -2,7 +2,6 @@
 *.rar
 *.zip
 out/
-target/
 *.log
 *.class
 
