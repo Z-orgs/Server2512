@@ -3,7 +3,7 @@
 *.zip
 out/
 target/
-
+*.log
 *.class
 
 codefix/node_modules/

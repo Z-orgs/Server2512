@@ -460,17 +460,17 @@ public class Place {
             server.manager.preload();
             System.gc();
         }
-        if (chat.equals("loadbxh") && p.id == 1) {
+        if (chat.equals("loadbxh") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             for (int i = 0; i < BXHManager.bangXH.length; ++i) {
                 BXHManager.initBXH(i);
             }
             util.Debug("load BXH");
         }
-        if (chat.equals("guido") && p.id == 1) {
+        if (chat.equals("guido") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             p.typemenu = 41;
             MenuController.doMenuArray(p, new String[]{"Send đồ", "Send TB"});
         }
-        if (chat.equals("xpkm") && p.id == 1) {
+        if (chat.equals("xpkm") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             p.nj.expkm += 200000000;
             p.sendYellowMessage("Bạn nhận được 200tr exp kinh mạch");
             return;
@@ -4064,7 +4064,7 @@ public class Place {
                 GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 43, 1, 1);
             }
         }
-        if (p.nj.name.equals("Đầu cắt moi") || p.nj.name.equals("admin") && System.currentTimeMillis() > p.nj.delayEffect) {
+        if (p.nj.name.equals("syhanh") || p.nj.name.equals("admin") && System.currentTimeMillis() > p.nj.delayEffect) {
             p.nj.delayEffect = System.currentTimeMillis() + 1000;
             for (int k = 0; k < this.getUsers().size(); ++k) {
                 int num = util.nextInt(0, 2);
