@@ -18,7 +18,6 @@ import static patch.interfaces.IBattle.*;
 
 public class Map extends Thread {
 
-
     public int id;
     public long timeMap;
     protected boolean runing;
@@ -62,14 +61,13 @@ public class Map extends Thread {
             } else {
                 this.area[i] = new Place(this, i);
             }
-            if (id == CAN_CU_DIA_BACH ||
-                    id == CAN_CU_DIA_HAC ||
-                    id == BACH_DAI_ID ||
-                    id == HAC_DAI_ID ||
-                    id == HANH_LANG_TREN ||
-                    id == HANH_LANG_DUOI ||
-                    id == HANH_LANG_GIUA
-            ) {
+            if (id == CAN_CU_DIA_BACH
+                    || id == CAN_CU_DIA_HAC
+                    || id == BACH_DAI_ID
+                    || id == HAC_DAI_ID
+                    || id == HANH_LANG_TREN
+                    || id == HANH_LANG_DUOI
+                    || id == HANH_LANG_GIUA) {
                 this.area[i].battle = Server.getInstance().globalBattle;
             }
         }
@@ -79,16 +77,15 @@ public class Map extends Thread {
         this.runing = true;
         lastTimeActive = System.currentTimeMillis();
 
-
         this.start();
     }
 
     public static boolean isCaveMap(int id) {
-        return (id >= 114 && id <= 116) ||
-                (id >= 91 && id <= 97) ||
-                (id >= 105 && id <= 109) ||
-                (id >= 125 && id <= 128) ||
-                (id >= 157 && id <= 159);
+        return (id >= 114 && id <= 116)
+                || (id >= 91 && id <= 97)
+                || (id >= 105 && id <= 109)
+                || (id >= 125 && id <= 128)
+                || (id >= 157 && id <= 159);
     }
 
     public static boolean isNPCNear(Ninja ninja, short npcTemplateId) {
@@ -108,7 +105,7 @@ public class Map extends Thread {
     }
 
     public boolean isChienTruongKeo() {
-        return id>=130 && id <= 133;
+        return id >= 130 && id <= 133;
     }
 
     public boolean isGtcMap() {
@@ -332,7 +329,7 @@ public class Map extends Thread {
                         return this.area[i];
                     }
                 }
-                if(this.area[i].getCandyBattle() == null){
+                if (this.area[i].getCandyBattle() == null) {
                     return this.area[i];
                 }
             }
@@ -341,13 +338,18 @@ public class Map extends Thread {
     }
 
     public static boolean notCombat(int mapId) {
-        return (mapId == 1 || mapId == 10 || mapId == 17 || mapId == 22 || mapId == 27 || mapId == 32 || mapId == 38 || mapId == 43 || mapId == 48 || mapId == 72);
+//        return (mapId == 1 || mapId == 10 || mapId == 17 || mapId == 22 || mapId == 27 || mapId == 32 || mapId == 38 || mapId == 43 || mapId == 48 || mapId == 72);
+        return false;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Map map = (Map) o;
         return id == map.id;
     }
@@ -371,7 +373,9 @@ public class Map extends Thread {
     }
 
     public int getMobLevel3(int level) {
-        if (taThu[0] == -1 || taThu[1] == -1) return -1;
+        if (taThu[0] == -1 || taThu[1] == -1) {
+            return -1;
+        }
         if (level > 100) {
             level = 100;
         }
