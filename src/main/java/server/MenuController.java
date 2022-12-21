@@ -665,9 +665,9 @@ public class MenuController {
                             break;
                         }
                         case 2: {
-                            if (optionId != 0) {
-                                break;
-                            }
+//                            if (optionId != 0) {
+//                                break;
+//                            }
                             // TODO Bo gioi up lv vdmq phan than
 //                            if (p.nj.isNhanban) {
 //                                p.conn.sendMessageLog("Chức năng này không dành cho phân thân");
