@@ -653,6 +653,7 @@ public class MenuController {
                     }
                     break;
                 }
+                case -1:
                 case 5: {
                     switch (menuId) {
                         case 0: {
@@ -2558,6 +2559,7 @@ public class MenuController {
                     }
                     break;
                 default: {
+                    System.out.println(p.nj.name + ": " + p.typemenu);
                     p.nj.getPlace().chatNPC(p, (short) npcId, "Chức năng này đang cập nhật nhé");
                     break;
                 }
