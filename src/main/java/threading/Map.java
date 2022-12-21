@@ -338,8 +338,7 @@ public class Map extends Thread {
     }
 
     public static boolean notCombat(int mapId) {
-//        return (mapId == 1 || mapId == 10 || mapId == 17 || mapId == 22 || mapId == 27 || mapId == 32 || mapId == 38 || mapId == 43 || mapId == 48 || mapId == 72);
-        return false;
+        return (mapId == 1 || mapId == 10 || mapId == 17 || mapId == 22 || mapId == 27 || mapId == 32 || mapId == 38 || mapId == 43 || mapId == 48 || mapId == 72);
     }
 
     @Override

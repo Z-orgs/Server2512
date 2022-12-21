@@ -249,7 +249,8 @@ public class Server {
 
 //            try {
 ////                if (!util.debug) {
-//                Naming.rebind("rmi://192.168.1.168:16666/tinhtoan", new RmiRemoteImpl());
+//                System.setProperty("java.rmi.server.hostname","192.168.1.16");
+//                Naming.rebind("rmi://192.168.1.16:3000/tinhtoan", new RmiRemoteImpl());
 ////                }
 //                System.out.println("Start rmi success");
 //            } catch (Exception e) {
