@@ -581,10 +581,10 @@ public class Place {
     }
 
     @SneakyThrows
-    public void EnterMap0(@Nullable final Ninja n) {
+    public boolean EnterMap0(@Nullable final Ninja n) {
 
         if (n == null) {
-            return;
+            return false;
         }
 
         final CloneChar clone = n.clone;
@@ -606,8 +606,10 @@ public class Place {
 
         try {
             this.Enter(n.p);
+            return true;
         } catch (IOException ex) {
             ex.printStackTrace();
+            return false;
         }
     }
 

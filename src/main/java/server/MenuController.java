@@ -684,10 +684,13 @@ public class MenuController {
 //                            }
                             final Manager manager = this.server.manager;
                             final Map ma = Manager.getMapid(139);
+                            boolean isEntered = false;
                             for (final Place area : ma.area) {
                                 if (area.getNumplayers() < ma.template.maxplayers) {
-                                    p.nj.getPlace().leave(p);
-                                    area.EnterMap0(p.nj);
+                                    while (!isEntered) {
+                                        p.nj.getPlace().leave(p);
+                                        isEntered = area.EnterMap0(p.nj);
+                                    }
                                     return;
                                 }
                             }
@@ -803,10 +806,13 @@ public class MenuController {
                     }
                     if (menuId > 0 && menuId <= Map.arrLang.length) {
                         final Map ma = Manager.getMapid(Map.arrLang[menuId - 1]);
+                        boolean isEntered = false;
                         for (final Place area : ma.area) {
                             if (area.getNumplayers() < ma.template.maxplayers) {
-                                p.nj.getPlace().leave(p);
-                                area.EnterMap0(p.nj);
+                                while (!isEntered) {
+                                    p.nj.getPlace().leave(p);
+                                    isEntered = area.EnterMap0(p.nj);
+                                }
                                 return;
                             }
                         }
@@ -833,10 +839,13 @@ public class MenuController {
                     }
                     if (menuId >= 0 && menuId < Map.arrTruong.length) {
                         final Map ma = Manager.getMapid(Map.arrTruong[menuId]);
+                        boolean isEntered = false;
                         for (final Place area : ma.area) {
                             if (area.getNumplayers() < ma.template.maxplayers) {
-                                p.nj.getPlace().leave(p);
-                                area.EnterMap0(p.nj);
+                                while (!isEntered) {
+                                    p.nj.getPlace().leave(p);
+                                    isEntered = area.EnterMap0(p.nj);
+                                }
                                 return;
                             }
                         }
