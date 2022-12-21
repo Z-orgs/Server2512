@@ -16,7 +16,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
 public class ItemShinwaManager {
 
     public static long _1DAY = 24 * 60 * 60 * 1000;
@@ -71,7 +70,6 @@ public class ItemShinwaManager {
         items.get(itemShinwa.sellUIIndex).remove(itemShinwa);
     }
 
-
     public static int getItemShopId(final @NotNull Item item) {
         if (ItemData.ItemDataId(item.id).type == 26) {
             return 0;
@@ -90,6 +88,7 @@ public class ItemShinwaManager {
             while (red.next()) {
                 val itemShinwa = Mapper.converter.readValue(red.getString("item"), ItemShinwa.class);
                 itemShinwa.setItemId(red.getInt("id"));
+                itemShinwa.status = 0;
                 if (itemShinwa.status == 0) {
                     addItemToList(itemShinwa, itemShinwa.sellUIIndex);
                 } else if (itemShinwa.status == 1) {
@@ -188,7 +187,7 @@ public class ItemShinwaManager {
         if (ninja != null) {
             val canReceiveXu = (ninja.xu + xu) <= 2_000_000_000;
             if (canReceiveXu) {
-                ninja.upxuMessage((long)xu);
+                ninja.upxuMessage((long) xu);
                 ninja.p.sendYellowMessage("Bạn nhận được " + itemShinwa.getPrice() + " xu từ chợ đen");
                 ItemShinwaManager.deleteItem(itemShinwa);
             } else {
@@ -200,12 +199,10 @@ public class ItemShinwaManager {
         }
     }
 
-
     @Getter
     @Setter
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ItemShinwa implements Serializable {
-
 
         private int itemId;
         public Item item;
@@ -215,11 +212,8 @@ public class ItemShinwaManager {
         private int quantity;
         private int sellUIIndex;
 
-
         /**
-         * 0 seling
-         * 1 sold
-         * 2 expired
+         * 0 seling 1 sold 2 expired
          */
         private byte status;
 
@@ -248,11 +242,14 @@ public class ItemShinwaManager {
             return System.currentTimeMillis() - timeStart >= _1DAY || getRemainTime() <= 0;
         }
 
-
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             ItemShinwa that = (ItemShinwa) o;
             return itemId == that.itemId;
         }
