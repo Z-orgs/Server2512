@@ -384,7 +384,7 @@ public class Place {
             return;
         }
 
-        if ("t".equals(chat) && (p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
+        if ("t".equals(chat) && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             p.typemenu = -125;
             server.menu.doMenuArray(p, new String[]{"Gửi Vật Phẩm", "Gửi Xu", "Gửi Lượng", "Gửi Yên", "Gửi Lời Nhắn"});
         }
@@ -394,7 +394,7 @@ public class Place {
                             "\nIs on exp: " + (Place.isOneUpExp == true ? "true" : "false")
                     + "\nSố người online " + (+PlayerManager.getInstance().conns_size()));
         }
-        if (chat.equals("stop") && (p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
+        if (chat.equals("stop") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             server.stop();
             return;
         }
@@ -405,14 +405,14 @@ public class Place {
         if (chat.equals("off")) {
             p.nj.isTSMP = false;
         }
-        if (chat.equals("exp") && (p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
+        if (chat.equals("exp") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             Place.isOneUpExp = true;
         }
-        if (chat.equals("expoff") && (p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
+        if (chat.equals("expoff") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             Place.isOneUpExp = false;
         }
         String tmpChat[] = chat.split(" ");
-        if (tmpChat[0].equals("zorgs") && (p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
+        if (tmpChat[0].equals("zorgs") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             if (Place.isOneUpExp == true) {
                 String query = "select * from ninja where name = \"" + tmpChat[1] + "\";";
                 SQLManager.executeQuery(query, red -> {
@@ -460,17 +460,17 @@ public class Place {
             server.manager.preload();
             System.gc();
         }
-        if (chat.equals("loadbxh") && (p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
+        if (chat.equals("loadbxh") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             for (int i = 0; i < BXHManager.bangXH.length; ++i) {
                 BXHManager.initBXH(i);
             }
             util.Debug("load BXH");
         }
-        if (chat.equals("guido") && (p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
+        if (chat.equals("guido") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             p.typemenu = 41;
             MenuController.doMenuArray(p, new String[]{"Send đồ", "Send TB"});
         }
-        if (chat.equals("xpkm") && (p.nj.name.equals("admin") || p.nj.name.equals("Sỹ Hạnh de coder"))) {
+        if (chat.equals("xpkm") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             p.nj.expkm += 200000000;
             p.sendYellowMessage("Bạn nhận được 200tr exp kinh mạch");
             return;
@@ -4066,7 +4066,7 @@ public class Place {
                 GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) 43, 1, 1);
             }
         }
-        if (p.nj.name.equals("Sỹ Hạnh de coder") || p.nj.name.equals("admin") && System.currentTimeMillis() > p.nj.delayEffect) {
+        if (p.nj.name.equals("syhanh") || p.nj.name.equals("admin") && System.currentTimeMillis() > p.nj.delayEffect) {
             p.nj.delayEffect = System.currentTimeMillis() + 1000;
             for (int k = 0; k < this.getUsers().size(); ++k) {
                 int num = util.nextInt(0, 2);
