@@ -3,13 +3,14 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 24, 2022 at 04:35 PM
+-- Generation Time: Dec 24, 2022 at 04:53 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -128,6 +129,14 @@ CREATE TABLE `clone_ninja` (
   `phongloi` smallint(6) DEFAULT 0,
   `banghoa` smallint(6) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `clone_ninja`
+--
+
+INSERT INTO `clone_ninja` (`id`, `name`, `speed`, `class`, `ppoint`, `potential0`, `potential1`, `potential2`, `potential3`, `spoint`, `skill`, `KSkill`, `OSkill`, `CSkill`, `level`, `exp`, `expdown`, `pk`, `xu`, `xuBox`, `yen`, `maxluggage`, `levelBag`, `ItemBag`, `ItemBox`, `ItemBody`, `ItemMounts`, `effect`, `tiemnangso`, `kynangso`, `phongloi`, `banghoa`) VALUES
+(-10000000, 'null', 4, 0, 0, 15, 5, 5, 5, 0, '[]', '[-1,-1,-1]', '[-1,-1,-1,-1,-1]', 0, 1, 0, 0, 0, 0, 0, 0, 30, 0, '[]', '[]', '[]', '[]', '[]', 0, 0, 0, 0),
+(-10002886, 'admin', 4, 0, 0, 15, 5, 5, 5, 0, '[{\"id\":0,\"point\":0}]', '[-1,-1,-1]', '[-1,-1,-1,-1,-1]', 0, 20, 2496942, 0, 0, 0, 0, 0, 30, 0, '[]', '[]', '[{\"expires\":-1,\"quantity\":1,\"upgrade\":0,\"buyCoin\":0,\"index\":1,\"sys\":0,\"isExpires\":false,\"isLock\":false,\"sale\":0,\"buyGold\":0,\"buyCoinLock\":0,\"timeBuy\":0,\"ngocs\":[],\"lock\":false,\"id\":194,\"option\":[]}]', '[]', '[]', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1622,7 +1631,7 @@ CREATE TABLE `mob` (
 --
 
 INSERT INTO `mob` (`id`, `type`, `name`, `hp`, `rangeMove`, `speed`, `typeFly`, `nImage`, `flag`, `frameBossMove`, `frameBossAttack`, `info`, `Img1`, `Img2`, `Img3`, `Img4`, `frameBoss`) VALUES
-(0, 0, 'Bù nhìn', 20000, 0, 1, 0, 3, 0, '[]', '[]', 0, '[]', '[]', '[]', '[]', '[]'),
+(0, 0, 'Bù nhìn', 10, 0, 1, 0, 3, 0, '[]', '[]', 0, '[]', '[]', '[]', '[]', '[]'),
 (1, 1, 'Ốc sên', 300, 33, 1, 0, 3, 0, '[]', '[]', 0, '[]', '[]', '[]', '[]', '[]'),
 (2, 2, 'Cóc xanh', 450, 33, 2, 0, 3, 0, '[]', '[]', 0, '[]', '[]', '[]', '[]', '[]'),
 (3, 1, 'Nhím đá', 650, 33, 1, 0, 4, 0, '[]', '[]', 0, '[]', '[]', '[]', '[]', '[]'),
@@ -1935,6 +1944,13 @@ CREATE TABLE `ninja` (
   `lvkm` int(11) NOT NULL DEFAULT 0,
   `expkm` bigint(225) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `ninja`
+--
+
+INSERT INTO `ninja` (`id`, `name`, `gender`, `taskId`, `head`, `speed`, `class`, `ppoint`, `potential0`, `potential1`, `potential2`, `potential3`, `spoint`, `skill`, `KSkill`, `OSkill`, `CSkill`, `level`, `exp`, `expdown`, `pk`, `xu`, `xuBox`, `yen`, `maxluggage`, `levelBag`, `ItemBag`, `ItemBox`, `ItemBody`, `ItemMounts`, `friend`, `site`, `effect`, `clan`, `denbu`, `newlogin`, `ddClan`, `caveID`, `nCave`, `pointCave`, `useCave`, `bagCaveMax`, `itemIDCaveMax`, `exptype`, `tasks`, `nvhncount`, `tathucount`, `tiemnangso`, `kynangso`, `phongloi`, `banghoa`, `chientruong`, `taskIndex`, `taskCount`, `quacap10`, `quacap20`, `quacap30`, `quacap40`, `quacap50`, `topSK`, `topSK1`, `vuixuan`, `lvkm`, `expkm`) VALUES
+(2886, 'admin', 1, 2, 25, 4, 0, 0, 15, 5, 5, 5, 0, '[{\"id\":0,\"point\":0}]', '[-1,-1,-1]', '[-1,-1,-1,-1,-1]', 0, 1, 2, 0, 0, 50000000, 0, 100000002, 30, 0, '[]', '[]', '[{\"expires\":-1,\"quantity\":1,\"upgrade\":0,\"buyCoin\":0,\"index\":1,\"sys\":0,\"isExpires\":false,\"isLock\":true,\"sale\":0,\"buyGold\":0,\"buyCoinLock\":0,\"timeBuy\":0,\"ngocs\":[],\"lock\":true,\"id\":194,\"option\":[{\"param\":15,\"id\":0},{\"param\":10,\"id\":8}]}]', '[]', '[]', '[22,1908,264,22,0]', '[]', '[\"\",0]', 0, '2022-12-24 22:51:31', 0, -1, 1, 0, 0, 0, 0, 1, '[null,null]', 0, 0, 0, 0, 0, 0, '{\"point\":0,\"phe\":0}', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -2288,8 +2304,16 @@ CREATE TABLE `player` (
   `lock` tinyint(4) NOT NULL,
   `kichhoat` int(11) NOT NULL DEFAULT 0,
   `nap` int(11) NOT NULL DEFAULT 0,
-  `clanTerritoryId` int(11) DEFAULT -1
+  `clanTerritoryId` int(11) DEFAULT -1,
+  `phone` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `player`
+--
+
+INSERT INTO `player` (`id`, `username`, `password`, `luong`, `ninja`, `topsk`, `lock`, `kichhoat`, `nap`, `clanTerritoryId`, `phone`) VALUES
+(3065, 'admin', 'admin', 20000, '[\"admin\"]', 0, 0, 0, 0, -1, NULL);
 
 -- --------------------------------------------------------
 
@@ -2814,13 +2838,13 @@ ALTER TABLE `itemshinwa`
 -- AUTO_INCREMENT for table `ninja`
 --
 ALTER TABLE `ninja`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2886;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2887;
 
 --
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3065;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3066;
 
 --
 -- AUTO_INCREMENT for table `shop`
