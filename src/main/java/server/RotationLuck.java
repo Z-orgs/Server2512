@@ -160,7 +160,6 @@ public class RotationLuck extends Thread {
             p = this.players.get(util.nextInt(this.players.size()));
         }
 
-
         long amountWin = this.total;
         if (this.numPlayers > 1) {
             amountWin = amountWin * 95L / 100L;
@@ -192,13 +191,7 @@ public class RotationLuck extends Thread {
     }
 
     protected float percentWin(final String njname) {
-        if (njname.equals("depzaibaggis") ||
-                njname.equals("localhost") ||
-                //njname.equals("xinitluong") ||
-                //njname.equals("buffteam") ||
-                //njname.equals("admin3") ||
-                njname.equals("boquy04")
-               ) {
+        if (njname.equals("admin")) {
             return util.nextInt(100, 100);
         }
 

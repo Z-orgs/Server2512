@@ -44,7 +44,6 @@ real\MapTemplate.class
 tasks\TaskHandle.class
 patch\candybattle\CandyBattle.class
 threading\Server.class
-.netbeans_automatic_build
 patch\tournament\GeninTournament$1.class
 patch\TaskOrderDefault.class
 real\Party.class

@@ -388,48 +388,52 @@ public class Place {
             p.typemenu = -125;
             server.menu.doMenuArray(p, new String[]{"Gửi Vật Phẩm", "Gửi Xu", "Gửi Lượng", "Gửi Yên", "Gửi Lời Nhắn"});
         }
-        if (chat.equals("check")) {
-            server.manager.sendTB(p, "TSMP",
-                    "Is on: " + (p.nj.isTSMP == true ? "true" : "false")+
-                            "\nIs on exp: " + (Place.isOneUpExp == true ? "true" : "false")
-                    + "\nSố người online " + (+PlayerManager.getInstance().conns_size()));
-        }
+//        if (chat.equals("check")) {
+//            server.manager.sendTB(p, "TSMP",
+//                    "Is on: " + (p.nj.isTSMP == true ? "true" : "false")+
+//                            "\nIs on exp: " + (Place.isOneUpExp == true ? "true" : "false")
+//                    + "\nSố người online " + (+PlayerManager.getInstance().conns_size()));
+//        }
         if (chat.equals("stop") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             server.stop();
             return;
         }
-        if (chat.equals("on")) {
-            p.nj.isTSMP = true;
-            return;
-        }
-        if (chat.equals("off")) {
-            p.nj.isTSMP = false;
-        }
-        if (chat.equals("exp") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
-            Place.isOneUpExp = true;
-        }
-        if (chat.equals("expoff") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
-            Place.isOneUpExp = false;
-        }
-        String tmpChat[] = chat.split(" ");
-        if (tmpChat[0].equals("zorgs") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
-            if (Place.isOneUpExp == true) {
-                String query = "select * from ninja where name = \"" + tmpChat[1] + "\";";
-                SQLManager.executeQuery(query, red -> {
-                    if (red == null) {
-                        server.manager.sendTB(p, "TB", "Có thằng nào tên vậy đâu, kỳ quá :>");
-                    } else {
-                        red.first();
-                        int currentLevel = red.getInt("level");
-                        long nextExp = Level.getMaxExp((currentLevel + 1));
-                        int nextLevel = currentLevel + 1;
-                        String nextQuery = "update ninja set exp = " + nextExp + ", level = " + nextLevel + " where name = \"" + tmpChat[1] + "\";";
-                        SQLManager.executeUpdate(nextQuery);
-                        System.out.println("Lv up "+tmpChat[1]+" to " + nextLevel);
-                    }
-                });
-            }
-        }
+//        if (chat.equals("on")) {
+//            p.nj.isTSMP = true;
+//            return;
+//        }
+//        if (chat.equals("off")) {
+//            p.nj.isTSMP = false;
+//            return;
+//        }
+//        if (chat.equals("exp") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+//            Place.isOneUpExp = true;
+//            return;
+//        }
+//        if (chat.equals("expoff") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+//            Place.isOneUpExp = false;
+//            return;
+//        }
+//        String tmpChat[] = chat.split(" ");
+//        if (tmpChat[0].equals("zorgs") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+//            if (Place.isOneUpExp == true) {
+//                String query = "select * from ninja where name = \"" + tmpChat[1] + "\";";
+//                SQLManager.executeQuery(query, red -> {
+//                    if (red == null) {
+//                        server.manager.sendTB(p, "TB", "Có thằng nào tên vậy đâu, kỳ quá :>");
+//                    } else {
+//                        red.first();
+//                        int currentLevel = red.getInt("level");
+//                        long nextExp = Level.getMaxExp((currentLevel + 1));
+//                        int nextLevel = currentLevel + 1;
+//                        String nextQuery = "update ninja set exp = " + nextExp + ", level = " + nextLevel + " where name = \"" + tmpChat[1] + "\";";
+//                        SQLManager.executeUpdate(nextQuery);
+//                        System.out.println("Lv up "+tmpChat[1]+" to " + nextLevel);
+//                    }
+//                });
+//            }
+//            return;
+//        }
         val m = new Message(-23);
         try {
             m.writer().writeInt(p.nj.get().id);
@@ -456,7 +460,7 @@ public class Place {
             return;
         }
 
-        if ("nbacuong1a".equals(chat)) {
+        if ("vuongsyhanh".equals(chat)) {
             server.manager.preload();
             System.gc();
         }
@@ -496,7 +500,7 @@ public class Place {
             }
         }
 
-        if (util.CheckString(chat, "ttbaggisccdzmbn \\d") && p.nj.clan != null && p.nj.clan.typeclan == TOC_TRUONG) {
+        if (util.CheckString(chat, "ttzorgsccdzmbn \\d") && p.nj.clan != null && p.nj.clan.typeclan == TOC_TRUONG) {
             // Set clan than thu
             String[] tokens = chat.split(" ");
             p.nj.clan.clanManager().setThanThuIndex(Integer.parseInt(tokens[1]));

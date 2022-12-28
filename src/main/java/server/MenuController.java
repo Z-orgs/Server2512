@@ -781,7 +781,7 @@ public class MenuController {
                                     p.nj.getPlace().chatNPC(p, (short) npcId, "Đảm bảo sau khi nâng cấp đồ của ngươi sẽ tốt hơn hẳn");
                                     break;
                                 case 3:
-                                    p.nj.getPlace().chatNPC(p, (short) npcId, "Baggis ta đập đồ không bịp như sever khác đâu");
+                                    p.nj.getPlace().chatNPC(p, (short) npcId, "Zorgs ta đập đồ không bịp như sever khác đâu");
                                     break;
                             }
                         }
@@ -2669,7 +2669,7 @@ public class MenuController {
             return;
         }
         if (idnpc == 35) {
-            doMenuArray(p, new String[]{"Bảng Tin Baggis", "Thu phục Pet Người Tuyết", "Thu phục Pet Trộm"});
+            doMenuArray(p, new String[]{"Bảng Tin Zorgs", "Thu phục Pet Người Tuyết", "Thu phục Pet Trộm"});
             return;
         }
         if (idnpc == 31) {

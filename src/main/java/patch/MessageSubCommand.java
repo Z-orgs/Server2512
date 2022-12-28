@@ -78,12 +78,12 @@ public class MessageSubCommand {
         m.writer().writeInt(ninja.mp);
         ninja.sendMessage(m);
         m.cleanup();
-        if (ninja.isTSMP == true) {
-            ninja.upDie();
-            ninja.p.sendYellowMessage("Gonna die");
-        } else {
+//        if (ninja.isTSMP == true) {
+//            ninja.upDie();
+//            ninja.p.sendYellowMessage("Gonna die");
+//        } else {
             ninja.p.sendYellowMessage("Không đủ MP để sử dụng");
-        }
+//        }
     }
 
     /**
