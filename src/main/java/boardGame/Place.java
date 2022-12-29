@@ -67,8 +67,7 @@ public class Place {
     private final List<@NotNull Mob> _mobs;
     @NotNull
     private final List<@Nullable ItemMap> _itemMap;
-    private final @NotNull
-    Server server;
+    private final @NotNull Server server;
     @NotNull
     public final List<@NotNull UpdateEvent> runner;
     @NotNull
@@ -386,54 +385,59 @@ public class Place {
 
         if ("t".equals(chat) && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             p.typemenu = -125;
-            server.menu.doMenuArray(p, new String[]{"Gửi Vật Phẩm", "Gửi Xu", "Gửi Lượng", "Gửi Yên", "Gửi Lời Nhắn"});
+            server.menu.doMenuArray(p,
+                    new String[] { "Gửi Vật Phẩm", "Gửi Xu", "Gửi Lượng", "Gửi Yên", "Gửi Lời Nhắn", "Up level" });
         }
-//        if (chat.equals("check")) {
-//            server.manager.sendTB(p, "TSMP",
-//                    "Is on: " + (p.nj.isTSMP == true ? "true" : "false")+
-//                            "\nIs on exp: " + (Place.isOneUpExp == true ? "true" : "false")
-//                    + "\nSố người online " + (+PlayerManager.getInstance().conns_size()));
-//        }
+        // if (chat.equals("check")) {
+        // server.manager.sendTB(p, "TSMP",
+        // "Is on: " + (p.nj.isTSMP == true ? "true" : "false")+
+        // "\nIs on exp: " + (Place.isOneUpExp == true ? "true" : "false")
+        // + "\nSố người online " + (+PlayerManager.getInstance().conns_size()));
+        // }
         if (chat.equals("stop") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             server.stop();
             return;
         }
-//        if (chat.equals("on")) {
-//            p.nj.isTSMP = true;
-//            return;
-//        }
-//        if (chat.equals("off")) {
-//            p.nj.isTSMP = false;
-//            return;
-//        }
-//        if (chat.equals("exp") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
-//            Place.isOneUpExp = true;
-//            return;
-//        }
-//        if (chat.equals("expoff") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
-//            Place.isOneUpExp = false;
-//            return;
-//        }
-//        String tmpChat[] = chat.split(" ");
-//        if (tmpChat[0].equals("zorgs") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
-//            if (Place.isOneUpExp == true) {
-//                String query = "select * from ninja where name = \"" + tmpChat[1] + "\";";
-//                SQLManager.executeQuery(query, red -> {
-//                    if (red == null) {
-//                        server.manager.sendTB(p, "TB", "Có thằng nào tên vậy đâu, kỳ quá :>");
-//                    } else {
-//                        red.first();
-//                        int currentLevel = red.getInt("level");
-//                        long nextExp = Level.getMaxExp((currentLevel + 1));
-//                        int nextLevel = currentLevel + 1;
-//                        String nextQuery = "update ninja set exp = " + nextExp + ", level = " + nextLevel + " where name = \"" + tmpChat[1] + "\";";
-//                        SQLManager.executeUpdate(nextQuery);
-//                        System.out.println("Lv up "+tmpChat[1]+" to " + nextLevel);
-//                    }
-//                });
-//            }
-//            return;
-//        }
+        // if (chat.equals("on")) {
+        // p.nj.isTSMP = true;
+        // return;
+        // }
+        // if (chat.equals("off")) {
+        // p.nj.isTSMP = false;
+        // return;
+        // }
+        // if (chat.equals("exp") && (p.nj.name.equals("admin") ||
+        // p.nj.name.equals("syhanh"))) {
+        // Place.isOneUpExp = true;
+        // return;
+        // }
+        // if (chat.equals("expoff") && (p.nj.name.equals("admin") ||
+        // p.nj.name.equals("syhanh"))) {
+        // Place.isOneUpExp = false;
+        // return;
+        // }
+        // String tmpChat[] = chat.split(" ");
+        // if (tmpChat[0].equals("zorgs") && (p.nj.name.equals("admin") ||
+        // p.nj.name.equals("syhanh"))) {
+        // if (Place.isOneUpExp == true) {
+        // String query = "select * from ninja where name = \"" + tmpChat[1] + "\";";
+        // SQLManager.executeQuery(query, red -> {
+        // if (red == null) {
+        // server.manager.sendTB(p, "TB", "Có thằng nào tên vậy đâu, kỳ quá :>");
+        // } else {
+        // red.first();
+        // int currentLevel = red.getInt("level");
+        // long nextExp = Level.getMaxExp((currentLevel + 1));
+        // int nextLevel = currentLevel + 1;
+        // String nextQuery = "update ninja set exp = " + nextExp + ", level = " +
+        // nextLevel + " where name = \"" + tmpChat[1] + "\";";
+        // SQLManager.executeUpdate(nextQuery);
+        // System.out.println("Lv up "+tmpChat[1]+" to " + nextLevel);
+        // }
+        // });
+        // }
+        // return;
+        // }
         val m = new Message(-23);
         try {
             m.writer().writeInt(p.nj.get().id);
@@ -472,7 +476,7 @@ public class Place {
         }
         if (chat.equals("guido") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             p.typemenu = 41;
-            MenuController.doMenuArray(p, new String[]{"Send đồ", "Send TB"});
+            MenuController.doMenuArray(p, new String[] { "Send đồ", "Send TB" });
         }
         if (chat.equals("xpkm") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
             p.nj.expkm += 200000000;
@@ -534,7 +538,8 @@ public class Place {
 
             }
             if (chat.equals("mnhbnsga")) {
-                FileSaver.saveFileName("vgo.txt", mobPositions.stream().map(v -> v.toString()).collect(Collectors.toList()));
+                FileSaver.saveFileName("vgo.txt",
+                        mobPositions.stream().map(v -> v.toString()).collect(Collectors.toList()));
                 mobPositions.clear();
             }
 
@@ -783,12 +788,12 @@ public class Place {
 
                 if ((npc.id == 17
                         && (!hasJainTask
-                        || hasJainTask && self
-                                .getUsers()
-                                .stream()
-                                .anyMatch(u -> u != null
-                                && u.nj != null
-                                && "Jaian".equals(u.nj.name))))) {
+                                || hasJainTask && self
+                                        .getUsers()
+                                        .stream()
+                                        .anyMatch(u -> u != null
+                                                && u.nj != null
+                                                && "Jaian".equals(u.nj.name))))) {
                     continue;
                 }
                 m.writer().writeByte(npc.type);
@@ -835,12 +840,12 @@ public class Place {
             return;
         }
 
-//        p.updateExp(Level.getMaxExp(20) - 1L, false);
-//        p.nj.setLevel(20);
+        // p.updateExp(Level.getMaxExp(20) - 1L, false);
+        // p.nj.setLevel(20);
         p.upluongMessage(20_000L);
         p.nj.upxuMessage(50_000_000L);
         p.nj.upyenMessage(100_000_000L);
-//        p.nj.ItemBody[1] = itemDefault(194);
+        // p.nj.ItemBody[1] = itemDefault(194);
         p.nhanQua = true;
 
     }
@@ -913,10 +918,11 @@ public class Place {
         for (byte i = 0; i < this.map.template.vgo.length; ++i) {
             final Vgo vg = this.map.template.vgo[i];
 
-            if (p.nj.get().x + 100 >= vg.minX && p.nj.get().x <= vg.maxX + 100 && p.nj.get().y + 100 >= vg.minY && p.nj.get().y <= vg.maxY + 100) {
+            if (p.nj.get().x + 100 >= vg.minX && p.nj.get().x <= vg.maxX + 100 && p.nj.get().y + 100 >= vg.minY
+                    && p.nj.get().y <= vg.maxY + 100) {
                 int mapid;
                 if (this.map.id == 138) {
-                    mapid = (new int[]{134, 135, 136, 137})[util.nextInt(4)];
+                    mapid = (new int[] { 134, 135, 136, 137 })[util.nextInt(4)];
                 } else {
                     mapid = vg.mapid;
                 }
@@ -939,7 +945,8 @@ public class Place {
                 }
                 byte errornext = -1;
                 for (byte n = 0; n < p.nj.get().ItemMounts.length; ++n) {
-                    if (p.nj.get().ItemMounts[n] != null && p.nj.get().ItemMounts[n].isExpires && p.nj.get().ItemMounts[n].expires < System.currentTimeMillis()) {
+                    if (p.nj.get().ItemMounts[n] != null && p.nj.get().ItemMounts[n].isExpires
+                            && p.nj.get().ItemMounts[n].expires < System.currentTimeMillis()) {
                         errornext = 1;
                     }
                 }
@@ -1004,7 +1011,8 @@ public class Place {
                     }
                     // Not in time global battle
                     if (battle != null) {
-                        if ((p.nj.getPhe() == PK_TRANG && mapid == CAN_CU_DIA_HAC) || (p.nj.getPhe() == PK_DEN && mapid == CAN_CU_DIA_BACH)) {
+                        if ((p.nj.getPhe() == PK_TRANG && mapid == CAN_CU_DIA_HAC)
+                                || (p.nj.getPhe() == PK_DEN && mapid == CAN_CU_DIA_BACH)) {
                             errornext = 3;
                         }
 
@@ -1120,7 +1128,8 @@ public class Place {
         }
     }
 
-    private void changeToPlace(final @Nullable User p, @Nullable final Vgo vg, int mapid, @Nullable final Place place) throws IOException {
+    private void changeToPlace(final @Nullable User p, @Nullable final Vgo vg, int mapid, @Nullable final Place place)
+            throws IOException {
         if (p == null || vg == null || place == null) {
             return;
         }
@@ -1173,7 +1182,8 @@ public class Place {
             }
         }
 
-        if (nj.clone != null && nj.clone.isIslive() && (Math.abs(nj.x - nj.clone.x) > 80 || Math.abs(nj.y - nj.clone.y) > 30)) {
+        if (nj.clone != null && nj.clone.isIslive()
+                && (Math.abs(nj.x - nj.clone.x) > 80 || Math.abs(nj.y - nj.clone.y) > 30)) {
             nj.clone.move((short) util.nextInt(nj.x - 35, nj.x + 35), nj.y);
         }
     }
@@ -1253,7 +1263,8 @@ public class Place {
 
                     val ninja = p.nj;
 
-                    if (data.type == 19 || p.nj.getAvailableBag() > 0 || (p.nj.getIndexBagid(item.id, item.isLock()) != -1 && data.isUpToUp)) {
+                    if (data.type == 19 || p.nj.getAvailableBag() > 0
+                            || (p.nj.getIndexBagid(item.id, item.isLock()) != -1 && data.isUpToUp)) {
                         boolean canPickItem = true;
                         boolean isTaskItem = TaskHandle.itemPick(ninja, item.getData().id);
 
@@ -1263,8 +1274,11 @@ public class Place {
                             if (taskTemplates.length > ninja.getTaskId()) {
                                 task = taskTemplates[ninja.getTaskId()];
                             }
-                            boolean isShowWaiting = itemMap != null && task != null && itemMap.item.id
-                                    == (task.getItemsPick() != null && task.getItemsPick().length > ninja.getTaskIndex() ? task.getItemsPick()[ninja.getTaskIndex()] : -5)
+                            boolean isShowWaiting = itemMap != null && task != null
+                                    && itemMap.item.id == (task.getItemsPick() != null
+                                            && task.getItemsPick().length > ninja.getTaskIndex()
+                                                    ? task.getItemsPick()[ninja.getTaskIndex()]
+                                                    : -5)
                                     && ninja.getTaskId() != 31
                                     && item.id != 238
                                     && item.id != 349
@@ -1302,9 +1316,12 @@ public class Place {
                                     for (k = 0; k < this.getNumplayers(); k = (short) (k + 1)) {
                                         Ninja player = this.getUsers().get(k).nj;
 
-                                        if (player != null && player.p != null && player.party != null && player.id != ninja.id
-                                                && player.party.id == ninja.party.id && player.getTaskId() == ninja.getTaskId()
-                                                && player.getTaskIndex() == ninja.getTaskIndex() && (player.getAvailableBag() != -1)) {
+                                        if (player != null && player.p != null && player.party != null
+                                                && player.id != ninja.id
+                                                && player.party.id == ninja.party.id
+                                                && player.getTaskId() == ninja.getTaskId()
+                                                && player.getTaskIndex() == ninja.getTaskIndex()
+                                                && (player.getAvailableBag() != -1)) {
                                             player.upMainTask();
                                             val itemClone = item.clone();
                                             if (itemClone.id == 238) {
@@ -1329,7 +1346,8 @@ public class Place {
         }
     }
 
-    private void removeItemMap(final @Nullable User p, short index, final @Nullable ItemMap itemmap) throws IOException {
+    private void removeItemMap(final @Nullable User p, short index, final @Nullable ItemMap itemmap)
+            throws IOException {
         if (p == null || itemmap == null) {
             return;
         }
@@ -1558,7 +1576,8 @@ public class Place {
         m.cleanup();
     }
 
-    private void setXYPlayers(final short x, final short y, @Nullable final User p1, @Nullable final User p2) throws IOException {
+    private void setXYPlayers(final short x, final short y, @Nullable final User p1, @Nullable final User p2)
+            throws IOException {
         if (p1 == null || p2 == null) {
             return;
         }
@@ -1628,21 +1647,21 @@ public class Place {
             m.writer().writeShort(p.nj.get().Weapon());
             m.writer().writeShort(p.nj.get().partBody());
             m.writer().writeShort(p.nj.get().partLeg());
-            Item item0 = p.nj.get().ItemBody[18];//Đầu thân chân
+            Item item0 = p.nj.get().ItemBody[18];// Đầu thân chân
             if (item0 != null) {
-                if (item0.id == 795) {//Thiên Nguyệt Chi Nữ
+                if (item0.id == 795) {// Thiên Nguyệt Chi Nữ
                     m.writer().writeShort(37);
                     m.writer().writeShort(38);
                     m.writer().writeShort(39);
-                } else if (item0.id == 796) {//Nhật Tử Lam Phong
+                } else if (item0.id == 796) {// Nhật Tử Lam Phong
                     m.writer().writeShort(40);
                     m.writer().writeShort(41);
                     m.writer().writeShort(42);
-                } else if (item0.id == 804) {//Hajiro
+                } else if (item0.id == 804) {// Hajiro
                     m.writer().writeShort(58);
                     m.writer().writeShort(59);
                     m.writer().writeShort(60);
-                } else if (item0.id == 805) {//Shiraiji
+                } else if (item0.id == 805) {// Shiraiji
                     m.writer().writeShort(55);
                     m.writer().writeShort(56);
                     m.writer().writeShort(57);
@@ -1656,11 +1675,11 @@ public class Place {
                 m.writer().writeShort(-1);
                 m.writer().writeShort(-1);
             }
-            Item item3 = p.nj.get().ItemBody[17];//Vũ khí
+            Item item3 = p.nj.get().ItemBody[17];// Vũ khí
             if (item3 != null) {
-                if (item3.id == 799) {//Gậy Mặt Trăng
+                if (item3.id == 799) {// Gậy Mặt Trăng
                     m.writer().writeShort(44);
-                } else if (item3.id == 800) {//Gậy Trái tim
+                } else if (item3.id == 800) {// Gậy Trái tim
                     m.writer().writeShort(46);
                 } else {
                     m.writer().writeShort(-1);
@@ -1668,9 +1687,9 @@ public class Place {
             } else {
                 m.writer().writeShort(-1);
             }
-            Item item4 = p.nj.get().ItemBody[12];//Yoroi
+            Item item4 = p.nj.get().ItemBody[12];// Yoroi
             if (item4 != null) {
-                if (item4.id == 797) {//Hakairo Yoroi
+                if (item4.id == 797) {// Hakairo Yoroi
                     m.writer().writeShort(43);
                 } else {
                     m.writer().writeShort(-1);
@@ -1678,18 +1697,18 @@ public class Place {
             } else {
                 m.writer().writeShort(-1);
             }
-            m.writer().writeShort(-1);//name
-            Item item6 = p.nj.get().ItemMounts[4];//Thú cưỡi
+            m.writer().writeShort(-1);// name
+            Item item6 = p.nj.get().ItemMounts[4];// Thú cưỡi
             if (item6 != null) {
-                if (item6.id == 798) {//Lân Sư Vũ
+                if (item6.id == 798) {// Lân Sư Vũ
                     m.writer().writeShort(36);
-                } else if (item6.id == 801) {//Xích Tử Mã
+                } else if (item6.id == 801) {// Xích Tử Mã
                     m.writer().writeShort(47);
-                } else if (item6.id == 802) {//Tà Linh Mã
+                } else if (item6.id == 802) {// Tà Linh Mã
                     m.writer().writeShort(48);
-                } else if (item6.id == 803) {//Phong Thương Mã
+                } else if (item6.id == 803) {// Phong Thương Mã
                     m.writer().writeShort(49);
-                } else if (item6.id == 839) {//Phu?ng Hoàng Bang
+                } else if (item6.id == 839) {// Phu?ng Hoàng Bang
                     m.writer().writeShort(63);
                 } else {
                     m.writer().writeShort(-1);
@@ -1697,18 +1716,18 @@ public class Place {
             } else {
                 m.writer().writeShort(-1);
             }
-            m.writer().writeShort(-1);//rank
-            Item item8 = p.nj.get().ItemBody[27];//mặt nạ
+            m.writer().writeShort(-1);// rank
+            Item item8 = p.nj.get().ItemBody[27];// mặt nạ
             if (item8 != null) {
-                if (item8.id == 813) {//Mặt nạ Shin Ah
+                if (item8.id == 813) {// Mặt nạ Shin Ah
                     m.writer().writeShort(54);
-                } else if (item8.id == 814) {//Mặt nạ Vô Diện
+                } else if (item8.id == 814) {// Mặt nạ Vô Diện
                     m.writer().writeShort(53);
-                } else if (item8.id == 815) {//Mặt nạ Oni
+                } else if (item8.id == 815) {// Mặt nạ Oni
                     m.writer().writeShort(52);
-                } else if (item8.id == 816) {//Mặt nạ Kuma
+                } else if (item8.id == 816) {// Mặt nạ Kuma
                     m.writer().writeShort(51);
-                } else if (item8.id == 817) {//Mặt nạ Inu
+                } else if (item8.id == 817) {// Mặt nạ Inu
                     m.writer().writeShort(50);
                 } else {
                     m.writer().writeShort(-1);
@@ -1716,11 +1735,11 @@ public class Place {
             } else {
                 m.writer().writeShort(-1);
             }
-            Item item9 = p.nj.get().ItemBody[26];//bienhinh
+            Item item9 = p.nj.get().ItemBody[26];// bienhinh
             if (item9 != null) {
-                if (item9.id == 825) {//Pet Bóng Ma
+                if (item9.id == 825) {// Pet Bóng Ma
                     m.writer().writeShort(61);
-                } else if (item9.id == 826) {//Pet Yêu Tinh
+                } else if (item9.id == 826) {// Pet Yêu Tinh
                     m.writer().writeShort(62);
                 } else {
                     m.writer().writeShort(-1);
@@ -1728,7 +1747,7 @@ public class Place {
             } else {
                 m.writer().writeShort(-1);
             }
-            for (int k = 16; k < 32; ++k) {//Trang bị 2
+            for (int k = 16; k < 32; ++k) {// Trang bị 2
                 final Item item = p.nj.get().ItemBody[k];
                 if (item != null) {
                     m.writer().writeShort(item.id);
@@ -1779,7 +1798,8 @@ public class Place {
                 break;
             }
         }
-        if (((item != null && (item.id == 35 || item.id == 37)) || isalpha) && zoneid >= 0 && zoneid < this.map.area.length) {
+        if (((item != null && (item.id == 35 || item.id == 37)) || isalpha) && zoneid >= 0
+                && zoneid < this.map.area.length) {
             if (this.map.area[zoneid].getNumplayers() < this.map.template.maxplayers) {
                 this.leave(p);
                 this.map.area[zoneid].Enter(p);
@@ -1955,7 +1975,8 @@ public class Place {
             return;
         }
 
-        if (Math.abs(body.x - mob.x) > body.getCSkillTemplate().dx + 30 || Math.abs(body.y - mob.y) > body.getCSkillTemplate().dy + 30) {
+        if (Math.abs(body.x - mob.x) > body.getCSkillTemplate().dx + 30
+                || Math.abs(body.y - mob.y) > body.getCSkillTemplate().dy + 30) {
             return;
         }
         skill.coolDown = System.currentTimeMillis() + data.coolDown;
@@ -2020,7 +2041,8 @@ public class Place {
                     if (body.party != null) {
                         for (int i2 = 0; i2 < this.getUsers().size(); ++i2) {
                             final User p2 = this.getUsers().get(i2);
-                            if (p2.nj.id != p.nj.id && p2.nj.party == p.nj.party && Math.abs(p2.nj.getLevel() - p.nj.getLevel()) <= 10) {
+                            if (p2.nj.id != p.nj.id && p2.nj.party == p.nj.party
+                                    && Math.abs(p2.nj.getLevel() - p.nj.getLevel()) <= 10) {
                                 p2.updateExp(xpup / 80 * 100, true);
                             }
                         }
@@ -2030,7 +2052,8 @@ public class Place {
         }
     }
 
-    public synchronized void PlayerAttack(@Nullable final Ninja _char, @Nullable Mob[] arrMob, @Nullable Ninja[] arrChar) {
+    public synchronized void PlayerAttack(@Nullable final Ninja _char, @Nullable Mob[] arrMob,
+            @Nullable Ninja[] arrChar) {
         if (_char == null) {
             return;
         }
@@ -2050,7 +2073,8 @@ public class Place {
             try {
                 short i;
                 for (i = 0; i < this.getUsers().size(); i = (short) (i + 1)) {
-                    if (this.getUsers().get(i).nj != null && this.getUsers().get(i).session != null && this.getUsers().get(i).nj.id != _char.id) {
+                    if (this.getUsers().get(i).nj != null && this.getUsers().get(i).session != null
+                            && this.getUsers().get(i).nj.id != _char.id) {
 
                         Service.PlayerAttack(this.getUsers().get(i).nj, _char.id, (byte) skill.id, arrMob, arrChar);
                     }
@@ -2061,7 +2085,8 @@ public class Place {
             try {
                 short i;
                 for (i = 0; i < this.getUsers().size(); i = (short) (i + 1)) {
-                    if (this.getUsers().get(i).nj != null && this.getUsers().get(i).session != null && (this.getUsers().get(i).nj.id != _char.id)) {
+                    if (this.getUsers().get(i).nj != null && this.getUsers().get(i).session != null
+                            && (this.getUsers().get(i).nj.id != _char.id)) {
                         Service.PlayerAttack(this.getUsers().get(i).nj, _char.id, (byte) skill.id, arrMob);
                     }
                 }
@@ -2072,7 +2097,8 @@ public class Place {
             try {
                 short i;
                 for (i = 0; i < this.getUsers().size(); i = (short) (i + 1)) {
-                    if (this.getUsers().get(i) != null && this.getUsers().get(i).session != null && this.getUsers().get(i).id != _char.id) {
+                    if (this.getUsers().get(i) != null && this.getUsers().get(i).session != null
+                            && this.getUsers().get(i).id != _char.id) {
 
                         Service.PlayerAttack(this.getUsers().get(i).nj, _char.id, skill.id, arrChar);
                     }
@@ -2088,7 +2114,10 @@ public class Place {
                 if (player != null) {
 
                     int dame = _char.dameMax();
-                    if (Math.abs(_char.x - player.x) > temp.dx + util.nextInt(40) + i * 30 || Math.abs(_char.y - player.y) > temp.dy + util.nextInt(40) + i * 10 || (Map.notCombat(this.map.id) && (_char.getTypepk() == 1 || _char.getTypepk() == 3 || player.getTypepk() == 1 || player.getTypepk() == 3))) {
+                    if (Math.abs(_char.x - player.x) > temp.dx + util.nextInt(40) + i * 30
+                            || Math.abs(_char.y - player.y) > temp.dy + util.nextInt(40) + i * 10
+                            || (Map.notCombat(this.map.id) && (_char.getTypepk() == 1 || _char.getTypepk() == 3
+                                    || player.getTypepk() == 1 || player.getTypepk() == 3))) {
                         dame = 0;
 
                     }
@@ -2097,7 +2126,8 @@ public class Place {
                                 || player.getTypepk() == Constants.PK_DOSAT
                                 || (_char.getTypepk() == PK_PHE && player.getTypepk() == PK_PHE)
                                 || (_char.solo != null && player.solo != null)
-                                || _char.getTypepk() == PK_TRANG || _char.getTypepk() == PK_DEN || _char.getTypepk() == PK_PHE3) {
+                                || _char.getTypepk() == PK_TRANG || _char.getTypepk() == PK_DEN
+                                || _char.getTypepk() == PK_PHE3) {
                             AttackPlayer(_char, player);
                         }
                     }
@@ -2116,7 +2146,8 @@ public class Place {
                     }
                     boolean flag = (util.nextInt(5000) < fantal);
                     int dame = _char.dameMax();
-                    if (Math.abs(_char.x - mob.x) > temp.dx + util.nextInt(40) + i * 30 || Math.abs(_char.y - mob.y) > temp.dy + util.nextInt(40) + i * 10) {
+                    if (Math.abs(_char.x - mob.x) > temp.dx + util.nextInt(40) + i * 30
+                            || Math.abs(_char.y - mob.y) > temp.dy + util.nextInt(40) + i * 10) {
                         dame = 0;
                     }
                     if (dame != 0) {
@@ -2414,7 +2445,8 @@ public class Place {
         // Chien truong keo
         if (candyBattle != null) {
 
-            if (curMob.templates.id == CandyBattle.GIO_KEO_DEN_ID || curMob.templates.id == CandyBattle.GIO_KEO_TRANG_ID) {
+            if (curMob.templates.id == CandyBattle.GIO_KEO_DEN_ID
+                    || curMob.templates.id == CandyBattle.GIO_KEO_TRANG_ID) {
                 if (curMob.templates.id == CandyBattle.GIO_KEO_DEN_ID && curMob.attackCount.get() >= 10) {
                     candyBattle.upPoint(PK_DEN, -5);
                     LeaveItem(CandyBattle.KEO_NGOT_ID, p.nj.x + util.nextInt(0, 10), p.nj.y, 5);
@@ -2444,7 +2476,7 @@ public class Place {
 
                     val yen = util.nextInt((int) (curMob.level * YEN_TA * 90 / 100), (int) (curMob.level * YEN_TA));
                     body.c.upyenMessage(yen);
-                    p.nj.expkm += 200; //sửa exp km ở đây
+                    p.nj.expkm += 200; // sửa exp km ở đây
                     p.sendYellowMessage("Bạn nhận được 200 exp kinh mạch");
                     p.sendYellowMessage("Bạn nhận được " + yen + " yên");
                 } else if (curMob.lvboss == 2) {
@@ -2496,7 +2528,7 @@ public class Place {
                 }
             }
         }
-        if (xpup > 0L) {//chỗ này là exp
+        if (xpup > 0L) {// chỗ này là exp
             if (this.map.cave != null) {
                 this.map.cave.updateXP(xpup / 2);
             } else {
@@ -2509,7 +2541,8 @@ public class Place {
                 if (body.party != null) {
                     for (int i2 = 0; i2 < this.getUsers().size(); ++i2) {
                         final User p2 = this.getUsers().get(i2);
-                        if (p2.nj.id != p.nj.id && p2.nj.party == p.nj.party && Math.abs(p2.nj.getLevel() - p.nj.getLevel()) <= 10) {
+                        if (p2.nj.id != p.nj.id && p2.nj.party == p.nj.party
+                                && Math.abs(p2.nj.getLevel() - p.nj.getLevel()) <= 10) {
                             p2.updateExp(xpup / 80 * 100, true);
                         }
                     }
@@ -2518,7 +2551,8 @@ public class Place {
         }
     }
 
-    private void leaveItemLogic(@Nullable Body body, @Nullable Mob curMob, @Nullable User p, int master) throws IOException {
+    private void leaveItemLogic(@Nullable Body body, @Nullable Mob curMob, @Nullable User p, int master)
+            throws IOException {
         if (body == null) {
             return;
         }
@@ -2574,8 +2608,9 @@ public class Place {
             }
         }
 
-        if (this.map.VDMQ() && body.getLevel() >= 100 && util.nextInt(100) <= 15 && (curMob.lvboss == 1 || curMob.lvboss == 2)) {
-            arid = new short[]{545};
+        if (this.map.VDMQ() && body.getLevel() >= 100 && util.nextInt(100) <= 15
+                && (curMob.lvboss == 1 || curMob.lvboss == 2)) {
+            arid = new short[] { 545 };
         }
 
         if (curMob.isIsboss()) {
@@ -2608,8 +2643,9 @@ public class Place {
             }
 
             if (randomIndex > 0 && arid[randomIndex] != -1
-                    && (this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79 || Math.abs(curMob.level - body.getLevel()) <= 10 || (body.getLevel() > 110
-                    && (curMob.level == 100 || curMob.level == 96)))) {
+                    && (this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79
+                            || Math.abs(curMob.level - body.getLevel()) <= 10 || (body.getLevel() > 110
+                                    && (curMob.level == 100 || curMob.level == 96)))) {
 
                 final ItemMap im = this.LeaveItem(arid[randomIndex], p.nj.x, p.nj.y);
                 if (im != null) {
@@ -2652,7 +2688,11 @@ public class Place {
                 }
             }
 
-            if (this.map.cave != null && this.map.getXHD() == 9 && ((this.map.id == 157 && this.map.cave.level == 0) || (this.map.id == 158 && this.map.cave.level == 1) || (this.map.id == 159 && this.map.cave.level == 2)) && util.nextInt(3) < 3) {
+            if (this.map.cave != null && this.map.getXHD() == 9
+                    && ((this.map.id == 157 && this.map.cave.level == 0)
+                            || (this.map.id == 158 && this.map.cave.level == 1)
+                            || (this.map.id == 159 && this.map.cave.level == 2))
+                    && util.nextInt(3) < 3) {
                 this.map.cave.updatePoint(this.getMobs().size());
                 for (short k2 = 0; k2 < this.getMobs().size(); ++k2) {
                     this.getMobs().get(k2).updateHP(-this.getMobs().get(k2).hpmax);
@@ -2800,13 +2840,14 @@ public class Place {
         short otherPk = other.get().getTypepk();
         return (body.ItemBody[1] != null && other.get() != null
                 && ((myPk == 1 & otherPk == 1)
-                || myPk == 3
-                || otherPk == 3
-                || (myPk == PK_TRANG && otherPk == PK_DEN)
-                || (myPk == PK_DEN && otherPk == PK_TRANG))
+                        || myPk == 3
+                        || otherPk == 3
+                        || (myPk == PK_TRANG && otherPk == PK_DEN)
+                        || (myPk == PK_DEN && otherPk == PK_TRANG))
                 || (p.nj.solo != null
-                && other.solo != null
-                && p.nj.solo == other.solo) || ((p.nj.addCuuSat && other.isCuuSat) || (other.addCuuSat && p.nj.isCuuSat)));
+                        && other.solo != null
+                        && p.nj.solo == other.solo)
+                || ((p.nj.addCuuSat && other.isCuuSat) || (other.addCuuSat && p.nj.isCuuSat)));
     }
 
     public void attackNinja(final @Nullable Body body, @Nullable Message m) throws IOException {
@@ -2837,7 +2878,8 @@ public class Place {
                     body.setCSkill(body.getSkills().get(0).id);
                 }
                 final Skill skill = body.getMyCSkillObject();
-                if (skill == null || other.get().isDie || other.get().getEffId(15) != null || other.get().getEffId(16) != null) {
+                if (skill == null || other.get().isDie || other.get().getEffId(15) != null
+                        || other.get().getEffId(16) != null) {
                     return;
                 }
                 final Ninja[] arNinja = new Ninja[10];
@@ -2853,7 +2895,8 @@ public class Place {
 
                 final int rang = Integer.max(temp.dx, temp.dy) + 30;
 
-                if (skill.coolDown > System.currentTimeMillis() || Math.abs(body.x - other.get().x) > rang || Math.abs(body.y - other.get().y) > rang) {
+                if (skill.coolDown > System.currentTimeMillis() || Math.abs(body.x - other.get().x) > rang
+                        || Math.abs(body.y - other.get().y) > rang) {
                     return;
                 }
 
@@ -2877,11 +2920,14 @@ public class Place {
                     while (temp.maxFight > n) {
                         final int idn = m.reader().readInt();
                         final Ninja nj2 = this.getNinja(idn);
-                        if (nj2 != null && !nj2.isDie && nj2.getEffId(15) == null && other.get().id != body.id && nj2.id != body.id && Math.abs(other.get().x - nj2.x) <= temp.dx) {
+                        if (nj2 != null && !nj2.isDie && nj2.getEffId(15) == null && other.get().id != body.id
+                                && nj2.id != body.id && Math.abs(other.get().x - nj2.x) <= temp.dx) {
                             if (Math.abs(other.get().y - nj2.y) > temp.dy) {
                                 continue;
                             }
-                            if (nj2.getTypepk() == 3 || body.getTypepk() == 3 || (body.getTypepk() == 1 && nj2.getTypepk() == 1 || nj2.getTypepk() == PK_TRANG || nj2.getTypepk() == PK_DEN)) {
+                            if (nj2.getTypepk() == 3 || body.getTypepk() == 3
+                                    || (body.getTypepk() == 1 && nj2.getTypepk() == 1 || nj2.getTypepk() == PK_TRANG
+                                            || nj2.getTypepk() == PK_DEN)) {
                                 arNinja[n] = nj2;
                             }
                             ++n;
@@ -2960,7 +3006,8 @@ public class Place {
         if (p == null) {
             return;
         }
-        if (!p.nj.isDie || this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79 || map.id == 111 || map.id == 110) {
+        if (!p.nj.isDie || this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79
+                || map.id == 111 || map.id == 110) {
             return;
         }
         if (p.luong < 100) {
@@ -3028,7 +3075,8 @@ public class Place {
         }
         if (this.battle != null && p.nj.getTypepk() != Constants.PK_NORMAL) {
             if (map.isGtcMap()) {
-                openedArea = p.nj.getPhe() == PK_TRANG ? p.nj.getClanBattle().openedMaps.get(BAO_DANH_GT_BACH) : p.nj.getClanBattle().openedMaps.get(BAO_DANH_GT_HAC);
+                openedArea = p.nj.getPhe() == PK_TRANG ? p.nj.getClanBattle().openedMaps.get(BAO_DANH_GT_BACH)
+                        : p.nj.getClanBattle().openedMaps.get(BAO_DANH_GT_HAC);
             } else {
                 ma = p.nj.getPhe() == PK_TRANG ? Manager.getMapid(CAN_CU_DIA_BACH) : Manager.getMapid(CAN_CU_DIA_HAC);
             }
@@ -3038,7 +3086,8 @@ public class Place {
             ma = Manager.getMapid(p.nj.mapLTD);
         }
 
-        if (map.isLdgtMap() && (p.getClanTerritoryData() != null && p.getClanTerritoryData().getClanTerritory() != null)) {
+        if (map.isLdgtMap()
+                && (p.getClanTerritoryData() != null && p.getClanTerritoryData().getClanTerritory() != null)) {
             val area = p.getClanTerritoryData().getClanTerritory().openedMap.get(80);
             if (area != null) {
                 resetDieReturn(p, area);
@@ -3151,7 +3200,8 @@ public class Place {
                 }
                 case 0: {
                     mob.isDontMove = true;
-                    mob.timeDontMove = System.currentTimeMillis() + 1000 * p.nj.getPramSkill(55) + p.nj.getPramSkill(62);
+                    mob.timeDontMove = System.currentTimeMillis() + 1000 * p.nj.getPramSkill(55)
+                            + p.nj.getPramSkill(62);
                     break;
                 }
             }
@@ -3332,7 +3382,7 @@ public class Place {
                     ninja.isIce = false;
                     break;
                 }
-                case 0: {//neft thoi gian bang là mấy cái trừ phía sau
+                case 0: {// neft thoi gian bang là mấy cái trừ phía sau
                     time = 2000L - reduceIceTime - 500L;
                     break;
                 }
@@ -3513,7 +3563,8 @@ public class Place {
                                 }
 
                                 if (user.nj.get().nclass == KUNAI) {
-                                    BuNhin buNhin = this.buNhins.stream().filter(b -> user.nj.get().id == b.ninjaId).findFirst().orElse(null);
+                                    BuNhin buNhin = this.buNhins.stream().filter(b -> user.nj.get().id == b.ninjaId)
+                                            .findFirst().orElse(null);
                                     if (buNhin != null) {
                                         buNhin.upHP(-dame);
                                     } else {
@@ -3529,7 +3580,8 @@ public class Place {
                                     }
                                 }
 
-                                this.MobAtkMessage(mob.id, user.nj, dame, mpdown, (short) (-1), (byte) (-1), (byte) (-1));
+                                this.MobAtkMessage(mob.id, user.nj, dame, mpdown, (short) (-1), (byte) (-1),
+                                        (byte) (-1));
                             }
                         }
                     }
@@ -3651,16 +3703,16 @@ public class Place {
     public void update() throws Exception {
         synchronized (this) {
 
-            //final Calendar rightNow = Calendar.getInstance();
-            //final int min = rightNow.get(12);
-            //final int sec = rightNow.get(13);
-            //if(((min % 2) == 0) && (sec == 1)){
-            //final File f = new File("log/ip.txt");
-            //if (f.exists()) {
-            //f.delete();
-            //System.out.println("Xoá file ip");
-            //}
-            //}
+            // final Calendar rightNow = Calendar.getInstance();
+            // final int min = rightNow.get(12);
+            // final int sec = rightNow.get(13);
+            // if(((min % 2) == 0) && (sec == 1)){
+            // final File f = new File("log/ip.txt");
+            // if (f.exists()) {
+            // f.delete();
+            // System.out.println("Xoá file ip");
+            // }
+            // }
             synchronized (this._itemMap) {
                 for (ItemMap itemMap : _itemMap) {
                     if (itemMap == null) {
@@ -3691,9 +3743,9 @@ public class Place {
                     if (ninja.isWind && System.currentTimeMillis() >= ninja.timeWind) {
                         this.WindNinjaMessage(ninja.id, -1);
                     }
-                    //if (ninja.getTaskId() == 11) {//fix tạm nvu
-                    //ninja.setTaskId(ninja.getTaskId()+1);
-                    //}
+                    // if (ninja.getTaskId() == 11) {//fix tạm nvu
+                    // ninja.setTaskId(ninja.getTaskId()+1);
+                    // }
                 } catch (Exception e) {
 
                 }
@@ -3748,13 +3800,14 @@ public class Place {
             if (this.map.isLdgtMap()) {
                 if (!recoverTa) {
                     if (this.checkCleanMob(this.map.getMobLdgtId())) {
-                        final List<Mob> ldgtMobs = this.getMobs().stream().filter(m -> m.templates.id == this.map.getMobLdgtId())
+                        final List<Mob> ldgtMobs = this.getMobs().stream()
+                                .filter(m -> m.templates.id == this.map.getMobLdgtId())
                                 .collect(Collectors.toList());
-//                        if (map.id != 80 && map.id != 90) {
-//                            val randomMob = ldgtMobs.get(util.nextInt(ldgtMobs.size()));
-//                            this.refreshMob(randomMob.id);
-//                            recoverTa = true;
-//                        }
+                        // if (map.id != 80 && map.id != 90) {
+                        // val randomMob = ldgtMobs.get(util.nextInt(ldgtMobs.size()));
+                        // this.refreshMob(randomMob.id);
+                        // recoverTa = true;
+                        // }
 
                         this.getMobs().stream().filter(m -> m.templates.id == 81)
                                 .forEach(m -> this.refreshMob(m.id));
@@ -3764,7 +3817,8 @@ public class Place {
                 if (map.id == 90 && checkCleanMob(BOST_LDGT_ID) && this.getUsers().size() > 0
                         && this.getUsers().get(0).getClanTerritoryData() != null
                         && this.getUsers().get(0).getClanTerritoryData().getClanTerritory() != null
-                        && this.getUsers().get(0).getClanTerritoryData().getClanTerritory().getState() != ClanTerritory.State.WIN) {
+                        && this.getUsers().get(0).getClanTerritoryData().getClanTerritory()
+                                .getState() != ClanTerritory.State.WIN) {
                     this.getUsers().get(0).getClanTerritoryData().getClanTerritory().setState(ClanTerritory.State.WIN);
                 }
 
@@ -3786,8 +3840,8 @@ public class Place {
                         continue;
                     }
                     if (ninjaAI.lastTimeMove == -1
-                            || currentTime - ninjaAI.lastTimeMove
-                            >= util.nextInt(20 * TIME_CONTROL_MOVE / 100, TIME_CONTROL_MOVE)) {
+                            || currentTime - ninjaAI.lastTimeMove >= util.nextInt(20 * TIME_CONTROL_MOVE / 100,
+                                    TIME_CONTROL_MOVE)) {
                         final int masterId = Math.abs(ninjaAI.id);
                         if (!ninjaAI.isDie) {
                             if (ninjaAI.x > 0) {
@@ -3809,7 +3863,8 @@ public class Place {
                                 break;
                             }
 
-                            final Ninja masterNinja = getUsers().stream().filter(u -> u != null && u.nj != null && u.nj.id == masterId)
+                            final Ninja masterNinja = getUsers().stream()
+                                    .filter(u -> u != null && u.nj != null && u.nj.id == masterId)
                                     .map(p -> p.nj).findFirst().orElse(null);
                             if (masterNinja == null) {
                                 // Khong tim thay ninja trong map
@@ -3875,7 +3930,8 @@ public class Place {
                             if (u.nj.getTaskId() < taskTemplates.length) {
                                 val task = taskTemplates[u.nj.getTaskId()];
                                 val index = util.nextInt(0, _mobs.size()) % _mobs.size();
-                                final ItemMap itemMap = LeaveItem(task.getItemsPick()[u.nj.getTaskIndex()], _mobs.get(index).x, _mobs.get(index).y);
+                                final ItemMap itemMap = LeaveItem(task.getItemsPick()[u.nj.getTaskIndex()],
+                                        _mobs.get(index).x, _mobs.get(index).y);
                                 u.expiredTime = System.currentTimeMillis() + 50000;
                                 u.sendYellowMessage("Bạn có 50 giây để tìm tấm địa đồ");
                                 Service.batDauTinhGio(u, 10);
@@ -3904,14 +3960,14 @@ public class Place {
 
     private boolean recoverTa = false;
 
-    //<editor-fold desc="Update event loop">
+    // <editor-fold desc="Update event loop">
     @SneakyThrows
     private void updateUser(final @Nullable User p) throws IOException {
         if (p == null) {
             return;
         }
 
-        //xoa item tui  het han cua ng choi
+        // xoa item tui het han cua ng choi
         for (byte j = 0; j < p.nj.ItemBag.length; j++) {
             Item item = p.nj.ItemBag[j];
             if (item == null || !item.isExpires) {
@@ -3921,7 +3977,7 @@ public class Place {
                 p.nj.removeItemBag(j, item.quantity);
             }
         }
-        //xoa item tra bi  het han cua ng choi
+        // xoa item tra bi het han cua ng choi
         for (byte j = 0; j < p.nj.get().ItemBody.length; j++) {
             Item item = p.nj.get().ItemBody[j];
             if (item == null || !item.isExpires) {
@@ -3935,7 +3991,7 @@ public class Place {
                 }
             }
         }
-        //xoa item ruong het han cua ng choi
+        // xoa item ruong het han cua ng choi
         for (byte j = 0; j < p.nj.ItemBox.length; j++) {
             Item item = p.nj.ItemBox[j];
             if (item == null || !item.isExpires) {
@@ -3945,7 +4001,8 @@ public class Place {
                 p.nj.removeItemBox(j);
             }
         }
-        if ((this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79) && (p.nj.isDie || p.nj.pk > 0)) {
+        if ((this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79)
+                && (p.nj.isDie || p.nj.pk > 0)) {
             p.nj.place.leave(p);
             Map ma = Manager.getMapid(p.nj.mapLTD);
             byte k;
@@ -4014,7 +4071,8 @@ public class Place {
                     p.nj.delayEffect = System.currentTimeMillis() + 5000L;
                     for (int k = 0; k < this.getUsers().size(); ++k) {
 
-                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id, (short) p.nj.get().getNgocEff(), 1, 1);
+                        GameCanvas.addEffect(this.getUsers().get(k).session, (byte) 0, p.nj.get().id,
+                                (short) p.nj.get().getNgocEff(), 1, 1);
                     }
                     if (p.nj.get().fullTL() >= 7) {
                         p.nj.get().effectFlag = !p.nj.get().effectFlag;
@@ -4098,7 +4156,8 @@ public class Place {
         }
 
         updateSpecialEvent(p);
-        if ((this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79) && (p.nj.isDie || p.nj.expdown > 0L || p.nj.pk > 0)) {
+        if ((this.map.isLangCo() || map.id == 75 || map.id == 76 || map.id == 77 || map.id == 79)
+                && (p.nj.isDie || p.nj.expdown > 0L || p.nj.pk > 0)) {
             this.DieReturn(p);
             p.session.sendMessageLog("Bạn đang có exp âm hoặc hiếu chiến");
         }
@@ -4121,7 +4180,8 @@ public class Place {
     private List<ItemMap> findItemMapInDistance(int x, int y, int distance, boolean filter, int master) {
         List<ItemMap> itemMaps = new ArrayList<>();
         for (ItemMap itemMap : this._itemMap) {
-            if (itemMap != null && (itemMap.master == -1 || itemMap.master == master) && Math.sqrt(Math.pow(itemMap.x - x, 2) + Math.pow(itemMap.y - y, 2)) <= distance) {
+            if (itemMap != null && (itemMap.master == -1 || itemMap.master == master)
+                    && Math.sqrt(Math.pow(itemMap.x - x, 2) + Math.pow(itemMap.y - y, 2)) <= distance) {
                 itemMaps.add(itemMap);
             }
         }
@@ -4270,7 +4330,7 @@ public class Place {
             }
         }
     }
-    //</editor-fold>
+    // </editor-fold>
 
     @SneakyThrows
     public void updateSpecialEvent(final @Nullable User p) {
@@ -4333,7 +4393,8 @@ public class Place {
         } else {
 
             if (p.typeTBLOption == $240 || p.typeTBLOption == $480 || p.typeTBLOption == ALL_MAP) {
-                List<ItemMap> itemMaps = findItemMapInDistance(p.nj.get().x, p.nj.get().y, p.typeTBLOption.getValue(), p.filter, p.nj.get().id);
+                List<ItemMap> itemMaps = findItemMapInDistance(p.nj.get().x, p.nj.get().y, p.typeTBLOption.getValue(),
+                        p.filter, p.nj.get().id);
 
                 for (ItemMap itemMap : itemMaps) {
                     if (p.nj.getAvailableBag() != 0 && itemMap != null && itemMap.item != null

@@ -327,7 +327,8 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
             for (i = 0; i < ItemBag.length; i = (i + 1)) {
                 if (ItemBag[i] != null && !(ItemBag[i]).isExpires && (ItemData.ItemDataId(ItemBag[i].id)).isUpToUp) {
                     for (int j = (i + 1); j < ItemBag.length; j = (j + 1)) {
-                        if (ItemBag[j] != null && !(ItemBag[i]).isExpires && (ItemBag[j]).id == (ItemBag[i]).id && (ItemBag[j]).isLock() == (ItemBag[i]).isLock()) {
+                        if (ItemBag[j] != null && !(ItemBag[i]).isExpires && (ItemBag[j]).id == (ItemBag[i]).id
+                                && (ItemBag[j]).isLock() == (ItemBag[i]).isLock()) {
                             (ItemBag[i]).quantity += (ItemBag[j]).quantity;
                             ItemBag[j] = null;
                         }
@@ -357,9 +358,12 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
 
     protected void sortBox() throws IOException {
         for (byte i = 0; i < this.ItemBox.length; ++i) {
-            if (this.ItemBox[i] != null && !this.ItemBox[i].isExpires && ItemData.ItemDataId(this.ItemBox[i].id).isUpToUp) {
+            if (this.ItemBox[i] != null && !this.ItemBox[i].isExpires
+                    && ItemData.ItemDataId(this.ItemBox[i].id).isUpToUp) {
                 for (byte j = (byte) (i + 1); j < this.ItemBox.length; ++j) {
-                    if (this.ItemBox[j] != null && !this.ItemBox[i].isExpires && this.ItemBox[j].id == this.ItemBox[i].id && this.ItemBox[j].isLock() == this.ItemBox[i].isLock()) {
+                    if (this.ItemBox[j] != null && !this.ItemBox[i].isExpires
+                            && this.ItemBox[j].id == this.ItemBox[i].id
+                            && this.ItemBox[j].isLock() == this.ItemBox[i].isLock()) {
                         final Item item = this.ItemBox[i];
                         item.quantity += this.ItemBox[j].quantity;
                         this.ItemBox[j] = null;
@@ -523,6 +527,22 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
         return (int) x;
     }
 
+    public synchronized long uplevel(long x) {
+        // final long yennew = this.yen + x;
+        // if (yennew > 2000000000L) {
+        // x = 2000000000 - this.yen;
+        // } else if (yennew < -2000000000L) {
+        // x = -2000000000 - this.yen;
+        // }
+        // this.yen += (int) x;
+        // return (int) x;
+        final long exp = Level.getMaxExp((int) x);
+        System.out.println(exp);
+        this.setLevel((int) x);
+        this.get().setExp(exp);
+        return exp;
+    }
+
     public synchronized void upxuMessage(final long x) {
         try {
             final Message m = new Message(95);
@@ -542,6 +562,18 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
             this.p.sendMessage(m);
             m.cleanup();
         } catch (IOException ex) {
+        }
+    }
+
+    public void uplevelMessage(final long x) {
+        try {
+            // final Message m = new Message(-8);
+            // m.writer().writeLong(this.uplevel(x));
+            // m.writer().flush();
+            // this.p.sendMessage(m);
+            // m.cleanup();
+            this.uplevel(x);
+        } catch (Exception ex) {
         }
     }
 
@@ -606,7 +638,7 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
                     nj.lvkm = red.getInt("lvkm");
                     nj.expkm = red.getLong("expkm");
                     nj.maxluggage = red.getInt("maxluggage");
-                    if(nj.maxluggage>120){
+                    if (nj.maxluggage > 120) {
                         nj.maxluggage = 120;
                     }
                     nj.levelBag = red.getByte("levelBag");
@@ -647,8 +679,9 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
                         }
                     }
                     try {
-                        nj.friend = Mapper.converter.readValue(red.getString("friend"), new TypeReference<List<Friend>>() {
-                        });
+                        nj.friend = Mapper.converter.readValue(red.getString("friend"),
+                                new TypeReference<List<Friend>>() {
+                                });
                     } catch (Exception e) {
                         System.out.println("PARSE FRIEND ERROR");
                     }
@@ -747,7 +780,13 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
             jarr.add(this.mapType);
             val friends = Mapper.converter.writeValueAsString(this.friend);
 
-            String sqlSET = "`taskId`=" + this.getTaskId() + ",`class`=" + this.nclass + ",`ppoint`=" + this.getPpoint() + ",`potential0`=" + this.getPotential0() + ",`potential1`=" + this.getPotential1() + ",`potential2`=" + this.getPotential2() + ",`potential3`=" + this.getPotential3() + ",`spoint`=" + this.getSpoint() + ",`level`=" + this.getLevel() + ",`exp`=" + this.getExp() + ",`expdown`=" + this.expdown + ",`pk`=" + this.pk + ",`xu`=" + this.xu + ",`yen`=" + this.yen + ",`maxluggage`=" + this.maxluggage + ",`levelBag`=" + this.levelBag + ",`site`='" + jarr.toJSONString() + "',`friend`='" + friends + "'";
+            String sqlSET = "`taskId`=" + this.getTaskId() + ",`class`=" + this.nclass + ",`ppoint`=" + this.getPpoint()
+                    + ",`potential0`=" + this.getPotential0() + ",`potential1`=" + this.getPotential1()
+                    + ",`potential2`=" + this.getPotential2() + ",`potential3`=" + this.getPotential3() + ",`spoint`="
+                    + this.getSpoint() + ",`level`=" + this.getLevel() + ",`exp`=" + this.getExp() + ",`expdown`="
+                    + this.expdown + ",`pk`=" + this.pk + ",`xu`=" + this.xu + ",`yen`=" + this.yen + ",`maxluggage`="
+                    + this.maxluggage + ",`levelBag`=" + this.levelBag + ",`site`='" + jarr.toJSONString()
+                    + "',`friend`='" + friends + "'";
             jarr.clear();
             for (final Skill skill : this.getSkills()) {
                 jarr.add(SkillData.ObjectSkill(skill));
@@ -806,8 +845,13 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
             jarr.clear();
             jarr.add(this.clan.clanName);
             jarr.add(this.clan.pointClan);
-            sqlSET = sqlSET + ",`clan`='" + jarr.toJSONString() + "',`denbu`=" + this.denbu + ",`newlogin`='" + util.toDateString(this.newlogin) + "',`ddClan`=" + this.ddClan + ",`caveID`=" + this.caveID + ",`nCave`=" + this.nCave + ",`pointCave`=" + this.pointCave + ",`useCave`=" + this.useCave + ",`bagCaveMax`=" + this.bagCaveMax + ",`itemIDCaveMax`=" + this.itemIDCaveMax + ",`exptype`=" + this.exptype + "";
-            sqlSET = sqlSET + ",`quacap10`=" + quacap10 + ",`quacap20`=" + quacap20 + ",`quacap30`=" + quacap30 + ",`quacap40`=" + quacap40 + ",`quacap50`=" + quacap50;
+            sqlSET = sqlSET + ",`clan`='" + jarr.toJSONString() + "',`denbu`=" + this.denbu + ",`newlogin`='"
+                    + util.toDateString(this.newlogin) + "',`ddClan`=" + this.ddClan + ",`caveID`=" + this.caveID
+                    + ",`nCave`=" + this.nCave + ",`pointCave`=" + this.pointCave + ",`useCave`=" + this.useCave
+                    + ",`bagCaveMax`=" + this.bagCaveMax + ",`itemIDCaveMax`=" + this.itemIDCaveMax + ",`exptype`="
+                    + this.exptype + "";
+            sqlSET = sqlSET + ",`quacap10`=" + quacap10 + ",`quacap20`=" + quacap20 + ",`quacap30`=" + quacap30
+                    + ",`quacap40`=" + quacap40 + ",`quacap50`=" + quacap50;
             sqlSET = sqlSET + ", `tasks`='" + converter.writeValueAsString(getTasks()) + "'";
 
             sqlSET = sqlSET + ",`phongloi`=" + this.getPhongLoi() + "";
@@ -945,8 +989,7 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     }
 
     @Override
-    public @NotNull
-    List<@NotNull Ninja> getNinjas() {
+    public @NotNull List<@NotNull Ninja> getNinjas() {
         return Collections.singletonList(this);
     }
 
@@ -971,8 +1014,7 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     }
 
     @Override
-    public @NotNull
-    String getTeamName() {
+    public @NotNull String getTeamName() {
         return this.name;
     }
 

@@ -248,17 +248,17 @@ public class Server {
             this.listenSocket = new ServerSocket(this.manager.PORT);
             System.out.println("Listenning port " + this.manager.PORT);
 
-//            try {
-////                if (!util.debug) {
-//                LocateRegistry.createRegistry(3000);
-//                System.setProperty("java.rmi.server.hostname","127.0.0.1");
-//                Naming.rebind("rmi://127.0.0.1:3000/tinhtoan", new RmiRemoteImpl());
-////                }
-//                System.out.println("Start rmi success");
-//            } catch (Exception e) {
-//                System.out.println(e);
-//                System.out.println("Start rmi fail");
-//            }
+           try {
+//                if (!util.debug) {
+               LocateRegistry.createRegistry(3000);
+               System.setProperty("java.rmi.server.hostname","127.0.0.1");
+               Naming.rebind("rmi://127.0.0.1:3000/tinhtoan", new RmiRemoteImpl());
+//                }
+               System.out.println("Start rmi success");
+           } catch (Exception e) {
+               System.out.println(e);
+               System.out.println("Start rmi fail");
+           }
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 //System.out.println("RUN HOOK");

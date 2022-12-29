@@ -8,10 +8,9 @@ import threading.Message;
 import real.User;
 import threading.Server;
 
-public class Draw
-{
+public class Draw {
     private static final Server server;
-    
+
     public static void Draw(final User p, final Message m) throws IOException {
         final short menuId = m.reader().readShort();
         final String str = m.reader().readUTF();
@@ -20,8 +19,8 @@ public class Draw
         byte b = -1;
         try {
             b = m.reader().readByte();
+        } catch (IOException ex) {
         }
-        catch (IOException ex) {}
         m.cleanup();
         switch (menuId) {
             case 1: {
@@ -40,63 +39,63 @@ public class Draw
                 break;
             }
             case 41_0:
-                        p.nameUS = str;
-                        Ninja n = PlayerManager.getInstance().getNinja(str);
-                        if (n != null) {
-                            server.menu.sendWrite(p, (short)41_0_0, "ID vật phẩm :");
-                        } else {
-                            p.sendYellowMessage("Người chơi không tồn tại hoặc không online");
-                        }
-                        break;
-                    case 41_0_0:
-                        p.idItemGF = str;
-                        if (p.idItemGF != null) {
-                            server.menu.sendWrite(p, (short)41_0_1, "Nhập số lượng :");
-                        } else {
-                            p.sendYellowMessage("Nhập sai");
-                        }
-                        break;
-                    case 41_0_1:
-                        p.itemQuantityGF = str;
-                        p.sendItem1();
-                        break;
-                    case 41_1:
-                        p.nameUS = str;
-                        Ninja u = PlayerManager.getInstance().getNinja(str);
-                        if (u != null) {
-                            server.menu.sendWrite(p, (short)41_1_0, "ID vật phẩm :");
-                        } else {
-                            p.sendYellowMessage("Người chơi không tồn tại hoặc không online");
-                        }
-                        break;
-                    case 41_1_0:
-                        p.idItemGF = str;
-                        if (p.idItemGF != null) {
-                            server.menu.sendWrite(p, (short)41_1_1, "Nhập số lượng :");
-                        } else {
-                            p.sendYellowMessage("Nhập sai");
-                        }
-                        break;
-                    case 41_1_1:
-                        p.itemQuantityGF = str;
-                        if (p.idItemGF != null) {
-                            server.menu.sendWrite(p, (short)41_1_2, "Nhập cấp độ cho trang bị :");
-                        } else {
-                            p.sendYellowMessage("Nhập sai");
-                        }
-                        break;
-                    case 41_1_2:
-                        p.itemUpgradeGF = str;
-                        if (p.idItemGF != null) {
-                            server.menu.sendWrite(p, (short)41_1_3, "Nhập hệ trang bị:");
-                        } else {
-                            p.sendYellowMessage("Nhập sai");
-                        }
-                        break;
-                    case 41_1_3:
-                        p.itemSysGF = str;
-                        p.sendTB();
-                        break;
+                p.nameUS = str;
+                Ninja n = PlayerManager.getInstance().getNinja(str);
+                if (n != null) {
+                    server.menu.sendWrite(p, (short) 41_0_0, "ID vật phẩm :");
+                } else {
+                    p.sendYellowMessage("Người chơi không tồn tại hoặc không online");
+                }
+                break;
+            case 41_0_0:
+                p.idItemGF = str;
+                if (p.idItemGF != null) {
+                    server.menu.sendWrite(p, (short) 41_0_1, "Nhập số lượng :");
+                } else {
+                    p.sendYellowMessage("Nhập sai");
+                }
+                break;
+            case 41_0_1:
+                p.itemQuantityGF = str;
+                p.sendItem1();
+                break;
+            case 41_1:
+                p.nameUS = str;
+                Ninja u = PlayerManager.getInstance().getNinja(str);
+                if (u != null) {
+                    server.menu.sendWrite(p, (short) 41_1_0, "ID vật phẩm :");
+                } else {
+                    p.sendYellowMessage("Người chơi không tồn tại hoặc không online");
+                }
+                break;
+            case 41_1_0:
+                p.idItemGF = str;
+                if (p.idItemGF != null) {
+                    server.menu.sendWrite(p, (short) 41_1_1, "Nhập số lượng :");
+                } else {
+                    p.sendYellowMessage("Nhập sai");
+                }
+                break;
+            case 41_1_1:
+                p.itemQuantityGF = str;
+                if (p.idItemGF != null) {
+                    server.menu.sendWrite(p, (short) 41_1_2, "Nhập cấp độ cho trang bị :");
+                } else {
+                    p.sendYellowMessage("Nhập sai");
+                }
+                break;
+            case 41_1_2:
+                p.itemUpgradeGF = str;
+                if (p.idItemGF != null) {
+                    server.menu.sendWrite(p, (short) 41_1_3, "Nhập hệ trang bị:");
+                } else {
+                    p.sendYellowMessage("Nhập sai");
+                }
+                break;
+            case 41_1_3:
+                p.itemSysGF = str;
+                p.sendTB();
+                break;
             case 49:
                 p.giftcode = str;
                 p.giftcode();
@@ -109,7 +108,7 @@ public class Draw
                 p.passnew = "";
                 p.passold = str;
                 p.changePassword();
-                Draw.server.menu.sendWrite(p, (short)52, "Nhập mật khẩu mới");
+                Draw.server.menu.sendWrite(p, (short) 52, "Nhập mật khẩu mới");
                 break;
             }
             case 52: {
@@ -186,13 +185,27 @@ public class Draw
                 p.messGF = str;
                 p.sendMess();
                 break;
+            case 66:
+                p.nameUS = str;
+                Ninja a5 = PlayerManager.getInstance().getNinja(str);
+                if (a5 != null) {
+                    server.menu.sendWrite(p, (short) 67, "Nhập level");
+                } else {
+                    p.sendYellowMessage("Nhân vật này không tồn tại hoặc không online.");
+                }
+                break;
+            case 67:
+                p.levelGF = str;
+                p.sendLevel();
+                break;
             case 100: {
                 if (b == 1) {
                     p.session.sendMessageLog("Chức năng tạm bảo trì");
                     return;
                 }
                 final String num = str.replaceAll(" ", "").trim();
-                if (num.length() > 10 || !util.checkNumInt(num) || b < 0 || b >= Draw.server.manager.rotationluck.length) {
+                if (num.length() > 10 || !util.checkNumInt(num) || b < 0
+                        || b >= Draw.server.manager.rotationluck.length) {
                     return;
                 }
                 final int xujoin = Integer.parseInt(num);
@@ -213,7 +226,7 @@ public class Draw
             }
         }
     }
-    
+
     static {
         server = Server.getInstance();
     }

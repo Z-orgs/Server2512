@@ -60,6 +60,7 @@ public class User extends Actor implements SendMessage {
     public String yenGF;
     public String messGF;
     public String messTB;
+    public String levelGF;
     public long expiredTime;
 
     private ClanTerritoryData clanTerritoryData;
@@ -77,6 +78,7 @@ public class User extends Actor implements SendMessage {
         ALL_MAP(888888),
         USEFUL(2),
         PICK_ALL(3);
+
         private int value;
 
         TypeTBLOption(int i) {
@@ -114,123 +116,126 @@ public class User extends Actor implements SendMessage {
     }
 
     public void giftcode() {
-        SQLManager.executeQuery("SELECT `*` FROM `giftcode` WHERE (`giftcode` LIKE'" + giftcode + "');", (checkGift) -> {
+        SQLManager.executeQuery("SELECT `*` FROM `giftcode` WHERE (`giftcode` LIKE'" + giftcode + "');",
+                (checkGift) -> {
 
-            if (checkGift == null || !checkGift.first()) {
-                session.sendMessageLog("Mã quà tặng không hợp lệ");
-                return;
-            } else {
-                String userEntered = "";
-                String messTB = "";
-                int xu = 0;
-                int yen = 0;
-                int luong = 0;
-                short itemId = 0;
-                short itemId1 = 0;
-                short itemId2 = 0;
-                short itemId3 = 0;
-                short itemId4 = 0;
-                short itemId5 = 0;
-                int itemQuantity = 0;
-                int itemQuantity1 = 0;
-                int itemQuantity2 = 0;
-                int itemQuantity3 = 0;
-                int itemQuantity4 = 0;
-                int itemQuantity5 = 0;
-                int luotnhap = 0;
-                int gioihan = 0;
-                int idgift = 0;
-                idgift = checkGift.getInt("idgift");
-                userEntered = checkGift.getString("username");
-                luotnhap = checkGift.getInt("luotnhap");
-                gioihan = checkGift.getInt("gioihan");
-                xu = checkGift.getInt("xu");
-                yen = checkGift.getInt("yen");
-                luong = checkGift.getInt("luong");
-                messTB = checkGift.getString("messTB");
-                itemId = checkGift.getShort("itemId");
-                itemQuantity = checkGift.getInt("itemQuantity");
-                itemId1 = checkGift.getShort("itemId1");
-                itemQuantity1 = checkGift.getInt("itemQuantity1");
-                itemId2 = checkGift.getShort("itemId2");
-                itemQuantity2 = checkGift.getInt("itemQuantity2");
-                itemId3 = checkGift.getShort("itemId3");
-                itemQuantity3 = checkGift.getInt("itemQuantity3");
-                itemId4 = checkGift.getShort("itemId4");
-                itemQuantity4 = checkGift.getInt("itemQuantity4");
-                itemId5 = checkGift.getShort("itemId5");
-                itemQuantity5 = checkGift.getInt("itemQuantity5");
+                    if (checkGift == null || !checkGift.first()) {
+                        session.sendMessageLog("Mã quà tặng không hợp lệ");
+                        return;
+                    } else {
+                        String userEntered = "";
+                        String messTB = "";
+                        int xu = 0;
+                        int yen = 0;
+                        int luong = 0;
+                        short itemId = 0;
+                        short itemId1 = 0;
+                        short itemId2 = 0;
+                        short itemId3 = 0;
+                        short itemId4 = 0;
+                        short itemId5 = 0;
+                        int itemQuantity = 0;
+                        int itemQuantity1 = 0;
+                        int itemQuantity2 = 0;
+                        int itemQuantity3 = 0;
+                        int itemQuantity4 = 0;
+                        int itemQuantity5 = 0;
+                        int luotnhap = 0;
+                        int gioihan = 0;
+                        int idgift = 0;
+                        idgift = checkGift.getInt("idgift");
+                        userEntered = checkGift.getString("username");
+                        luotnhap = checkGift.getInt("luotnhap");
+                        gioihan = checkGift.getInt("gioihan");
+                        xu = checkGift.getInt("xu");
+                        yen = checkGift.getInt("yen");
+                        luong = checkGift.getInt("luong");
+                        messTB = checkGift.getString("messTB");
+                        itemId = checkGift.getShort("itemId");
+                        itemQuantity = checkGift.getInt("itemQuantity");
+                        itemId1 = checkGift.getShort("itemId1");
+                        itemQuantity1 = checkGift.getInt("itemQuantity1");
+                        itemId2 = checkGift.getShort("itemId2");
+                        itemQuantity2 = checkGift.getInt("itemQuantity2");
+                        itemId3 = checkGift.getShort("itemId3");
+                        itemQuantity3 = checkGift.getInt("itemQuantity3");
+                        itemId4 = checkGift.getShort("itemId4");
+                        itemQuantity4 = checkGift.getInt("itemQuantity4");
+                        itemId5 = checkGift.getShort("itemId5");
+                        itemQuantity5 = checkGift.getInt("itemQuantity5");
 
-                if (userEntered.contains(username)) {
-                    session.sendMessageLog("Mỗi tài khoản chỉ được nhập mã quà tặng này 1 lần");
-                    return;
-                }
+                        if (userEntered.contains(username)) {
+                            session.sendMessageLog("Mỗi tài khoản chỉ được nhập mã quà tặng này 1 lần");
+                            return;
+                        }
 
-                if (luotnhap >= gioihan) {
-                    session.sendMessageLog("Mã quà tặng đã đạt giới hạn lượt nhập");
-                    return;
-                }
-                luotnhap += 1;
-                userEntered += username + ", ";
+                        if (luotnhap >= gioihan) {
+                            session.sendMessageLog("Mã quà tặng đã đạt giới hạn lượt nhập");
+                            return;
+                        }
+                        luotnhap += 1;
+                        userEntered += username + ", ";
 
-                if (xu != 0) {
-                    nj.upxuMessage(xu);
-                }
-                if (yen != 0) {
-                    nj.upyenMessage(yen);
-                }
-                if (luong != 0) {
-                    upluongMessage(luong);
-                }
-                if (itemId != 0) {
-                    Item it = new Item();
-                    for (byte i = 0; i < itemQuantity; i++) {
-                        it = ItemData.itemDefault(itemId);
-                        nj.addItemBag(true, it);
+                        if (xu != 0) {
+                            nj.upxuMessage(xu);
+                        }
+                        if (yen != 0) {
+                            nj.upyenMessage(yen);
+                        }
+                        if (luong != 0) {
+                            upluongMessage(luong);
+                        }
+                        if (itemId != 0) {
+                            Item it = new Item();
+                            for (byte i = 0; i < itemQuantity; i++) {
+                                it = ItemData.itemDefault(itemId);
+                                nj.addItemBag(true, it);
+                            }
+                        }
+                        if (itemId1 != 0) {
+                            Item it1 = new Item();
+                            for (byte i = 0; i < itemQuantity1; i++) {
+                                it1 = ItemData.itemDefault(itemId1);
+                                nj.addItemBag(true, it1);
+                            }
+                        }
+                        if (itemId2 != 0) {
+                            Item it2 = new Item();
+                            for (byte i = 0; i < itemQuantity2; i++) {
+                                it2 = ItemData.itemDefault(itemId2);
+                                nj.addItemBag(true, it2);
+                            }
+                        }
+                        if (itemId3 != 0) {
+                            Item it3 = new Item();
+                            for (byte i = 0; i < itemQuantity3; i++) {
+                                it3 = ItemData.itemDefault(itemId3);
+                                nj.addItemBag(true, it3);
+                            }
+                        }
+                        if (itemId4 != 0) {
+                            Item it4 = new Item();
+                            for (byte i = 0; i < itemQuantity4; i++) {
+                                it4 = ItemData.itemDefault(itemId4);
+                                nj.addItemBag(true, it4);
+                            }
+                        }
+                        if (itemId5 != 0) {
+                            Item it5 = new Item();
+                            for (byte i = 0; i < itemQuantity5; i++) {
+                                it5 = ItemData.itemDefault(itemId5);
+                                nj.addItemBag(true, it5);
+                            }
+                        }
+                        if (messTB.length() > 0) {
+                            this.sendYellowMessage(messTB);
+                        }
+                        SQLManager.executeUpdate("UPDATE `giftcode` SET `luotnhap`='" + luotnhap + "' WHERE `idgift`="
+                                + idgift + " LIMIT 1;");
+                        SQLManager.executeUpdate("UPDATE `giftcode` SET `username`='" + userEntered
+                                + "' WHERE `idgift`=" + idgift + " LIMIT 1;");
                     }
-                }
-                if (itemId1 != 0) {
-                    Item it1 = new Item();
-                    for (byte i = 0; i < itemQuantity1; i++) {
-                        it1 = ItemData.itemDefault(itemId1);
-                        nj.addItemBag(true, it1);
-                    }
-                }
-                if (itemId2 != 0) {
-                    Item it2 = new Item();
-                    for (byte i = 0; i < itemQuantity2; i++) {
-                        it2 = ItemData.itemDefault(itemId2);
-                        nj.addItemBag(true, it2);
-                    }
-                }
-                if (itemId3 != 0) {
-                    Item it3 = new Item();
-                    for (byte i = 0; i < itemQuantity3; i++) {
-                        it3 = ItemData.itemDefault(itemId3);
-                        nj.addItemBag(true, it3);
-                    }
-                }
-                if (itemId4 != 0) {
-                    Item it4 = new Item();
-                    for (byte i = 0; i < itemQuantity4; i++) {
-                        it4 = ItemData.itemDefault(itemId4);
-                        nj.addItemBag(true, it4);
-                    }
-                }
-                if (itemId5 != 0) {
-                    Item it5 = new Item();
-                    for (byte i = 0; i < itemQuantity5; i++) {
-                        it5 = ItemData.itemDefault(itemId5);
-                        nj.addItemBag(true, it5);
-                    }
-                }
-                if (messTB.length() > 0) {
-                    this.sendYellowMessage(messTB);
-                }
-                SQLManager.executeUpdate("UPDATE `giftcode` SET `luotnhap`='" + luotnhap + "' WHERE `idgift`=" + idgift + " LIMIT 1;");
-                SQLManager.executeUpdate("UPDATE `giftcode` SET `username`='" + userEntered + "' WHERE `idgift`=" + idgift + " LIMIT 1;");
-            }
-        });
+                });
 
     }
 
@@ -252,7 +257,7 @@ public class User extends Actor implements SendMessage {
 
     public static User login(final Session conn, final String user, final String pass) {
 
-        final User[] u = new User[]{null};
+        final User[] u = new User[] { null };
         val query = "SELECT * FROM `player` WHERE (`username`LIKE'" + user + "' AND `password`LIKE'" + pass + "');";
         SQLManager.executeQuery(query, (red) -> {
             if (red != null && red.first()) {
@@ -261,7 +266,8 @@ public class User extends Actor implements SendMessage {
                 final int luong = red.getInt("luong");
                 final byte lock = red.getByte("lock");
                 if (lock == 1) {
-                    conn.sendMessageLog("Tài khoản của bạn đã bị khóa hoặc chưa kích hoạt (Phí kích hoạt 10k). Để biết thêm thông tin hãy liên hệ ADMIN");
+                    conn.sendMessageLog(
+                            "Tài khoản của bạn đã bị khóa hoặc chưa kích hoạt (Phí kích hoạt 10k). Để biết thêm thông tin hãy liên hệ ADMIN");
                     u[0] = null;
                     return;
                 }
@@ -464,7 +470,8 @@ public class User extends Actor implements SendMessage {
             if (item != null) {
                 m.writer().writeShort(item.id);
                 m.writer().writeBoolean(item.isLock());
-                if (ItemData.isTypeBody(item.id) || ItemData.isTypeMounts(item.id) || ItemData.isTypeNgocKham(item.id)) {
+                if (ItemData.isTypeBody(item.id) || ItemData.isTypeMounts(item.id)
+                        || ItemData.isTypeNgocKham(item.id)) {
                     m.writer().writeByte(item.getUpgrade());
                 }
                 m.writer().writeBoolean(item.isExpires);
@@ -508,7 +515,8 @@ public class User extends Actor implements SendMessage {
                     + clone.getPotential2()
                     + clone.getPotential3()
                     + clone.getPpoint();
-            if (totalClone > Level.totalpPoint(clone.getLevel()) + clone.getTiemNangSo() * 10 + clone.getBanghoa() * 10 + 25) {
+            if (totalClone > Level.totalpPoint(clone.getLevel()) + clone.getTiemNangSo() * 10 + clone.getBanghoa() * 10
+                    + 25) {
                 this.restPpoint(clone);
             }
         }
@@ -560,9 +568,11 @@ public class User extends Actor implements SendMessage {
     @SneakyThrows
     void restPoint() {
 
-        int totalPoint = this.nj.getPotential0() + this.nj.getPotential1() + this.nj.getPotential2() + this.nj.getPotential3() + this.nj.getPpoint();
+        int totalPoint = this.nj.getPotential0() + this.nj.getPotential1() + this.nj.getPotential2()
+                + this.nj.getPotential3() + this.nj.getPpoint();
 
-        if (totalPoint > Level.totalpPoint(nj.get().getLevel()) + nj.get().getTiemNangSo() * 10 + nj.get().getBanghoa() * 10 + 25) {
+        if (totalPoint > Level.totalpPoint(nj.get().getLevel()) + nj.get().getTiemNangSo() * 10
+                + nj.get().getBanghoa() * 10 + 25) {
             this.restPpoint(nj);
             this.restSpoint();
             this.nj.setExp(Level.getMaxExp(this.nj.getLevel()));
@@ -585,7 +595,7 @@ public class User extends Actor implements SendMessage {
             }
             case -122: {
                 GameScr.SendFile(session, -28, "res/msg/-28_-122");
-//                this.server.manager.sendData(this);
+                // this.server.manager.sendData(this);
                 break;
             }
             case -121: {
@@ -772,37 +782,37 @@ public class User extends Actor implements SendMessage {
             case 1: {
                 this.nj.addItemBag(true, ItemData.itemDefault(94, true));
                 this.nj.addItemBag(true, ItemData.itemDefault(40, true));
-//                this.nj.addItemBag(true, ItemData.itemDefault(420, true));
+                // this.nj.addItemBag(true, ItemData.itemDefault(420, true));
                 break;
             }
             case 2: {
                 this.nj.addItemBag(true, ItemData.itemDefault(114, true));
                 this.nj.addItemBag(true, ItemData.itemDefault(49, true));
-//                this.nj.addItemBag(true, ItemData.itemDefault(420, true));
+                // this.nj.addItemBag(true, ItemData.itemDefault(420, true));
                 break;
             }
             case 3: {
                 this.nj.addItemBag(true, ItemData.itemDefault(99, true));
                 this.nj.addItemBag(true, ItemData.itemDefault(58, true));
-//                this.nj.addItemBag(true, ItemData.itemDefault(421, true));
+                // this.nj.addItemBag(true, ItemData.itemDefault(421, true));
                 break;
             }
             case 4: {
                 this.nj.addItemBag(true, ItemData.itemDefault(109, true));
                 this.nj.addItemBag(true, ItemData.itemDefault(67, true));
-//                this.nj.addItemBag(true, ItemData.itemDefault(421, true));
+                // this.nj.addItemBag(true, ItemData.itemDefault(421, true));
                 break;
             }
             case 5: {
                 this.nj.addItemBag(true, ItemData.itemDefault(104, true));
                 this.nj.addItemBag(true, ItemData.itemDefault(76, true));
-//                this.nj.addItemBag(true, ItemData.itemDefault(422, true));
+                // this.nj.addItemBag(true, ItemData.itemDefault(422, true));
                 break;
             }
             case 6: {
                 this.nj.addItemBag(true, ItemData.itemDefault(119, true));
                 this.nj.addItemBag(true, ItemData.itemDefault(85, true));
-//                this.nj.addItemBag(true, ItemData.itemDefault(422, true));
+                // this.nj.addItemBag(true, ItemData.itemDefault(422, true));
                 break;
             }
         }
@@ -813,7 +823,8 @@ public class User extends Actor implements SendMessage {
         this.nj.get().upHP(this.nj.get().getMaxHP());
         this.nj.get().upMP(this.nj.get().getMaxMP());
         this.nj.get().setSpoint(Level.totalsPoint(this.nj.get().getLevel()));
-        this.nj.get().updatePpoint(Level.totalpPoint(this.nj.get().getLevel()) + nj.get().getTiemNangSo() * 10 + nj.get().getBanghoa() * 10);
+        this.nj.get().updatePpoint(Level.totalpPoint(this.nj.get().getLevel()) + nj.get().getTiemNangSo() * 10
+                + nj.get().getBanghoa() * 10);
         this.nj.get().setPotential0(5);
         this.nj.get().setPotential1(5);
         this.nj.get().setPotential2(5);
@@ -896,7 +907,8 @@ public class User extends Actor implements SendMessage {
             }
             sumSkill += skill1.point - 1;
         }
-        if (this.nj.get().getSpoint() + sumSkill > 1.75 * (Level.totalsPoint(this.nj.get().getLevel()) + this.nj.get().getKyNangSo() + this.nj.get().getPhongLoi())) {
+        if (this.nj.get().getSpoint() + sumSkill > 1.75 * (Level.totalsPoint(this.nj.get().getLevel())
+                + this.nj.get().getKyNangSo() + this.nj.get().getPhongLoi())) {
             session.sendMessageLog("Tài khoản bạn đã hack game và bị khoá vui lòng không ý kiến");
             lockAcc();
             return;
@@ -948,8 +960,9 @@ public class User extends Actor implements SendMessage {
 
     @SneakyThrows
     private void lockAcc() {
-//        SQLManager.executeUpdate("UPDATE `player` set `lock`=1 where `id`=" + this.id + " limit 1;");
-//        conn.disconnect();
+        // SQLManager.executeUpdate("UPDATE `player` set `lock`=1 where `id`=" + this.id
+        // + " limit 1;");
+        // conn.disconnect();
     }
 
     private void pluspPoint(final Message m) throws IOException {
@@ -976,8 +989,8 @@ public class User extends Actor implements SendMessage {
                 + this.nj.get().getPotential0()
                 + this.nj.get().getPotential1()
                 + nj.get().getPotential2()
-                + nj.get().getPotential3()
-                > (Level.totalpPoint(nj.get().getLevel()) + 25 + nj.get().getTiemNangSo() * 10 + nj.get().getBanghoa() * 10)) {
+                + nj.get().getPotential3() > (Level.totalpPoint(nj.get().getLevel()) + 25
+                        + nj.get().getTiemNangSo() * 10 + nj.get().getBanghoa() * 10)) {
             session.sendMessageLog("Lỗi cộng điểm tiềm năng tiềm năng được reset");
             restPpoint(this.nj.get());
             return;
@@ -1047,7 +1060,8 @@ public class User extends Actor implements SendMessage {
                 skill.point = 1;
             }
         }
-        this.nj.get().setSpoint(Level.totalsPoint(this.nj.get().getLevel()) + this.nj.get().getPhongLoi() + this.nj.get().getKyNangSo());
+        this.nj.get().setSpoint(Level.totalsPoint(this.nj.get().getLevel()) + this.nj.get().getPhongLoi()
+                + this.nj.get().getKyNangSo());
         lastTimeResetPoint = System.currentTimeMillis();
         this.loadSkill();
     }
@@ -1074,7 +1088,8 @@ public class User extends Actor implements SendMessage {
             return;
         }
         if (xu + (long) this.nj.xuBox > 2000000000L) {
-            this.session.sendMessageLog("Bạn chỉ có thể cất thêm " + getFormatNumber(xu + (long) this.nj.xu - 2000000000L));
+            this.session
+                    .sendMessageLog("Bạn chỉ có thể cất thêm " + getFormatNumber(xu + (long) this.nj.xu - 2000000000L));
             return;
         }
         final Ninja c = this.nj;
@@ -1095,7 +1110,8 @@ public class User extends Actor implements SendMessage {
             return;
         }
         if (xu + (long) this.nj.xu > 2000000000L) {
-            this.session.sendMessageLog("Bạn chỉ có thể rút thêm " + getFormatNumber(xu + (long) this.nj.xu - 2000000000L));
+            this.session
+                    .sendMessageLog("Bạn chỉ có thể rút thêm " + getFormatNumber(xu + (long) this.nj.xu - 2000000000L));
             return;
         }
         final Ninja c = this.nj;
@@ -1353,7 +1369,8 @@ public class User extends Actor implements SendMessage {
                         this.nj.sendTaskOrders();
                         m = new Message(-23);
                         m.writer().writeInt(this.nj.get().id);
-                        m.writer().writeUTF("Trò chơi dành cho người từ đủ 18 tuổi chở lên. Chơi game quá 180 phút mỗi ngày có hại cho sức khỏe.");
+                        m.writer().writeUTF(
+                                "Trò chơi dành cho người từ đủ 18 tuổi chở lên. Chơi game quá 180 phút mỗi ngày có hại cho sức khỏe.");
                         m.writer().flush();
                         m.cleanup();
 
@@ -1369,9 +1386,9 @@ public class User extends Actor implements SendMessage {
                         } catch (Exception e) {
 
                         }
-//                        server.manager.sendTB(this, "Z-orgs",
-//                                "Chào mừng các player đến với sever Z-orgs \n" +
-//                                        "Số người online " + ( + PlayerManager.getInstance().conns_size()));
+                        // server.manager.sendTB(this, "Z-orgs",
+                        // "Chào mừng các player đến với sever Z-orgs \n" +
+                        // "Số người online " + ( + PlayerManager.getInstance().conns_size()));
 
                         if (this.nj != null && this.nj.clan != null) {
                             Server.clanTerritoryManager.getClanTerritoryDataById(this.getClanTerritoryId());
@@ -1395,66 +1412,70 @@ public class User extends Actor implements SendMessage {
         for (byte j = 0; j < this.sortNinja.length; ++j) {
             if (this.sortNinja[j] != null) {
                 Message finalM = m;
-                SQLManager.executeQuery("SELECT `gender`,`name`,`class`,`level`,`head`,`ItemBody` FROM `ninja` WHERE `name`LIKE'" + this.sortNinja[j] + "';", (red) -> {
-                    if (red != null && red.first()) {
-                        finalM.writer().writeByte(red.getByte("gender"));
-                        finalM.writer().writeUTF(red.getString("name"));
-                        finalM.writer().writeUTF(this.server.manager.NinjaS[red.getByte("class")]);
-                        finalM.writer().writeByte(red.getInt("level"));
-                        short head = red.getByte("head");
-                        short weapon = -1;
-                        short body = -1;
-                        short leg = -1;
-                        final JSONArray jar = (JSONArray) JSONValue.parse(red.getString("ItemBody"));
-                        final Item[] itembody = new Item[32];
-                        if (jar != null) {
-                            for (byte k = 0; k < jar.size(); ++k) {
-                                final JSONObject job = (JSONObject) jar.get(k);
-                                final byte index = Byte.parseByte(job.get("index").toString());
-                                itembody[index] = ItemData.parseItem(jar.get(k).toString());
+                SQLManager.executeQuery(
+                        "SELECT `gender`,`name`,`class`,`level`,`head`,`ItemBody` FROM `ninja` WHERE `name`LIKE'"
+                                + this.sortNinja[j] + "';",
+                        (red) -> {
+                            if (red != null && red.first()) {
+                                finalM.writer().writeByte(red.getByte("gender"));
+                                finalM.writer().writeUTF(red.getString("name"));
+                                finalM.writer().writeUTF(this.server.manager.NinjaS[red.getByte("class")]);
+                                finalM.writer().writeByte(red.getInt("level"));
+                                short head = red.getByte("head");
+                                short weapon = -1;
+                                short body = -1;
+                                short leg = -1;
+                                final JSONArray jar = (JSONArray) JSONValue.parse(red.getString("ItemBody"));
+                                final Item[] itembody = new Item[32];
+                                if (jar != null) {
+                                    for (byte k = 0; k < jar.size(); ++k) {
+                                        final JSONObject job = (JSONObject) jar.get(k);
+                                        final byte index = Byte.parseByte(job.get("index").toString());
+                                        itembody[index] = ItemData.parseItem(jar.get(k).toString());
+                                    }
+                                }
+                                if (itembody[11] != null) {
+                                    head = ItemData.ItemDataId(itembody[11].id).part;
+                                    if (itembody[11].id == 541) {
+                                        head = 185;
+                                    }
+                                    if (itembody[11].id == 542) {
+                                        head = 188;
+                                    }
+                                    if (itembody[11].id == 745) {
+                                        head = 264;
+                                    }
+                                    if (itembody[11].id == 774) {
+                                        head = 267;
+                                    }
+                                    if (itembody[11].id == 786) {
+                                        head = 270;
+                                    }
+                                    if (itembody[11].id == 787) {
+                                        head = 276;
+                                    }
+                                }
+                                if (itembody[1] != null) {
+                                    weapon = ItemData.ItemDataId(itembody[1].id).part;
+                                }
+                                if (itembody[2] != null) {
+                                    body = ItemData.ItemDataId(itembody[2].id).part;
+                                }
+                                if (itembody[6] != null) {
+                                    leg = ItemData.ItemDataId(itembody[6].id).part;
+                                }
+                                if (head == 185 || head == 188 || head == 258 || head == 264 || head == 267
+                                        || head == 270 || head == 276) {
+                                    body = (short) (head + 1);
+                                    leg = (short) (head + 2);
+                                }
+                                finalM.writer().writeShort(head);
+                                finalM.writer().writeShort(weapon);
+                                finalM.writer().writeShort(body);
+                                finalM.writer().writeShort(leg);
                             }
-                        }
-                        if (itembody[11] != null) {
-                            head = ItemData.ItemDataId(itembody[11].id).part;
-                            if (itembody[11].id == 541) {
-                                head = 185;
-                            }
-                            if (itembody[11].id == 542) {
-                                head = 188;
-                            }
-                            if (itembody[11].id == 745) {
-                                head = 264;
-                            }
-                            if (itembody[11].id == 774) {
-                                head = 267;
-                            }
-                            if (itembody[11].id == 786) {
-                                head = 270;
-                            }
-                            if (itembody[11].id == 787) {
-                                head = 276;
-                            }
-                        }
-                        if (itembody[1] != null) {
-                            weapon = ItemData.ItemDataId(itembody[1].id).part;
-                        }
-                        if (itembody[2] != null) {
-                            body = ItemData.ItemDataId(itembody[2].id).part;
-                        }
-                        if (itembody[6] != null) {
-                            leg = ItemData.ItemDataId(itembody[6].id).part;
-                        }
-                        if (head == 185 || head == 188 || head == 258 || head == 264 || head == 267 || head == 270 || head == 276) {
-                            body = (short) (head + 1);
-                            leg = (short) (head + 2);
-                        }
-                        finalM.writer().writeShort(head);
-                        finalM.writer().writeShort(weapon);
-                        finalM.writer().writeShort(body);
-                        finalM.writer().writeShort(leg);
-                    }
 
-                });
+                        });
 
             }
         }
@@ -1480,7 +1501,7 @@ public class User extends Actor implements SendMessage {
             return;
         }
 
-        final boolean[] canNext = {true};
+        final boolean[] canNext = { true };
         SQLManager.executeQuery("SELECT `id` FROM `ninja` WHERE `name`LIKE'" + name + "';", (red) -> {
             try {
                 if (red != null && red.first()) {
@@ -1497,8 +1518,10 @@ public class User extends Actor implements SendMessage {
         if (!canNext[0]) {
             return;
         }
-        SQLManager.executeUpdate("INSERT INTO ninja(`name`,`gender`,`head`,`ItemBag`,`ItemBox`,`ItemBody`,`ItemMounts`, `friend`, `effect`, `clan`, `exptype`, `skill`) VALUES "
-                + "(\"" + name + "\"," + gender + "," + head + ",'[]','[]','[]','[]', '[]', '[]','[]', 1, '[{\"id\": 0, \"point\": 0}]');");
+        SQLManager.executeUpdate(
+                "INSERT INTO ninja(`name`,`gender`,`head`,`ItemBag`,`ItemBox`,`ItemBody`,`ItemMounts`, `friend`, `effect`, `clan`, `exptype`, `skill`) VALUES "
+                        + "(\"" + name + "\"," + gender + "," + head
+                        + ",'[]','[]','[]','[]', '[]', '[]','[]', 1, '[{\"id\": 0, \"point\": 0}]');");
         for (byte i = 0; i < this.sortNinja.length; ++i) {
             if (this.sortNinja[i] == null) {
                 this.sortNinja[i] = name;
@@ -1582,18 +1605,18 @@ public class User extends Actor implements SendMessage {
     public void useItem(final Message m) throws IOException {
         val differ = System.currentTimeMillis() - this.lastTimeUseItem;
         util.Debug(differ + "");
-        //if (differ < DIFFER_USE_ITEM_TIME) {
-        //useItemCount++;
-        //} else {
-        //useItemCount = 0;
-        //}
-        //this.lastTimeUseItem = System.currentTimeMillis();
+        // if (differ < DIFFER_USE_ITEM_TIME) {
+        // useItemCount++;
+        // } else {
+        // useItemCount = 0;
+        // }
+        // this.lastTimeUseItem = System.currentTimeMillis();
 
-        //if (useItemCount >= MAX_USE_ITEM_FAST) {
-        //session.disconnect();
-        //PlayerManager.getInstance().kickSession(session);
-        //return;
-        //}
+        // if (useItemCount >= MAX_USE_ITEM_FAST) {
+        // session.disconnect();
+        // PlayerManager.getInstance().kickSession(session);
+        // return;
+        // }
         final byte index = m.reader().readByte();
         m.cleanup();
         final Item item = this.nj.getIndexBag(index);
@@ -1773,7 +1796,9 @@ public class User extends Actor implements SendMessage {
         if (ItemData.isTypeUIME(typeUI)) {
             m.writer().writeInt(item.sale);
         }
-        if (ItemData.isTypeUIShop(typeUI) || ItemData.isTypeUIShopLock(typeUI) || ItemData.isTypeMounts(typeUI) || ItemData.isTypeUIStore(typeUI) || ItemData.isTypeUIBook(typeUI) || ItemData.isTypeUIFashion(typeUI) || ItemData.isTypeUIClanShop(typeUI)) {
+        if (ItemData.isTypeUIShop(typeUI) || ItemData.isTypeUIShopLock(typeUI) || ItemData.isTypeMounts(typeUI)
+                || ItemData.isTypeUIStore(typeUI) || ItemData.isTypeUIBook(typeUI) || ItemData.isTypeUIFashion(typeUI)
+                || ItemData.isTypeUIClanShop(typeUI)) {
             m.writer().writeInt(item.buyCoin);
             m.writer().writeInt(item.buyCoinLock);
             m.writer().writeInt(item.buyGold);
@@ -2014,7 +2039,8 @@ public class User extends Actor implements SendMessage {
         } else if (Math.abs(this.nj.get().x - p.nj.get().x) > 100 || Math.abs(this.nj.get().y - p.nj.get().y) > 100) {
             this.sendYellowMessage("Khoảng cách quá xa.");
         } else if (this.nj.tradeDelay > System.currentTimeMillis()) {
-            this.session.sendMessageLog("Bạn còn " + (this.nj.tradeDelay - System.currentTimeMillis()) / 1000L + "s để tiếp tục giao dịch.");
+            this.session.sendMessageLog("Bạn còn " + (this.nj.tradeDelay - System.currentTimeMillis()) / 1000L
+                    + "s để tiếp tục giao dịch.");
         } else if (this.nj.rqTradeId > 0) {
             this.session.sendMessageLog(p.nj.name + " đang có yêu cầu giao dịch.");
         } else if (p.nj.isTrade) {
@@ -2382,7 +2408,7 @@ public class User extends Actor implements SendMessage {
         AtomicBoolean agree = new AtomicBoolean(false);
         other.friend.stream()
                 .filter(f -> f != null && this.nj != null
-                && this.nj.name.equals(f.getName()))
+                        && this.nj.name.equals(f.getName()))
                 .findFirst()
                 .ifPresent(f -> {
                     agree.set(true);
@@ -2436,7 +2462,8 @@ public class User extends Actor implements SendMessage {
         if (index > 4 || index < 0 || this.nj.get().ItemMounts[index] == null) {
             return;
         }
-        if (index == 4 && (this.nj.get().ItemMounts[0] != null || this.nj.get().ItemMounts[1] != null || this.nj.get().ItemMounts[2] != null || this.nj.get().ItemMounts[3] != null)) {
+        if (index == 4 && (this.nj.get().ItemMounts[0] != null || this.nj.get().ItemMounts[1] != null
+                || this.nj.get().ItemMounts[2] != null || this.nj.get().ItemMounts[3] != null)) {
             this.session.sendMessageLog("Cần phải tháo hết trang bị thú cưới ra trước");
             return;
         }
@@ -2460,29 +2487,32 @@ public class User extends Actor implements SendMessage {
     }
 
     public void changePassword() {
-        if (!CheckString(this.passnew + this.passold, "^[a-zA-Z0-9]+$") || this.passnew.length() < 1 || this.passnew.length() > 30) {
+        if (!CheckString(this.passnew + this.passold, "^[a-zA-Z0-9]+$") || this.passnew.length() < 1
+                || this.passnew.length() > 30) {
             this.session.sendMessageLog("Mật khẩu chỉ đồng ý các ký tự a-z,0-9 và chiều dài từ 1 đến 30 ký tự");
             return;
         }
         try {
 
-            final boolean[] canNext = {true};
-            SQLManager.executeQuery("SELECT `id` FROM `player` WHERE (`password`LIKE'" + this.passold + "' AND `id` = " + this.id + ");", (red) -> {
-                try {
-                    if (red == null || !red.first()) {
-                        this.session.sendMessageLog("Mật khẩu cũ không chính xác!");
-                        canNext[0] = false;
-                    }
-                } catch (Exception e) {
+            final boolean[] canNext = { true };
+            SQLManager.executeQuery("SELECT `id` FROM `player` WHERE (`password`LIKE'" + this.passold + "' AND `id` = "
+                    + this.id + ");", (red) -> {
+                        try {
+                            if (red == null || !red.first()) {
+                                this.session.sendMessageLog("Mật khẩu cũ không chính xác!");
+                                canNext[0] = false;
+                            }
+                        } catch (Exception e) {
 
-                }
-            });
+                        }
+                    });
 
             if (!canNext[0]) {
                 return;
             }
 
-            SQLManager.executeUpdate("UPDATE `player` SET `password`='" + this.passnew + "' WHERE `id`=" + this.id + " LIMIT 1;");
+            SQLManager.executeUpdate(
+                    "UPDATE `player` SET `password`='" + this.passnew + "' WHERE `id`=" + this.id + " LIMIT 1;");
             this.session.sendMessageLog("Đã đổi mật khẩu thành công");
         } catch (Exception e) {
             e.printStackTrace();
@@ -2509,8 +2539,10 @@ public class User extends Actor implements SendMessage {
                 }
             }
 
-            SQLManager.executeUpdate("UPDATE `player` SET `luong`=" + this.luong + ",`ninja`='" + jarr.toJSONString() + "' WHERE `id`=" + this.id + " LIMIT 1;");
-            SQLManager.executeUpdate("UPDATE `player` SET `clanTerritoryId`=" + this.getClanTerritoryId() + " WHERE `id`=" + this.id + " LIMIT 1;");
+            SQLManager.executeUpdate("UPDATE `player` SET `luong`=" + this.luong + ",`ninja`='" + jarr.toJSONString()
+                    + "' WHERE `id`=" + this.id + " LIMIT 1;");
+            SQLManager.executeUpdate("UPDATE `player` SET `clanTerritoryId`=" + this.getClanTerritoryId()
+                    + " WHERE `id`=" + this.id + " LIMIT 1;");
 
         } catch (SQLException e) {
             Debug("Flush data User + Ninja Error");
@@ -2573,9 +2605,9 @@ public class User extends Actor implements SendMessage {
             this.nj.get().expdown = 0L;
             final long xpold = this.nj.get().getExp();
 
-//            if (xpold >= 10711676205700L) {
-//                xpup = 0;
-//            }
+            // if (xpold >= 10711676205700L) {
+            // xpup = 0;
+            // }
             final Body body = this.nj.get();
             body.setExp(body.getExp() + xpup);
             final int oldLv = this.nj.get().getLevel();
@@ -2858,7 +2890,8 @@ public class User extends Actor implements SendMessage {
                 final Item item2 = item;
                 item2.setUpgrade(item2.getUpgrade() + 1);
                 final int lv = item.getUpgrade() + 1;
-                if (lv == 10 || lv == 20 || lv == 30 || lv == 40 || lv == 50 || lv == 60 || lv == 70 || lv == 80 || lv == 90) {
+                if (lv == 10 || lv == 20 || lv == 30 || lv == 40 || lv == 50 || lv == 60 || lv == 70 || lv == 80
+                        || lv == 90) {
                     for (byte j = 0; j < item.option.size(); ++j) {
                         final Option op2 = item.option.get(j);
                         if (op2.id != 65 && op2.id != 66) {
@@ -3128,7 +3161,8 @@ public class User extends Actor implements SendMessage {
     public void moveMemberParty(final Message m) throws IOException {
         final byte index = m.reader().readByte();
         m.cleanup();
-        if (this.nj.get().party != null && this.nj.get().id == this.nj.get().party.master && index >= 0 && index < this.nj.get().party.ninjas.size()) {
+        if (this.nj.get().party != null && this.nj.get().id == this.nj.get().party.master && index >= 0
+                && index < this.nj.get().party.ninjas.size()) {
             final Ninja n = this.nj.get().party.ninjas.get(index);
             if (n.id != this.nj.id) {
                 this.nj.get().party.moveMember(index);
@@ -3139,7 +3173,8 @@ public class User extends Actor implements SendMessage {
     public void changeTeamLeaderParty(final Message m) throws IOException {
         final byte index = m.reader().readByte();
         m.cleanup();
-        if (this.nj.get().party != null && this.nj.id == this.nj.get().party.master && index >= 0 && index < this.nj.get().party.ninjas.size()) {
+        if (this.nj.get().party != null && this.nj.id == this.nj.get().party.master && index >= 0
+                && index < this.nj.get().party.ninjas.size()) {
             this.nj.get().party.changeTeamLeader(index);
         }
     }
@@ -3519,64 +3554,66 @@ public class User extends Actor implements SendMessage {
 
     }
 
+    public void sendLevel() {
+        try {
+            Ninja userGF = PlayerManager.getInstance().getNinja(nameUS);
+            int levelGFF = Integer.parseInt(levelGF);
+            userGF.uplevelMessage(levelGFF);
+        } catch (Exception e) {
+            this.sendYellowMessage("Hãy nhập đúng định dạng");
+
+        }
+
+    }
+
     public void Kinhmach() {
         if (nj.lvkm == 0) {
-            session.sendMessageLog("Mày chưa có kinh mạch nên kém vl"
-            );
+            session.sendMessageLog("Mày chưa có kinh mạch nên kém vl");
         } else if (nj.lvkm == 1) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 1"
                     + "\n Hiệu ứng đang nhận được là: "
                     + "\n +5.000 dame lên quái"
-                    + "\n 1% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
-            );
+                    + "\n 1% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame");
         } else if (nj.lvkm == 2) {
             this.sendYellowMessage("Bạn đang tu luyện kinh mạch đến tầng 2"
                     + "\n Hiệu ứng đang nhận được là: "
                     + "\n +7.000 dame lên quái"
-                    + "\n 2% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
-            );
+                    + "\n 2% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame");
         } else if (nj.lvkm == 3) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 3"
                     + "\n Hiệu ứng đang nhận được là: "
                     + "\n +9.000 dame lên quái"
-                    + "\n 3% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
-            );
+                    + "\n 3% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame");
         } else if (nj.lvkm == 4) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 4"
                     + "\n Hiệu ứng đang nhận được là: "
                     + "\n +11.000 dame lên quái"
-                    + "\n 4% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
-            );
+                    + "\n 4% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame");
         } else if (nj.lvkm == 5) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 5"
                     + "\n Hiệu ứng đang nhận được là: "
                     + "\n +13.000 dame lên quái"
-                    + "\n 5% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
-            );
+                    + "\n 5% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame");
         } else if (nj.lvkm == 6) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 6"
                     + "\n Hiệu ứng đang nhận được là: "
                     + "\n +15.000 dame lên quái"
-                    + "\n 6% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
-            );
+                    + "\n 6% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame");
         } else if (nj.lvkm == 7) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 7"
                     + "\n Hiệu ứng đang nhận được là: "
                     + "\n +18.000 dame lên quái"
-                    + "\n 7% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
-            );
+                    + "\n 7% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame");
         } else if (nj.lvkm == 8) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng 8"
                     + "\n Hiệu ứng đang nhận được là: "
                     + "\n +21.000 dame lên quái"
-                    + "\n 8% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
-            );
+                    + "\n 8% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame");
         } else if (nj.lvkm == 9) {
             session.sendMessageLog("Bạn đang tu luyện kinh mạch đến tầng cuối cùng"
                     + "\n Hiệu ứng đang nhận được là: "
                     + "\n +25.000 dame lên quái"
-                    + "\n 10% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame"
-            );
+                    + "\n 10% tỷ lệ xuất hiện hút máu từ quái - tương đương 10% dame");
         }
     }
 

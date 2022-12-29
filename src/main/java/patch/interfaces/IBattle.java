@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface IBattle extends Expireable, UpdateEvent {
@@ -81,7 +82,7 @@ int[] idHacMobs = new int[]{
 
     long getTimeInSeconds();
 
-    @SneakyThrows
+    // @SneakyThrows
     boolean enter(IGlobalBattler member, int type);
 
     void setState(byte state);
