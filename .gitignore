@@ -1,8 +1,10 @@
 .idea/
+*.jar
 *.rar
 *.zip
 out/
-*.log
+target/
+
 *.class
 
-codefix/node_modules/
+codefix/node_modules/ 

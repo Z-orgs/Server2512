@@ -1949,8 +1949,8 @@ CREATE TABLE `ninja` (
 -- Dumping data for table `ninja`
 --
 
-INSERT INTO `ninja` (`id`, `name`, `gender`, `taskId`, `head`, `speed`, `class`, `ppoint`, `potential0`, `potential1`, `potential2`, `potential3`, `spoint`, `skill`, `KSkill`, `OSkill`, `CSkill`, `level`, `exp`, `expdown`, `pk`, `xu`, `xuBox`, `yen`, `maxluggage`, `levelBag`, `ItemBag`, `ItemBox`, `ItemBody`, `ItemMounts`, `friend`, `site`, `effect`, `clan`, `denbu`, `newlogin`, `ddClan`, `caveID`, `nCave`, `pointCave`, `useCave`, `bagCaveMax`, `itemIDCaveMax`, `exptype`, `tasks`, `nvhncount`, `tathucount`, `tiemnangso`, `kynangso`, `phongloi`, `banghoa`, `chientruong`, `taskIndex`, `taskCount`, `quacap10`, `quacap20`, `quacap30`, `quacap40`, `quacap50`, `topSK`, `topSK1`, `vuixuan`, `lvkm`, `expkm`) VALUES
-(2886, 'admin', 1, 2, 25, 4, 0, 0, 15, 5, 5, 5, 0, '[{\"id\":0,\"point\":0}]', '[-1,-1,-1]', '[-1,-1,-1,-1,-1]', 0, 1, 2, 0, 0, 50000000, 0, 100000002, 30, 0, '[]', '[]', '[{\"expires\":-1,\"quantity\":1,\"upgrade\":0,\"buyCoin\":0,\"index\":1,\"sys\":0,\"isExpires\":false,\"isLock\":true,\"sale\":0,\"buyGold\":0,\"buyCoinLock\":0,\"timeBuy\":0,\"ngocs\":[],\"lock\":true,\"id\":194,\"option\":[{\"param\":15,\"id\":0},{\"param\":10,\"id\":8}]}]', '[]', '[]', '[22,1908,264,22,0]', '[]', '[\"\",0]', 0, '2022-12-24 22:51:31', 0, -1, 1, 0, 0, 0, 0, 1, '[null,null]', 0, 0, 0, 0, 0, 0, '{\"point\":0,\"phe\":0}', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+-- INSERT INTO `ninja` (`id`, `name`, `gender`, `taskId`, `head`, `speed`, `class`, `ppoint`, `potential0`, `potential1`, `potential2`, `potential3`, `spoint`, `skill`, `KSkill`, `OSkill`, `CSkill`, `level`, `exp`, `expdown`, `pk`, `xu`, `xuBox`, `yen`, `maxluggage`, `levelBag`, `ItemBag`, `ItemBox`, `ItemBody`, `ItemMounts`, `friend`, `site`, `effect`, `clan`, `denbu`, `newlogin`, `ddClan`, `caveID`, `nCave`, `pointCave`, `useCave`, `bagCaveMax`, `itemIDCaveMax`, `exptype`, `tasks`, `nvhncount`, `tathucount`, `tiemnangso`, `kynangso`, `phongloi`, `banghoa`, `chientruong`, `taskIndex`, `taskCount`, `quacap10`, `quacap20`, `quacap30`, `quacap40`, `quacap50`, `topSK`, `topSK1`, `vuixuan`, `lvkm`, `expkm`) VALUES
+-- (2886, 'admin', 1, 2, 25, 4, 0, 0, 15, 5, 5, 5, 0, '[{\"id\":0,\"point\":0}]', '[-1,-1,-1]', '[-1,-1,-1,-1,-1]', 0, 1, 2, 0, 0, 50000000, 0, 100000002, 30, 0, '[]', '[]', '[{\"expires\":-1,\"quantity\":1,\"upgrade\":0,\"buyCoin\":0,\"index\":1,\"sys\":0,\"isExpires\":false,\"isLock\":true,\"sale\":0,\"buyGold\":0,\"buyCoinLock\":0,\"timeBuy\":0,\"ngocs\":[],\"lock\":true,\"id\":194,\"option\":[{\"param\":15,\"id\":0},{\"param\":10,\"id\":8}]}]', '[]', '[]', '[22,1908,264,22,0]', '[]', '[\"\",0]', 0, '2022-12-24 22:51:31', 0, -1, 1, 0, 0, 0, 0, 1, '[null,null]', 0, 0, 0, 0, 0, 0, '{\"point\":0,\"phe\":0}', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -2305,15 +2305,15 @@ CREATE TABLE `player` (
   `kichhoat` int(11) NOT NULL DEFAULT 0,
   `nap` int(11) NOT NULL DEFAULT 0,
   `clanTerritoryId` int(11) DEFAULT -1,
-  `phone` varchar(10) DEFAULT NULL
+  `email` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `player`
 --
 
-INSERT INTO `player` (`id`, `username`, `password`, `luong`, `ninja`, `topsk`, `lock`, `kichhoat`, `nap`, `clanTerritoryId`, `phone`) VALUES
-(3065, 'admin', 'admin', 20000, '[\"admin\"]', 0, 0, 0, 0, -1, NULL);
+-- INSERT INTO `player` (`id`, `username`, `password`, `luong`, `ninja`, `topsk`, `lock`, `kichhoat`, `nap`, `clanTerritoryId`, `phone`) VALUES
+-- (3065, 'admin', 'admin', 20000, '[\"admin\"]', 0, 0, 0, 0, -1, NULL);
 
 -- --------------------------------------------------------
 
