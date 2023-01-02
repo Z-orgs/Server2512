@@ -3,6 +3,8 @@ package real;
 import io.Session;
 import lombok.SneakyThrows;
 import lombok.val;
+import lombok.var;
+
 import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -62,6 +64,7 @@ public class User extends Actor implements SendMessage {
     public String messTB;
     public String levelGF;
     public long expiredTime;
+    public String role = "user";
 
     private ClanTerritoryData clanTerritoryData;
 
@@ -255,6 +258,16 @@ public class User extends Actor implements SendMessage {
         return (int) x;
     }
 
+    public String getRole() {
+        val query = "SELECT * FROM `player` WHERE (`username`LIKE'" + this.username + "');";
+        SQLManager.executeQuery(query, red -> {
+            if (red != null && red.first()) {
+                role = red.getString("role");
+            }
+        });
+        return role;
+    }
+
     public static User login(final Session conn, final String user, final String pass) {
 
         final User[] u = new User[] { null };
@@ -264,7 +277,7 @@ public class User extends Actor implements SendMessage {
                 final int iddb = red.getInt("id");
                 final String username = red.getString("username");
                 final int luong = red.getInt("luong");
-                final byte lock = red.getByte("lock");
+                final byte lock = red.getByte("lockacc");
                 if (lock == 1) {
                     conn.sendMessageLog(
                             "Tài khoản của bạn đã bị khóa hoặc chưa kích hoạt (Phí kích hoạt 10k). Để biết thêm thông tin hãy liên hệ ADMIN");
@@ -960,7 +973,8 @@ public class User extends Actor implements SendMessage {
 
     @SneakyThrows
     private void lockAcc() {
-        // SQLManager.executeUpdate("UPDATE `player` set `lock`=1 where `id`=" + this.id
+        // SQLManager.executeUpdate("UPDATE `player` set `lockacc`=1 where `id`=" +
+        // this.id
         // + " limit 1;");
         // conn.disconnect();
     }
@@ -1497,7 +1511,7 @@ public class User extends Actor implements SendMessage {
             return;
         }
         if (this.sortNinja[0] != null) {
-            this.session.sendMessageLog("Để tránh nhiều ác clone không tạo thêm nhân vật");
+            this.session.sendMessageLog("Để tránh nhiều clone không tạo thêm nhân vật");
             return;
         }
 

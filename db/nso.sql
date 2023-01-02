@@ -134,9 +134,9 @@ CREATE TABLE `clone_ninja` (
 -- Dumping data for table `clone_ninja`
 --
 
-INSERT INTO `clone_ninja` (`id`, `name`, `speed`, `class`, `ppoint`, `potential0`, `potential1`, `potential2`, `potential3`, `spoint`, `skill`, `KSkill`, `OSkill`, `CSkill`, `level`, `exp`, `expdown`, `pk`, `xu`, `xuBox`, `yen`, `maxluggage`, `levelBag`, `ItemBag`, `ItemBox`, `ItemBody`, `ItemMounts`, `effect`, `tiemnangso`, `kynangso`, `phongloi`, `banghoa`) VALUES
-(-10000000, 'null', 4, 0, 0, 15, 5, 5, 5, 0, '[]', '[-1,-1,-1]', '[-1,-1,-1,-1,-1]', 0, 1, 0, 0, 0, 0, 0, 0, 30, 0, '[]', '[]', '[]', '[]', '[]', 0, 0, 0, 0),
-(-10002886, 'admin', 4, 0, 0, 15, 5, 5, 5, 0, '[{\"id\":0,\"point\":0}]', '[-1,-1,-1]', '[-1,-1,-1,-1,-1]', 0, 20, 2496942, 0, 0, 0, 0, 0, 30, 0, '[]', '[]', '[{\"expires\":-1,\"quantity\":1,\"upgrade\":0,\"buyCoin\":0,\"index\":1,\"sys\":0,\"isExpires\":false,\"isLock\":false,\"sale\":0,\"buyGold\":0,\"buyCoinLock\":0,\"timeBuy\":0,\"ngocs\":[],\"lock\":false,\"id\":194,\"option\":[]}]', '[]', '[]', 0, 0, 0, 0);
+-- INSERT INTO `clone_ninja` (`id`, `name`, `speed`, `class`, `ppoint`, `potential0`, `potential1`, `potential2`, `potential3`, `spoint`, `skill`, `KSkill`, `OSkill`, `CSkill`, `level`, `exp`, `expdown`, `pk`, `xu`, `xuBox`, `yen`, `maxluggage`, `levelBag`, `ItemBag`, `ItemBox`, `ItemBody`, `ItemMounts`, `effect`, `tiemnangso`, `kynangso`, `phongloi`, `banghoa`) VALUES
+-- (-10000000, 'null', 4, 0, 0, 15, 5, 5, 5, 0, '[]', '[-1,-1,-1]', '[-1,-1,-1,-1,-1]', 0, 1, 0, 0, 0, 0, 0, 0, 30, 0, '[]', '[]', '[]', '[]', '[]', 0, 0, 0, 0),
+-- (-10002886, 'admin', 4, 0, 0, 15, 5, 5, 5, 0, '[{\"id\":0,\"point\":0}]', '[-1,-1,-1]', '[-1,-1,-1,-1,-1]', 0, 20, 2496942, 0, 0, 0, 0, 0, 30, 0, '[]', '[]', '[{\"expires\":-1,\"quantity\":1,\"upgrade\":0,\"buyCoin\":0,\"index\":1,\"sys\":0,\"isExpires\":false,\"isLock\":false,\"sale\":0,\"buyGold\":0,\"buyCoinLock\":0,\"timeBuy\":0,\"ngocs\":[],\"lock\":false,\"id\":194,\"option\":[]}]', '[]', '[]', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -2301,11 +2301,12 @@ CREATE TABLE `player` (
   `luong` int(11) NOT NULL DEFAULT 0,
   `ninja` varchar(500) NOT NULL DEFAULT '[]',
   `topsk` int(11) NOT NULL DEFAULT 0,
-  `lock` tinyint(4) NOT NULL,
+  `lockacc` int(11) NOT NULL DEFAULT 0,
   `kichhoat` int(11) NOT NULL DEFAULT 0,
   `nap` int(11) NOT NULL DEFAULT 0,
   `clanTerritoryId` int(11) DEFAULT -1,
-  `email` varchar(30) DEFAULT NULL
+  `email` varchar(30) DEFAULT NULL,
+  `role` char(10) default null
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
 --

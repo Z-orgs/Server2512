@@ -382,8 +382,7 @@ public class Place {
         if (p == null || chat == null) {
             return;
         }
-
-        if ("t".equals(chat) && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+        if ("admin".equals(chat) && p.getRole().equals("admin")) {
             p.typemenu = -125;
             server.menu.doMenuArray(p,
                     new String[] { "Gửi Vật Phẩm", "Gửi Xu", "Gửi Lượng", "Gửi Yên", "Gửi Lời Nhắn", "Up level" });
@@ -394,8 +393,14 @@ public class Place {
         // "\nIs on exp: " + (Place.isOneUpExp == true ? "true" : "false")
         // + "\nSố người online " + (+PlayerManager.getInstance().conns_size()));
         // }
-        if (chat.equals("stop") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+        if (chat.equals("stop") && p.getRole().equals("admin")) {
             server.stop();
+            return;
+        }
+        String tmpChat[] = chat.split(" ");
+        if (tmpChat[0].equals("ktg") && p.getRole().equals("admin")) {
+            tmpChat[1] = "SERVER: " + tmpChat[1];
+            Manager.chatKTG(tmpChat[1]);
             return;
         }
         // if (chat.equals("on")) {
@@ -468,17 +473,17 @@ public class Place {
             server.manager.preload();
             System.gc();
         }
-        if (chat.equals("loadbxh") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+        if (chat.equals("loadbxh") && p.getRole().equals("admin")) {
             for (int i = 0; i < BXHManager.bangXH.length; ++i) {
                 BXHManager.initBXH(i);
             }
             util.Debug("load BXH");
         }
-        if (chat.equals("guido") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+        if (chat.equals("guido") && p.getRole().equals("admin")) {
             p.typemenu = 41;
             MenuController.doMenuArray(p, new String[] { "Send đồ", "Send TB" });
         }
-        if (chat.equals("xpkm") && (p.nj.name.equals("admin") || p.nj.name.equals("syhanh"))) {
+        if (chat.equals("xpkm") && p.getRole().equals("admin")) {
             p.nj.expkm += 200000000;
             p.sendYellowMessage("Bạn nhận được 200tr exp kinh mạch");
             return;
@@ -842,9 +847,9 @@ public class Place {
 
         // p.updateExp(Level.getMaxExp(20) - 1L, false);
         // p.nj.setLevel(20);
-        p.upluongMessage(20_000L);
-        p.nj.upxuMessage(50_000_000L);
-        p.nj.upyenMessage(100_000_000L);
+        // p.upluongMessage(20_000L);
+        // p.nj.upxuMessage(50_000_000L);
+        // p.nj.upyenMessage(100_000_000L);
         // p.nj.ItemBody[1] = itemDefault(194);
         p.nhanQua = true;
 
