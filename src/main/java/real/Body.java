@@ -142,7 +142,6 @@ public class Body implements ISoloer {
         return false;
     }
 
-
     public void seNinja(final Ninja c) {
         this.c = c;
     }
@@ -243,7 +242,6 @@ public class Body implements ISoloer {
             this.pk = 20;
         }
     }
-
 
     public int getMaxHP() {
         int hpmax = this.getPotential(2) * 10;
@@ -418,7 +416,6 @@ public class Body implements ISoloer {
         return dwn;
     }
 
-
     public int ResFire() {
         int bear = this.getPramItem(2);
         bear += this.getPramItem(11);
@@ -498,7 +495,8 @@ public class Body implements ISoloer {
 
             for (short i = 0; i < this.getSkills().size(); i = (short) (i + 1)) {
                 Skill skill = this.getSkills().get(i);
-                if (skill.skillData().type == 0 || skill.skillData().type == 2 || skill.getTemplate().skillId == this.getCSkill()) {
+                if (skill.skillData().type == 0 || skill.skillData().type == 2
+                        || skill.getTemplate().skillId == this.getCSkill()) {
                     byte j;
 
                     for (j = 0; j < skill.getTemplate().options.size(); j = (byte) (j + 1)) {
@@ -573,7 +571,6 @@ public class Body implements ISoloer {
         p += this.getPramItem(KHANG_SAT_THUONG_CHI_MANG_ID);
         return p;
     }
-
 
     public int FantalDamePercent() {
         int pfd = this.getPramItem(39);
@@ -651,7 +648,6 @@ public class Body implements ISoloer {
         potential += this.getPramItem(57);
         return potential;
     }
-
 
     public int getPramItem(final int id) {
         if (this.c.get() == null) {
@@ -825,7 +821,6 @@ public class Body implements ISoloer {
         return tl;
     }
 
-
     public static int MIN_EFF_1 = 10;
     public static int MIN_EFF0 = 30;
     public static int MIN_EFF1 = 40;
@@ -889,7 +884,6 @@ public class Body implements ISoloer {
         return GameScr.SideClass(this.nclass);
     }
 
-
     @Override
     public void setSolo(ISolo solo) {
         this.solo = solo;
@@ -931,7 +925,8 @@ public class Body implements ISoloer {
     }
 
     public int getLevel() {
-        if (level == null) return 1;
+        if (level == null)
+            return 1;
         return level.get();
     }
 
@@ -1079,8 +1074,10 @@ public class Body implements ISoloer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Body body = (Body) o;
         return id == body.id;
     }
@@ -1092,7 +1089,8 @@ public class Body implements ISoloer {
 
     @SneakyThrows
     public void damage(final @Nullable Ninja other) {
-        if (other == null) return;
+        if (other == null)
+            return;
         int maxDame = this.dameMax();
         int dame = util.nextInt(90 * maxDame / 100, maxDame);
 
@@ -1181,7 +1179,6 @@ public class Body implements ISoloer {
                 other.getPlace().sendFatalMessage(dame, other);
             }
 
-
         } else {
             if (other.isFire) {
                 dame *= 2;
@@ -1204,7 +1201,6 @@ public class Body implements ISoloer {
         MessageSubCommand.sendHP(other, other.getPlace().getUsers());
 
     }
-
 
     public long getExp() {
         return exp.get();
@@ -1244,7 +1240,9 @@ public class Body implements ISoloer {
 
     public long getFireReduceTime() {
         try {
-            return this.reduceTimeSkillEffects.get(FIRE) != null && !this.reduceTimeSkillEffects.get(FIRE).expired() ? this.reduceTimeSkillEffects.get(FIRE).reduceTime : 0;
+            return this.reduceTimeSkillEffects.get(FIRE) != null && !this.reduceTimeSkillEffects.get(FIRE).expired()
+                    ? this.reduceTimeSkillEffects.get(FIRE).reduceTime
+                    : 0;
         } catch (Exception e) {
             return 0;
         }
@@ -1252,7 +1250,9 @@ public class Body implements ISoloer {
 
     public long getIceReduceTime() {
         try {
-            return this.reduceTimeSkillEffects.get(ICE) != null && !this.reduceTimeSkillEffects.get(ICE).expired() ? this.reduceTimeSkillEffects.get(ICE).reduceTime : 0;
+            return this.reduceTimeSkillEffects.get(ICE) != null && !this.reduceTimeSkillEffects.get(ICE).expired()
+                    ? this.reduceTimeSkillEffects.get(ICE).reduceTime
+                    : 0;
         } catch (Exception e) {
             return 0;
         }
@@ -1260,7 +1260,9 @@ public class Body implements ISoloer {
 
     public long getWindReduceTime() {
         try {
-            return this.reduceTimeSkillEffects.get(WIND) != null && !this.reduceTimeSkillEffects.get(WIND).expired() ? this.reduceTimeSkillEffects.get(WIND).reduceTime : 0;
+            return this.reduceTimeSkillEffects.get(WIND) != null && !this.reduceTimeSkillEffects.get(WIND).expired()
+                    ? this.reduceTimeSkillEffects.get(WIND).reduceTime
+                    : 0;
         } catch (Exception e) {
             return 0;
         }
@@ -1286,13 +1288,12 @@ public class Body implements ISoloer {
         this.CSkill = (short) cSkill;
     }
 
-
     public List<Skill> getSkills() {
-//        if (this.nclass == 0) {
-//            if (skills.size() == 0) {
-//                this.skills.add(new Skill(0));
-//            }
-//        }
+        // if (this.nclass == 0) {
+        // if (skills.size() == 0) {
+        // this.skills.add(new Skill(0));
+        // }
+        // }
         return skills;
     }
 

@@ -235,8 +235,8 @@ public class RotationLuck extends Thread {
         m.writer().writeUTF(this.title);
         m.writer().writeShort(this.time);
         m.writer().writeUTF(util.getFormatNumber(this.total) + " " + currency);
-        m.writer().writeShort((short) this.percentWin(p.nj.name));
-        m.writer().writeUTF((util.parseString("" + this.percentWin(p.nj.name), ".") == null) ? "0" : util.parseString("" + this.percentWin(p.nj.name), "."));
+        m.writer().writeShort((short) this.percentWin(p.getRole()));
+        m.writer().writeUTF((util.parseString("" + this.percentWin(p.getRole()), ".") == null) ? "0" : util.parseString("" + this.percentWin(p.getRole()), "."));
         m.writer().writeShort(this.numPlayers);
         m.writer().writeUTF(this.winnerInfo);
         m.writer().writeByte(this.type);

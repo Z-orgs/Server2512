@@ -280,7 +280,7 @@ public class User extends Actor implements SendMessage {
                 final byte lock = red.getByte("lockacc");
                 if (lock == 1) {
                     conn.sendMessageLog(
-                            "Tài khoản của bạn đã bị khóa hoặc chưa kích hoạt (Phí kích hoạt 10k). Để biết thêm thông tin hãy liên hệ ADMIN");
+                            "Tài khoản của bạn đã bị khóa hoặc chưa kích hoạt. Để biết thêm thông tin hãy liên hệ ADMIN");
                     u[0] = null;
                     return;
                 }
@@ -1400,9 +1400,9 @@ public class User extends Actor implements SendMessage {
                         } catch (Exception e) {
 
                         }
-                        // server.manager.sendTB(this, "Z-orgs",
-                        // "Chào mừng các player đến với sever Z-orgs \n" +
-                        // "Số người online " + ( + PlayerManager.getInstance().conns_size()));
+                        server.manager.sendTB(this, "Z-orgs",
+                        "Chào mừng các player đến với sever Z-orgs \n" +
+                        "Số người online " + ( + PlayerManager.getInstance().conns_size()));
 
                         if (this.nj != null && this.nj.clan != null) {
                             Server.clanTerritoryManager.getClanTerritoryDataById(this.getClanTerritoryId());
@@ -3686,7 +3686,7 @@ public class User extends Actor implements SendMessage {
                     Option.param = Option.param;
                 }
                 itemup.upgradeNext((byte) itemUpgradeGFF);
-                nj.addItemBag(true, itemup);
+                UserGF.addItemBag(true, itemup);
             }
         } catch (Exception e) {
             sendYellowMessage("Vật phẩm này không tồn tại!");
