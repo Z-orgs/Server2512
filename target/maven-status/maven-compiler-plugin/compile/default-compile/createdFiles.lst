@@ -72,7 +72,6 @@ real\Actor.class
 patch\battle\GBattle.class
 patch\candybattle\CandyBattle$State.class
 patch\tournament\Tournament$RegisterResult.class
-Reader.class
 patch\interfaces\ISoloer.class
 tasks\TaskList.class
 server\Controller.class
