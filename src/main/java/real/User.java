@@ -1400,9 +1400,9 @@ public class User extends Actor implements SendMessage {
                         } catch (Exception e) {
 
                         }
-                        server.manager.sendTB(this, "Z-orgs",
-                        "Chào mừng các player đến với sever Z-orgs \n" +
-                        "Số người online " + ( + PlayerManager.getInstance().conns_size()));
+                        server.manager.sendTB(this, "2512",
+                                "Chào mừng các player đến với sever 2512 \n" +
+                                        "Số người online " + (+PlayerManager.getInstance().conns_size()));
 
                         if (this.nj != null && this.nj.clan != null) {
                             Server.clanTerritoryManager.getClanTerritoryDataById(this.getClanTerritoryId());
@@ -1506,8 +1506,8 @@ public class User extends Actor implements SendMessage {
         final byte gender = m.reader().readByte();
         final byte head = m.reader().readByte();
         m.cleanup();
-        if (!CheckString(name, "^[a-zA-Z0-9]+$") || name.length() < 5 || name.length() > 15) {
-            this.session.sendMessageLog("Tên nhân chỉ đồng ý các ký tự a-z,0-9 và chiều dài từ 5 đến 15 ký tự");
+        if (!CheckString(name, "^[a-zA-Z0-9]+$") || name.length() < 3 || name.length() > 20) {
+            this.session.sendMessageLog("Tên nhân chỉ đồng ý các ký tự a-z,0-9 và chiều dài từ 3 đến 20 ký tự");
             return;
         }
         if (this.sortNinja[0] != null) {
