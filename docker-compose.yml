@@ -1,0 +1,10 @@
+services:
+    mysql:
+        image: mysql:oracle
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_DATABASE: nso
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - ./data/mysql:/var/lib/mysql
