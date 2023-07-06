@@ -1,4 +1,13 @@
 services:
+    server2512:
+        image: server2512
+        restart: always
+        ports:
+          - 14444:14444
+        depends_on:
+            - mysql
+        networks:
+            - nso
     mysql:
         image: mysql:oracle
         ports:
@@ -8,3 +17,7 @@ services:
             MYSQL_ROOT_PASSWORD: root
         volumes:
             - ./data/mysql:/var/lib/mysql
+        networks:
+            - nso
+networks:
+  nso:

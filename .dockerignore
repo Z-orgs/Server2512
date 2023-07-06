@@ -1,0 +1,4 @@
+# Ignore unnecessary files for Docker image build
+/target/
+/.mvn/
+.DS_Store

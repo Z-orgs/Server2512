@@ -391,7 +391,7 @@ public class Manager {
 
 
         MAX_CLIENT_PER_SOCKET = Short.parseShort(configMap.get("max-Client-Per-Socket"));
-        SQLManager.create(host, mysql_database, mysql_user, mysql_pass);
+        SQLManager.create(mysql_host, mysql_database, mysql_user, mysql_pass);
 
     }
     
