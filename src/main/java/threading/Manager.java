@@ -354,12 +354,14 @@ public class Manager {
             this.mysql_host = "localhost";
         }
         if (configMap.containsKey("mysql-user")) {
-            this.mysql_user = configMap.get("mysql-user");
+            this.mysql_user = System.getenv("USERNAME");
+            // this.mysql_user = configMap.get("mysql-user");
         } else {
             this.mysql_user = "root";
         }
         if (configMap.containsKey("mysql-password")) {
-            this.mysql_pass = configMap.get("mysql-password");
+            this.mysql_pass = System.getenv("PASSWORD");
+            // this.mysql_pass = configMap.get("mysql-password");
         } else {
             this.mysql_pass = "";
         }
