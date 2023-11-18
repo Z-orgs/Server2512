@@ -33,25 +33,16 @@ import static tasks.TaskList.taskTemplates;
 public class Ninja extends Body implements TeamBattle, IGlobalBattler {
 
     public boolean isTSMP = false;
-    private byte taskId;
     public byte gender;
     public int xu;
     public int xuBox;
     public int yen;
     public int maxluggage;
-    protected byte levelBag;
     public int mapType;
     public int mapLTD;
-    private int mapid;
     public int mobAtk;
     public long eff5buff;
     public byte type;
-    protected boolean isTrade;
-    protected int rqTradeId;
-    protected int tradeId;
-    protected int tradeCoin;
-    protected long tradeDelay;
-    protected byte tradeLock;
     public byte denbu;
     public byte quacap10 = 0;
     public byte quacap20 = 0;
@@ -65,8 +56,6 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     public int nCave;
     public int pointCave;
     public int useCave;
-    protected int bagCaveMax;
-    protected short itemIDCaveMax;
     public int requestclan;
     public long deleyRequestClan;
     public long delayEffect;
@@ -76,7 +65,6 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     public int taThuCount;
     public long lastTimeMove = -1;
     public volatile boolean isBusy = false;
-    private short taskIndex = 0;
     public short taskCount;
     public boolean isNpc = false;
     public boolean addCuuSat;
@@ -84,7 +72,6 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     public int lvkm;
     public long expkm;
     public int vuixuan;
-
     @Nullable
     public CandyBattle candyBattle;
     @NotNull
@@ -100,28 +87,35 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
     @NotNull
     public Item[] ItemBox;
     @NotNull
-    protected List<@NotNull Friend> friend;
-    @NotNull
-    protected List<@NotNull Byte> tradeIdItem;
-    @NotNull
     public Date newlogin;
     @Nullable
     public CloneChar clone;
     @Nullable
-    private TournamentData tournamentData;
-    @Nullable
     public BattleData battleData;
+    protected byte levelBag;
+    protected boolean isTrade;
+    protected int rqTradeId;
+    protected int tradeId;
+    protected int tradeCoin;
+    protected long tradeDelay;
+    protected byte tradeLock;
+    protected int bagCaveMax;
+    protected short itemIDCaveMax;
+    @NotNull
+    protected List<@NotNull Friend> friend;
+    @NotNull
+    protected List<@NotNull Byte> tradeIdItem;
+    private byte taskId;
+    private int mapid;
+    private short taskIndex = 0;
+    @Nullable
+    private TournamentData tournamentData;
     @NotNull
     private TaskOrder[] tasks = new TaskOrder[2];
     @Nullable
     private Battle battle;
     @Nullable
     private ClanBattle clanBattle;
-
-    @Nullable
-    public TournamentData getTournamentData() {
-        return tournamentData;
-    }
 
     protected Ninja() {
 
@@ -176,6 +170,208 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
 
     }
 
+    @NotNull
+    protected static Ninja setup(final @NotNull User p, final @NotNull String name) {
+        val nj = getNinja(name);
+        nj.p = p;
+        p.nj = nj;
+        return nj;
+    }
+
+    @NotNull
+    public static Ninja getNinja(String name) {
+        final Ninja nj = new Ninja();
+        SQLManager.executeQuery("SELECT * FROM `ninja` WHERE `name`LIKE'" + name + "';", (red) -> {
+            try {
+                if (red != null && red.first()) {
+                    nj.id = red.getInt("id");
+                    nj.name = red.getString("name");
+                    nj.gender = red.getByte("gender");
+                    nj.head = red.getByte("head");
+                    nj.speed = red.getByte("speed");
+                    nj.nclass = red.getByte("class");
+                    nj.updatePpoint(red.getShort("ppoint"));
+                    nj.setPotential0(red.getShort("potential0"));
+                    nj.setPotential1(red.getShort("potential1"));
+                    nj.setPotential2(red.getInt("potential2"));
+                    nj.setPotential3(red.getInt("potential3"));
+                    nj.setSpoint(red.getShort("spoint"));
+                    nj.setTaskId(red.getByte("taskId"));
+                    nj.taskCount = red.getShort("taskCount");
+                    nj.setTaskIndex(red.getShort("taskIndex"));
+
+                    JSONArray jar = (JSONArray) JSONValue.parse(red.getString("skill"));
+                    if (jar != null) {
+                        for (byte b = 0; b < jar.size(); ++b) {
+                            final JSONObject job = (JSONObject) jar.get((int) b);
+                            final Skill skill = new Skill();
+                            skill.id = Byte.parseByte(job.get((Object) "id").toString());
+                            skill.point = Byte.parseByte(job.get((Object) "point").toString());
+                            nj.getSkills().add(skill);
+                        }
+                    }
+                    JSONArray jarr2 = (JSONArray) JSONValue.parse(red.getString("KSkill"));
+                    nj.KSkill = new byte[jarr2.size()];
+                    for (byte j = 0; j < nj.KSkill.length; ++j) {
+                        nj.KSkill[j] = Byte.parseByte(jarr2.get((int) j).toString());
+                    }
+                    jarr2 = (JSONArray) JSONValue.parse(red.getString("OSkill"));
+                    nj.OSkill = new byte[jarr2.size()];
+                    for (byte j = 0; j < nj.OSkill.length; ++j) {
+                        nj.OSkill[j] = Byte.parseByte(jarr2.get((int) j).toString());
+                    }
+                    nj.setCSkill(Byte.parseByte(red.getString("CSkill")));
+                    nj.setLevel(red.getShort("level"));
+                    nj.setExp(red.getLong("exp"));
+                    nj.expdown = red.getLong("expdown");
+                    nj.pk = red.getByte("pk");
+                    nj.xu = red.getInt("xu");
+                    nj.xuBox = red.getInt("xuBox");
+                    nj.yen = red.getInt("yen");
+                    nj.lvkm = red.getInt("lvkm");
+                    nj.expkm = red.getLong("expkm");
+                    nj.maxluggage = red.getInt("maxluggage");
+                    if (nj.maxluggage > 120) {
+                        nj.maxluggage = 120;
+                    }
+                    nj.levelBag = red.getByte("levelBag");
+                    nj.ItemBag = new Item[nj.maxluggage];
+                    jar = (JSONArray) JSONValue.parse(red.getString("ItemBag"));
+                    if (jar != null) {
+                        for (byte j = 0; j < jar.size(); ++j) {
+                            final JSONObject job2 = (JSONObject) jar.get((int) j);
+                            final byte index = Byte.parseByte(job2.get((Object) "index").toString());
+                            nj.ItemBag[index] = ItemData.parseItem(jar.get((int) j).toString());
+                        }
+                    }
+                    nj.ItemBox = new Item[30];
+                    jar = (JSONArray) JSONValue.parse(red.getString("ItemBox"));
+                    if (jar != null) {
+                        for (byte j = 0; j < jar.size(); ++j) {
+                            final JSONObject job2 = (JSONObject) jar.get((int) j);
+                            final byte index = Byte.parseByte(job2.get((Object) "index").toString());
+                            nj.ItemBox[index] = ItemData.parseItem(jar.get((int) j).toString());
+                        }
+                    }
+                    nj.ItemBody = new Item[32];
+                    jar = (JSONArray) JSONValue.parse(red.getString("ItemBody"));
+                    if (jar != null) {
+                        for (byte j = 0; j < jar.size(); ++j) {
+                            final JSONObject job2 = (JSONObject) jar.get((int) j);
+                            final byte index = Byte.parseByte(job2.get((Object) "index").toString());
+                            nj.ItemBody[index] = ItemData.parseItem(jar.get((int) j).toString());
+                        }
+                    }
+                    nj.ItemMounts = new Item[5];
+                    jar = (JSONArray) JSONValue.parse(red.getString("ItemMounts"));
+                    if (jar != null) {
+                        for (byte j = 0; j < jar.size(); ++j) {
+                            final JSONObject job2 = (JSONObject) jar.get((int) j);
+                            final byte index = Byte.parseByte(job2.get((Object) "index").toString());
+                            nj.ItemMounts[index] = ItemData.parseItem(jar.get((int) j).toString());
+                        }
+                    }
+                    try {
+                        nj.friend = Mapper.converter.readValue(red.getString("friend"),
+                                new TypeReference<List<Friend>>() {
+                                });
+                    } catch (Exception e) {
+                        System.out.println("PARSE FRIEND ERROR");
+                    }
+
+                    jar = (JSONArray) JSONValue.parse(red.getString("site"));
+                    nj.setMapid(util.UnsignedByte((byte) Integer.parseInt(jar.get(0).toString())));
+                    nj.x = Short.parseShort(jar.get(1).toString());
+                    nj.y = Short.parseShort(jar.get(2).toString());
+                    nj.mapLTD = Short.parseShort(jar.get(3).toString());
+                    nj.mapType = Short.parseShort(jar.get(4).toString());
+                    jar = (JSONArray) JSONValue.parse(red.getString("effect"));
+                    try {
+                        val r = Mapper.converter.readValue(red.getString("tasks"), TaskOrder[].class);
+                        nj.setTasks(r);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        nj.taThuCount = red.getInt("tathucount");
+                        nj.nvhnCount = red.getInt("nvhncount");
+                        nj.get().setKyNangSo(red.getInt("kynangso"));
+                        nj.get().setTiemNangSo(red.getInt("tiemnangso"));
+                        nj.get().setBanghoa(red.getInt("banghoa"));
+                        nj.get().setPhongLoi(red.getInt("phongloi"));
+                        nj.battleData = Mapper.converter.readValue(red.getString("chientruong"), BattleData.class);
+                    } catch (Exception e) {
+                        nj.battleData = new BattleData();
+                    }
+
+                    if (nj.getTasks().length != 2) {
+                        nj.setTasks(new TaskOrder[2]);
+                    }
+
+                    try {
+                        if (jar != null) {
+                            for (int i = 0; i < jar.size(); i++) {
+                                val effect = Effect.fromJSONObject((JSONObject) jar.get(i));
+                                nj.addEffect(effect);
+                            }
+                        }
+                    } catch (Exception e) {
+
+                    }
+
+                    jar = (JSONArray) JSONValue.parse(red.getString("clan"));
+                    if (jar == null || jar.size() != 2) {
+                        nj.clan = new ClanMember("", nj);
+                    } else {
+                        final String clanName = jar.get(0).toString();
+                        final ClanManager clan = ClanManager.getClanByName(clanName);
+                        if (clan == null || clan.getMem(name) == null) {
+                            nj.clan = new ClanMember("", nj);
+                        } else {
+                            nj.clan = clan.getMem(name);
+                            nj.clan.nClass = nj.nclass;
+                            nj.clan.clevel = nj.getLevel();
+                        }
+                        nj.clan.pointClan = Integer.parseInt(jar.get(1).toString());
+                    }
+                    nj.denbu = red.getByte("denbu");
+                    nj.quacap10 = red.getByte("quacap10");
+                    nj.quacap20 = red.getByte("quacap20");
+                    nj.quacap30 = red.getByte("quacap30");
+                    nj.quacap40 = red.getByte("quacap40");
+                    nj.quacap50 = red.getByte("quacap50");
+                    nj.topSK = red.getInt("topSK");
+                    nj.topSK1 = red.getInt("topSK1");
+                    nj.vuixuan = red.getInt("vuixuan");
+                    nj.newlogin = util.getDate(red.getString("newlogin"));
+                    nj.ddClan = red.getBoolean("ddClan");
+                    nj.caveID = red.getInt("caveID");
+                    nj.nCave = red.getInt("nCave");
+                    nj.pointCave = red.getInt("pointCave");
+                    nj.useCave = red.getInt("useCave");
+                    nj.bagCaveMax = red.getInt("bagCaveMax");
+                    nj.itemIDCaveMax = red.getShort("itemIDCaveMax");
+                    nj.exptype = red.getByte("exptype");
+                    nj.isHuman = true;
+                    nj.isNhanban = false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        return nj;
+    }
+
+    @Nullable
+    public TournamentData getTournamentData() {
+        return tournamentData;
+    }
+
+    public void setTournamentData(TournamentData tournament) {
+        this.tournamentData = tournament;
+    }
+
     public boolean hasItemInBag(int id) {
         for (Item item : this.ItemBag) {
             if (item != null && item.id == id) {
@@ -196,6 +392,7 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
 
     public byte getAvailableBag() {
         byte num = 0;
+        System.out.println("Itembag: " + this.ItemBag);
         for (int i = 0; i < this.ItemBag.length; ++i) {
             if (this.ItemBag[i] == null) {
                 ++num;
@@ -575,199 +772,6 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
             this.uplevel(x);
         } catch (Exception ex) {
         }
-    }
-
-    @NotNull
-    protected static Ninja setup(final @NotNull User p, final @NotNull String name) {
-        val nj = getNinja(name);
-        nj.p = p;
-        p.nj = nj;
-        return nj;
-    }
-
-    @NotNull
-    public static Ninja getNinja(String name) {
-        final Ninja nj = new Ninja();
-        SQLManager.executeQuery("SELECT * FROM `ninja` WHERE `name`LIKE'" + name + "';", (red) -> {
-            try {
-                if (red != null && red.first()) {
-                    nj.id = red.getInt("id");
-                    nj.name = red.getString("name");
-                    nj.gender = red.getByte("gender");
-                    nj.head = red.getByte("head");
-                    nj.speed = red.getByte("speed");
-                    nj.nclass = red.getByte("class");
-                    nj.updatePpoint(red.getShort("ppoint"));
-                    nj.setPotential0(red.getShort("potential0"));
-                    nj.setPotential1(red.getShort("potential1"));
-                    nj.setPotential2(red.getInt("potential2"));
-                    nj.setPotential3(red.getInt("potential3"));
-                    nj.setSpoint(red.getShort("spoint"));
-                    nj.setTaskId(red.getByte("taskId"));
-                    nj.taskCount = red.getShort("taskCount");
-                    nj.setTaskIndex(red.getShort("taskIndex"));
-
-                    JSONArray jar = (JSONArray) JSONValue.parse(red.getString("skill"));
-                    if (jar != null) {
-                        for (byte b = 0; b < jar.size(); ++b) {
-                            final JSONObject job = (JSONObject) jar.get((int) b);
-                            final Skill skill = new Skill();
-                            skill.id = Byte.parseByte(job.get((Object) "id").toString());
-                            skill.point = Byte.parseByte(job.get((Object) "point").toString());
-                            nj.getSkills().add(skill);
-                        }
-                    }
-                    JSONArray jarr2 = (JSONArray) JSONValue.parse(red.getString("KSkill"));
-                    nj.KSkill = new byte[jarr2.size()];
-                    for (byte j = 0; j < nj.KSkill.length; ++j) {
-                        nj.KSkill[j] = Byte.parseByte(jarr2.get((int) j).toString());
-                    }
-                    jarr2 = (JSONArray) JSONValue.parse(red.getString("OSkill"));
-                    nj.OSkill = new byte[jarr2.size()];
-                    for (byte j = 0; j < nj.OSkill.length; ++j) {
-                        nj.OSkill[j] = Byte.parseByte(jarr2.get((int) j).toString());
-                    }
-                    nj.setCSkill(Byte.parseByte(red.getString("CSkill")));
-                    nj.setLevel(red.getShort("level"));
-                    nj.setExp(red.getLong("exp"));
-                    nj.expdown = red.getLong("expdown");
-                    nj.pk = red.getByte("pk");
-                    nj.xu = red.getInt("xu");
-                    nj.xuBox = red.getInt("xuBox");
-                    nj.yen = red.getInt("yen");
-                    nj.lvkm = red.getInt("lvkm");
-                    nj.expkm = red.getLong("expkm");
-                    nj.maxluggage = red.getInt("maxluggage");
-                    if (nj.maxluggage > 120) {
-                        nj.maxluggage = 120;
-                    }
-                    nj.levelBag = red.getByte("levelBag");
-                    nj.ItemBag = new Item[nj.maxluggage];
-                    jar = (JSONArray) JSONValue.parse(red.getString("ItemBag"));
-                    if (jar != null) {
-                        for (byte j = 0; j < jar.size(); ++j) {
-                            final JSONObject job2 = (JSONObject) jar.get((int) j);
-                            final byte index = Byte.parseByte(job2.get((Object) "index").toString());
-                            nj.ItemBag[index] = ItemData.parseItem(jar.get((int) j).toString());
-                        }
-                    }
-                    nj.ItemBox = new Item[30];
-                    jar = (JSONArray) JSONValue.parse(red.getString("ItemBox"));
-                    if (jar != null) {
-                        for (byte j = 0; j < jar.size(); ++j) {
-                            final JSONObject job2 = (JSONObject) jar.get((int) j);
-                            final byte index = Byte.parseByte(job2.get((Object) "index").toString());
-                            nj.ItemBox[index] = ItemData.parseItem(jar.get((int) j).toString());
-                        }
-                    }
-                    nj.ItemBody = new Item[32];
-                    jar = (JSONArray) JSONValue.parse(red.getString("ItemBody"));
-                    if (jar != null) {
-                        for (byte j = 0; j < jar.size(); ++j) {
-                            final JSONObject job2 = (JSONObject) jar.get((int) j);
-                            final byte index = Byte.parseByte(job2.get((Object) "index").toString());
-                            nj.ItemBody[index] = ItemData.parseItem(jar.get((int) j).toString());
-                        }
-                    }
-                    nj.ItemMounts = new Item[5];
-                    jar = (JSONArray) JSONValue.parse(red.getString("ItemMounts"));
-                    if (jar != null) {
-                        for (byte j = 0; j < jar.size(); ++j) {
-                            final JSONObject job2 = (JSONObject) jar.get((int) j);
-                            final byte index = Byte.parseByte(job2.get((Object) "index").toString());
-                            nj.ItemMounts[index] = ItemData.parseItem(jar.get((int) j).toString());
-                        }
-                    }
-                    try {
-                        nj.friend = Mapper.converter.readValue(red.getString("friend"),
-                                new TypeReference<List<Friend>>() {
-                                });
-                    } catch (Exception e) {
-                        System.out.println("PARSE FRIEND ERROR");
-                    }
-
-                    jar = (JSONArray) JSONValue.parse(red.getString("site"));
-                    nj.setMapid(util.UnsignedByte((byte) Integer.parseInt(jar.get(0).toString())));
-                    nj.x = Short.parseShort(jar.get(1).toString());
-                    nj.y = Short.parseShort(jar.get(2).toString());
-                    nj.mapLTD = Short.parseShort(jar.get(3).toString());
-                    nj.mapType = Short.parseShort(jar.get(4).toString());
-                    jar = (JSONArray) JSONValue.parse(red.getString("effect"));
-                    try {
-                        val r = Mapper.converter.readValue(red.getString("tasks"), TaskOrder[].class);
-                        nj.setTasks(r);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        nj.taThuCount = red.getInt("tathucount");
-                        nj.nvhnCount = red.getInt("nvhncount");
-                        nj.get().setKyNangSo(red.getInt("kynangso"));
-                        nj.get().setTiemNangSo(red.getInt("tiemnangso"));
-                        nj.get().setBanghoa(red.getInt("banghoa"));
-                        nj.get().setPhongLoi(red.getInt("phongloi"));
-                        nj.battleData = Mapper.converter.readValue(red.getString("chientruong"), BattleData.class);
-                    } catch (Exception e) {
-                        nj.battleData = new BattleData();
-                    }
-
-                    if (nj.getTasks().length != 2) {
-                        nj.setTasks(new TaskOrder[2]);
-                    }
-
-                    try {
-                        if (jar != null) {
-                            for (int i = 0; i < jar.size(); i++) {
-                                val effect = Effect.fromJSONObject((JSONObject) jar.get(i));
-                                nj.addEffect(effect);
-                            }
-                        }
-                    } catch (Exception e) {
-
-                    }
-
-                    jar = (JSONArray) JSONValue.parse(red.getString("clan"));
-                    if (jar == null || jar.size() != 2) {
-                        nj.clan = new ClanMember("", nj);
-                    } else {
-                        final String clanName = jar.get(0).toString();
-                        final ClanManager clan = ClanManager.getClanByName(clanName);
-                        if (clan == null || clan.getMem(name) == null) {
-                            nj.clan = new ClanMember("", nj);
-                        } else {
-                            nj.clan = clan.getMem(name);
-                            nj.clan.nClass = nj.nclass;
-                            nj.clan.clevel = nj.getLevel();
-                        }
-                        nj.clan.pointClan = Integer.parseInt(jar.get(1).toString());
-                    }
-                    nj.denbu = red.getByte("denbu");
-                    nj.quacap10 = red.getByte("quacap10");
-                    nj.quacap20 = red.getByte("quacap20");
-                    nj.quacap30 = red.getByte("quacap30");
-                    nj.quacap40 = red.getByte("quacap40");
-                    nj.quacap50 = red.getByte("quacap50");
-                    nj.topSK = red.getInt("topSK");
-                    nj.topSK1 = red.getInt("topSK1");
-                    nj.vuixuan = red.getInt("vuixuan");
-                    nj.newlogin = util.getDate(red.getString("newlogin"));
-                    nj.ddClan = red.getBoolean("ddClan");
-                    nj.caveID = red.getInt("caveID");
-                    nj.nCave = red.getInt("nCave");
-                    nj.pointCave = red.getInt("pointCave");
-                    nj.useCave = red.getInt("useCave");
-                    nj.bagCaveMax = red.getInt("bagCaveMax");
-                    nj.itemIDCaveMax = red.getShort("itemIDCaveMax");
-                    nj.exptype = red.getByte("exptype");
-                    nj.isHuman = true;
-                    nj.isNhanban = false;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        return nj;
     }
 
     public void flush() {
@@ -1216,16 +1220,12 @@ public class Ninja extends Body implements TeamBattle, IGlobalBattler {
         this.mapid = mapid;
     }
 
-    public void setClanBattle(ClanBattle clanBattle) {
-        this.clanBattle = clanBattle;
-    }
-
     public ClanBattle getClanBattle() {
         return this.clanBattle;
     }
 
-    public void setTournamentData(TournamentData tournament) {
-        this.tournamentData = tournament;
+    public void setClanBattle(ClanBattle clanBattle) {
+        this.clanBattle = clanBattle;
     }
 
     @Override

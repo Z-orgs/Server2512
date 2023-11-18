@@ -47,5 +47,6 @@ buildNumber.properties
 .classpath
 
 data
+.idea
 
 # End of https://www.toptal.com/developers/gitignore/api/maven,java

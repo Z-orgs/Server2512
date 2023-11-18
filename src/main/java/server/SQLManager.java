@@ -36,31 +36,51 @@ public class SQLManager {
         }
     }
 
-    @FunctionalInterface
-    public interface MyConsumer {
-        void accept(ResultSet r) throws Exception;
-    }
-
+    //    public static void executeQuery(@Language("SQL") String query, MyConsumer consumer) {
+//        try (val conn = dataSource.getConnection()) {
+//            try {
+//                consumer.accept(conn.createStatement().executeQuery(query));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        } catch (SQLException e) {
+//
+//            e.printStackTrace();
+//        }
+//    }
     public static void executeQuery(@Language("SQL") String query, MyConsumer consumer) {
         try (val conn = dataSource.getConnection()) {
             try {
-                consumer.accept(conn.createStatement().executeQuery(query));
+                Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                ResultSet resultSet = statement.executeQuery(query);
+                consumer.accept(resultSet);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } catch (SQLException e) {
-
             e.printStackTrace();
         }
     }
 
+    public static synchronized boolean close() {
+        util.Debug("Close connection to database");
+        dataSource.close();
+        return true;
+
+    }
+
+
+    @FunctionalInterface
+    public interface MyConsumer {
+        void accept(ResultSet r) throws Exception;
+    }
 
     public static class DataSource {
         private final HikariDataSource ds;
 
         public DataSource(final String host, final String database, final String user, final String pass) {
             HikariConfig config = new HikariConfig();
-            val connectString ="jdbc:mysql://" + host + "/" + database + "?autoReconnect=true&useSSL=false";
+            val connectString = "jdbc:mysql://" + host + "/" + database + "?autoReconnect=true&useSSL=false";
             System.out.println(connectString);
             config.setJdbcUrl(connectString);
             config.setUsername(user);
@@ -85,14 +105,6 @@ public class SQLManager {
             util.Debug("CLOSE DATASOURCE");
             this.ds.close();
         }
-
-    }
-
-
-    public static synchronized boolean close() {
-        util.Debug("Close connection to database");
-        dataSource.close();
-        return true;
 
     }
 }

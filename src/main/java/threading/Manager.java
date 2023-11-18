@@ -42,25 +42,12 @@ public class Manager {
     public static int MIN_YEN_BOSS;
     public static int MAX_YEN_BOSS;
     public static int TIME_DISCONNECT = 10;
-
-    public int PORT;
     public static String host;
     public static String mysql_host;
     public static String mysql_database;
     public static String mysql_user;
     public static String mysql_pass;
-    private byte vsData;
-    private byte vsMap;
-    private byte vsSkill;
-    private byte vsItem;
-    public byte[][] tasks;
-    private byte[][] maptasks;
-    static Server server;
-    public RotationLuck[] rotationluck;
-    public byte EVENT;
-    public String[] NinjaS;
     public static short MAX_CLIENT;
-
     public static byte MAX_PERCENT = 100;
     public static byte N_YEN;
     public static byte PERCENT_TA_TL = 100;
@@ -70,7 +57,6 @@ public class Manager {
     public static short[] MAP_MOI_ITEM_IDS;
     public static short[] VDMQ_ITEM_IDS;
     public static short[] EMPTY = new short[0];
-
     public static long MIN_TIME_REFRESH_MOB;
     public static long MIN_TIME_REFRESH_BOSS;
     public static short[] BOSS_ITEM_LV45;
@@ -86,10 +72,8 @@ public class Manager {
     public static short[] BOSS_DEFAULT_ITEM;
     public static short[] BOSS_VUI_XUAN;
     public static byte PERCENT_DAME_BOSS;
-
     public static long TIME_DESTROY_MAP;
     public static short N_ITEM_BOSS;
-
     public static short[] ID_FEATURES;
     public static short[] IDS_THUONG_LV70;
     public static short[] IDS_THUONG_LV90;
@@ -97,19 +81,14 @@ public class Manager {
     public static short MULTI_EXP;
     public static short N_THREAD_STOP;
     public static short MAX_CLIENT_PER_SOCKET;
-
     public static short[] MOMENT_REFRESH_BATTLE;
-
     public static short[] LDGT_REWARD_ITEM_ID;
-    
     //Cache
     public static MapCache[] mapCache;
     public static NpcCache[] npcCache;
     public static ItemOptionCache[] iOptionTemplates;
     public static ItemCache[] itemTemplates;
     public static MobCache[] mobCache;
-
-
     /**
      * 0 MIN
      * 1 MAX
@@ -117,7 +96,35 @@ public class Manager {
     public static int[] MIN_MAX_YEN_RUONG_MAY_MAN = new int[2];
     public static int[] MIN_MAX_YEN_RUONG_TINH_SAO = new int[2];
     public static int[] MIN_MAX_YEN_RUONG_MA_QUAI = new int[2];
+    public static long TIME_REFRESH_MOB;
+    public static long TIME_REFRESH_BOSS;
+    public static byte MIN_DA_LV;
+    public static byte N_DA;
+    public static String[] MENU_EVENT_NPC;
+    public static short ID_EVENT_NPC;
+    public static String[] EVENT_NPC_CHAT;
+    public static ByteArrayOutputStream[] cache = new ByteArrayOutputStream[5];
+    static Server server;
 
+    static {
+        Manager.server = Server.getInstance();
+        cache[0] = GameScr.loadFile("res/cache/data.bin");
+        cache[1] = GameScr.loadFile("res/cache/map");
+        cache[2] = GameScr.loadFile("res/cache/skill");
+        cache[3] = GameScr.loadFile("res/cache/item");
+        cache[4] = GameScr.loadFile("res/cache/skillnhanban");
+    }
+
+    public int PORT;
+    public byte[][] tasks;
+    public RotationLuck[] rotationluck;
+    public byte EVENT;
+    public String[] NinjaS;
+    private byte vsData;
+    private byte vsMap;
+    private byte vsSkill;
+    private byte vsItem;
+    private byte[][] maptasks;
 
     public Manager() {
         entrys = new HashMap<>();
@@ -127,6 +134,41 @@ public class Manager {
         preload();
     }
 
+    public static Map getMapid(final int id) {
+        synchronized (Manager.server.getMaps()) {
+            for (short i = 0; i < Manager.server.getMaps().length; ++i) {
+                final Map map = Manager.server.getMapById(i);
+                if (map != null && map.id == id) {
+                    return map;
+                }
+            }
+            return null;
+        }
+    }
+
+    public static void chatKTG(final String chat) throws IOException {
+        final Message m = new Message(-25);
+        m.writer().writeUTF(chat);
+        m.writer().flush();
+        PlayerManager.getInstance().NinjaMessage(m);
+        m.cleanup();
+    }
+
+    public static void serverChat(final String name, final String s) {
+        final Message m = new Message(-21);
+        try {
+            m.writer().writeUTF(name);
+            m.writer().writeUTF(s);
+            m.writer().flush();
+            PlayerManager.getInstance().NinjaMessage(m);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (m != null) {
+                m.cleanup();
+            }
+        }
+    }
 
     public void preload() {
         this.loadConfigFile();
@@ -144,15 +186,6 @@ public class Manager {
         this.loadProperties();
 
     }
-
-    public static long TIME_REFRESH_MOB;
-    public static long TIME_REFRESH_BOSS;
-    public static byte MIN_DA_LV;
-    public static byte N_DA;
-
-    public static String[] MENU_EVENT_NPC;
-    public static short ID_EVENT_NPC;
-    public static String[] EVENT_NPC_CHAT;
 
     private void loadProperties() {
         Properties properties = new Properties();
@@ -263,7 +296,6 @@ public class Manager {
         return token.split("\\,\\s*?");
     }
 
-
     private short[] parseShortArray(String input) {
         val tokens = input.split("\\,\\s*?");
         val result = new short[tokens.length];
@@ -280,19 +312,6 @@ public class Manager {
             result[i] = Integer.parseInt(tokens[i].trim());
         }
         return result;
-    }
-
-
-    public static Map getMapid(final int id) {
-        synchronized (Manager.server.getMaps()) {
-            for (short i = 0; i < Manager.server.getMaps().length; ++i) {
-                final Map map = Manager.server.getMapById(i);
-                if (map != null && map.id == id) {
-                    return map;
-                }
-            }
-            return null;
-        }
     }
 
     @SneakyThrows
@@ -354,14 +373,12 @@ public class Manager {
             this.mysql_host = "localhost";
         }
         if (configMap.containsKey("mysql-user")) {
-            this.mysql_user = System.getenv("USERNAME");
-            // this.mysql_user = configMap.get("mysql-user");
+            this.mysql_user = configMap.get("mysql-user");
         } else {
             this.mysql_user = "root";
         }
         if (configMap.containsKey("mysql-password")) {
-            this.mysql_pass = System.getenv("PASSWORD");
-            // this.mysql_pass = configMap.get("mysql-password");
+            this.mysql_pass = configMap.get("mysql-password");
         } else {
             this.mysql_pass = "";
         }
@@ -396,7 +413,7 @@ public class Manager {
         SQLManager.create(mysql_host, mysql_database, mysql_user, mysql_pass);
 
     }
-    
+
     public void loadCache() {
         final int[] i = {0};
         try {
@@ -427,10 +444,10 @@ public class Manager {
                     npcTemplate.headId = res.getShort("head");
                     npcTemplate.bodyId = res.getShort("body");
                     npcTemplate.legId = res.getShort("leg");
-                    final JSONArray jarr = (JSONArray)JSONValue.parse(res.getString("talk"));
+                    final JSONArray jarr = (JSONArray) JSONValue.parse(res.getString("talk"));
                     npcTemplate.menu = new String[jarr.size()][];
                     for (int j = 0; j < npcTemplate.menu.length; ++j) {
-                        final JSONArray jarr2 = (JSONArray)jarr.get(j);
+                        final JSONArray jarr2 = (JSONArray) jarr.get(j);
                         npcTemplate.menu[j] = new String[jarr2.size()];
                         for (int k2 = 0; k2 < npcTemplate.menu[j].length; ++k2) {
                             npcTemplate.menu[j][k2] = jarr2.get(k2).toString();
@@ -498,13 +515,12 @@ public class Manager {
                 }
                 res.close();
             });
-        }catch (Exception e) {
+        } catch (Exception e) {
             util.Debug("Error i:" + i[0]);
             e.printStackTrace();
             System.exit(0);
         }
     }
-
 
     public void loadDataBase() {
         entrys.clear();
@@ -983,14 +999,6 @@ public class Manager {
         m.cleanup();
     }
 
-    public static void chatKTG(final String chat) throws IOException {
-        final Message m = new Message(-25);
-        m.writer().writeUTF(chat);
-        m.writer().flush();
-        PlayerManager.getInstance().NinjaMessage(m);
-        m.cleanup();
-    }
-
     public void Infochat(final String chat) throws IOException {
         final Message m = new Message(-24);
         m.writer().writeUTF(chat);
@@ -1018,22 +1026,6 @@ public class Manager {
         serverChat(p.nj.name, chat);
     }
 
-    public static void serverChat(final String name, final String s) {
-        final Message m = new Message(-21);
-        try {
-            m.writer().writeUTF(name);
-            m.writer().writeUTF(s);
-            m.writer().flush();
-            PlayerManager.getInstance().NinjaMessage(m);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (m != null) {
-                m.cleanup();
-            }
-        }
-    }
-
     public void sendTB(final User p, final String title, final String s) throws IOException {
         final Message m = new Message(53);
         m.writer().writeUTF(title);
@@ -1057,17 +1049,6 @@ public class Manager {
             }
         }
         Manager.server.setMaps(null);
-    }
-
-    public static ByteArrayOutputStream[] cache = new ByteArrayOutputStream[5];
-
-    static {
-        Manager.server = Server.getInstance();
-        cache[0] = GameScr.loadFile("res/cache/data.bin");
-        cache[1] = GameScr.loadFile("res/cache/map");
-        cache[2] = GameScr.loadFile("res/cache/skill");
-        cache[3] = GameScr.loadFile("res/cache/item");
-        cache[4] = GameScr.loadFile("res/cache/skillnhanban");
     }
 
     public void sendMap(final User p) throws IOException {
@@ -1099,10 +1080,10 @@ public class Manager {
         m.cleanup();
 
     }*/
-    
-    public void createItem(final User p){
+
+    public void createItem(final User p) {
         Message m = new Message(-28);
-        try{
+        try {
             m.writer().writeByte(-119);
             m.writer().writeByte(vsItem);
             m.writer().writeByte(Manager.iOptionTemplates.length);
@@ -1124,10 +1105,9 @@ public class Manager {
             m.writer().flush();
             p.sendMessage(m);
             m.cleanup();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             if (m != null) {
                 m.cleanup();
             }
