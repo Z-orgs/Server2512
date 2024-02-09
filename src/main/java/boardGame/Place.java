@@ -799,8 +799,8 @@ public class Place {
             return;
         }
 
-        p.updateExp(Level.getMaxExp(10) - 1L, false);
-        p.nj.setLevel(10);
+//        p.updateExp(Level.getMaxExp(10) - 1L, false);
+//        p.nj.setLevel(10);
         p.upluongMessage(20_000L);
         p.nj.upxuMessage(50_000_000L);
         p.nj.upyenMessage(100_000_000L);
