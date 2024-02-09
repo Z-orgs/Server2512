@@ -80,7 +80,7 @@ public class SQLManager {
 
         public DataSource(final String host, final String database, final String user, final String pass) {
             HikariConfig config = new HikariConfig();
-            val connectString = "jdbc:mysql://" + host + "/" + database + "?autoReconnect=true&useSSL=false";
+            val connectString = "jdbc:mysql://" + host + "/" + database + "?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true";
             System.out.println(connectString);
             config.setJdbcUrl(connectString);
             config.setUsername(user);
