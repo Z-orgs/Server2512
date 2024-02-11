@@ -6,6 +6,7 @@ import cache.MapCache;
 import cache.MobCache;
 import cache.NpcCache;
 import com.fasterxml.jackson.core.type.TypeReference;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.SneakyThrows;
 import lombok.val;
 import patch.*;
@@ -316,100 +317,68 @@ public class Manager {
 
     @SneakyThrows
     private void loadConfigFile() {
+        Dotenv dotenv = Dotenv.load();
 
-        final byte[] ab = GameScr.loadFile("ninja.conf").toByteArray();
-        if (ab == null) {
-            util.Debug("Config file not found!");
-            System.exit(0);
-        }
-        final String data = new String(ab);
-        final HashMap<String, String> configMap = new HashMap<String, String>();
-        final StringBuilder sbd = new StringBuilder();
-        boolean bo = false;
-        for (int i = 0; i <= data.length(); ++i) {
-            final char es;
-            if (i == data.length() || (es = data.charAt(i)) == '\n') {
-                bo = false;
-                final String sbf = sbd.toString().trim();
-                if (sbf != null && !sbf.equals("") && sbf.charAt(0) != '#') {
-                    final int j = sbf.indexOf(58);
-                    if (j > 0) {
-                        final String key = sbf.substring(0, j).trim();
-                        final String value = sbf.substring(j + 1).trim();
-                        configMap.put(key, value);
-                        util.Debug("config: " + key + "-" + value);
-                    }
-                }
-                sbd.setLength(0);
-            } else {
-                if (es == '#') {
-                    bo = true;
-                }
-                if (!bo) {
-                    sbd.append(es);
-                }
-            }
-        }
-        if (configMap.containsKey("debug")) {
-            util.setDebug(Boolean.parseBoolean(configMap.get("debug")));
+        if (!dotenv.get("DEBUG").equals("")) {
+            util.setDebug(Boolean.parseBoolean(dotenv.get("DEBUG")));
         } else {
             util.setDebug(false);
         }
 
 
-        if (configMap.containsKey("host")) {
-            this.host = configMap.get("host");
+        if (!dotenv.get("HOST").equals("")) {
+            this.host = dotenv.get("HOST");
         } else {
             this.host = "localhost";
         }
-        if (configMap.containsKey("post")) {
-            this.PORT = Short.parseShort(configMap.get("post"));
+        if (!dotenv.get("PORT").equals("")) {
+            this.PORT = Short.parseShort(dotenv.get("PORT"));
         } else {
             this.PORT = 14444;
         }
-        if (configMap.containsKey("mysql-host")) {
-            this.mysql_host = configMap.get("mysql-host");
+        if (!dotenv.get("MYSQL_HOST").equals("")) {
+            this.mysql_host = dotenv.get("MYSQL_HOST");
         } else {
             this.mysql_host = "localhost";
         }
-        if (configMap.containsKey("mysql-user")) {
-            this.mysql_user = configMap.get("mysql-user");
+        if (!dotenv.get("MYSQL_USER").equals("")) {
+            this.mysql_user = dotenv.get("MYSQL_USER");
         } else {
             this.mysql_user = "root";
         }
-        if (configMap.containsKey("mysql-password")) {
-            this.mysql_pass = configMap.get("mysql-password");
+        if (!dotenv.get("MYSQL_PASSWORD").equals("")) {
+            this.mysql_pass = dotenv.get("MYSQL_PASSWORD");
         } else {
             this.mysql_pass = "";
         }
-        if (configMap.containsKey("mysql-database")) {
-            this.mysql_database = configMap.get("mysql-database");
+        if (!dotenv.get("MYSQL_DATABASE").equals("")) {
+            this.mysql_database = dotenv.get("MYSQL_DATABASE");
         } else {
             this.mysql_database = "ninja";
         }
-        if (configMap.containsKey("version-Data")) {
-            this.vsData = Byte.parseByte(configMap.get("version-Data"));
+        if (!dotenv.get("VERSION_DATA").equals("")) {
+            this.vsData = Byte.parseByte(dotenv.get("VERSION_DATA"));
         } else {
             this.vsData = 54;
         }
-        if (configMap.containsKey("version-Map")) {
-            this.vsMap = Byte.parseByte(configMap.get("version-Map"));
+        if (!dotenv.get("VERSION_MAP").equals("")) {
+            this.vsMap = Byte.parseByte(dotenv.get("VERSION_MAP"));
         } else {
             this.vsMap = 86;
         }
-        if (configMap.containsKey("version-Skill")) {
-            this.vsSkill = Byte.parseByte(configMap.get("version-Skill"));
+        if (!dotenv.get("VERSION_SKILL").equals("")) {
+            this.vsSkill = Byte.parseByte(dotenv.get("VERSION_SKILL"));
         } else {
             this.vsSkill = 10;
         }
-        if (configMap.containsKey("version-Item")) {
-            this.vsItem = Byte.parseByte(configMap.get("version-Item"));
+        if (!dotenv.get("VERSION_ITEM").equals("")) {
+            this.vsItem = Byte.parseByte(dotenv.get("VERSION_ITEM"));
         } else {
             this.vsItem = 70;
         }
 
 
-        MAX_CLIENT_PER_SOCKET = Short.parseShort(configMap.get("max-Client-Per-Socket"));
+        MAX_CLIENT_PER_SOCKET = Short.parseShort(dotenv.get("MAX_CLIENT_PER_SOCKET"));
         SQLManager.create(mysql_host, mysql_database, mysql_user, mysql_pass);
 
     }
